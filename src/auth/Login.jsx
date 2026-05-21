@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { BrandLogo, I } from '../lib/ui.jsx'
 import { supabase } from '../lib/supabase.js'
-import { roleRedirect } from '../lib/roles.jsx'
 
 const FEATURES = [
   { icon: I.Home,       label: 'Annonces illimitées',      sub: 'Publiez sans restriction' },
@@ -28,7 +27,7 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: `${window.location.origin}/app` },
+        options: { redirectTo: `${window.location.origin}/` },
       })
       if (error) throw error
     } catch (err) {
@@ -43,9 +42,7 @@ export default function Login() {
     try {
       const { data: { user }, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) throw error
-      const { data: profile } = await supabase
-        .from('profiles').select('role').eq('id', user.id).single()
-      navigate(roleRedirect(profile?.role))
+      navigate('/')
     } catch (err) {
       const msg = err?.message || ''
       if (/invalid login/i.test(msg))            setError('E-mail ou mot de passe incorrect.')
@@ -155,9 +152,9 @@ export default function Login() {
         <div className="flex-1 flex flex-col justify-center px-6 py-10 sm:px-10 lg:px-14 xl:px-20">
           <motion.div
             className="w-full max-w-md mx-auto"
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2 }}
           >
             {/* Heading */}
             <h2 className="text-2xl xl:text-3xl font-extrabold text-[#0F172A] tracking-tight mb-1">

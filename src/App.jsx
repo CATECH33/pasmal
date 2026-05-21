@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useInView, useScroll, useTransform, animate } from 'framer-motion'
 import { TrustGuarantees } from './lib/trustBadges.jsx'
 import AdminPreview from './admin/AdminPreview.jsx'
@@ -2231,7 +2232,7 @@ function AgencyPreviewCard({ agencyName, city, agencyType, logoUrl, plan }) {
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block" />
         Aperçu en direct
       </div>
-      <motion.div layout className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xl">
+      <motion.div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xl">
         <div className="h-20 bg-gradient-to-br from-[#0B1F3A] via-[#0F2D50] to-[#1a3a5e] relative overflow-hidden">
           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 75% 50%, rgba(249,115,22,0.25) 0%, transparent 60%)' }} />
         </div>
@@ -3129,7 +3130,7 @@ function RegisterProView({ setCurrentView }) {
           </div>
 
           {/* ── Live preview (lg+) ── */}
-          <div className="hidden lg:block w-60 xl:w-72 shrink-0">
+          <div className="hidden lg:block w-60 xl:w-72 shrink-0 overflow-hidden">
             <AgencyPreviewCard agencyName={agencyName} city={city} agencyType={agencyType} logoUrl={logoUrl} plan={plan} />
           </div>
         </div>
@@ -3666,6 +3667,8 @@ function PublierView({ user, onSignIn }) {
    APP root
    ============================================================================ */
 export default function App() {
+  const navigate = useNavigate()
+
   /* ---------- Routing ---------- */
   const [currentView, setCurrentView] = useState('home') // home | acheter | louer | publier
 
@@ -3719,8 +3722,16 @@ export default function App() {
     }
   }, [currentView, user, role])
 
-  const openSignIn = () => { setAuthMode('login'); setAuthOpen(true) }
-  const openSignUp = () => { setAuthMode('signup'); setAuthOpen(true) }
+  // Auth guard — redirect to home when session ends on a protected view
+  useEffect(() => {
+    const authViews = ['profil', 'favoris', 'mes-annonces', 'verification', 'alerts', 'admin']
+    if (!user && authViews.includes(currentView)) {
+      setCurrentView('home')
+    }
+  }, [user, currentView])
+
+  const openSignIn = () => navigate('/auth/login')
+  const openSignUp = () => navigate('/auth/register')
   const handleSignOut = async () => {
     await supabase.auth.signOut().catch(() => {})
     setUser(null)
@@ -3729,8 +3740,7 @@ export default function App() {
   }
   const handlePublish = () => {
     if (!user) {
-      setAuthMode('signup')
-      setAuthOpen(true)
+      navigate('/auth/register')
     } else {
       setCurrentView('publier')
     }
@@ -3911,12 +3921,7 @@ export default function App() {
       <MobileStickyCTA onPublish={handlePublish} visible={currentView !== 'publier'} />
       <MobileBottomNav currentView={currentView} setCurrentView={setCurrentView} onPublish={handlePublish} />
 
-      <AuthModal
-        open={authOpen}
-        mode={authMode}
-        onClose={() => setAuthOpen(false)}
-        onNavigatePro={() => { setAuthOpen(false); setCurrentView('register-pro') }}
-      />
+      {/* AuthModal removed — auth is now handled by /auth/login and /auth/register pages */}
     </div>
   )
 }
