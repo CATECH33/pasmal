@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #0B1F3A;
+  background: #FFFFFF;
+}
+
+/* Glassmorphism */
+.glass {
+  backdrop-filter: saturate(180%) blur(18px);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  background-color: rgba(255, 255, 255, 0.72);
+}
+.glass-dark {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background-color: rgba(11, 31, 58, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.hero-overlay {
+  background: linear-gradient(180deg, rgba(11,31,58,0.55) 0%, rgba(11,31,58,0.30) 35%, rgba(11,31,58,0.72) 100%);
+}
+
+/* Animated gradient blobs */
+.blob {
+  filter: blur(80px);
+  opacity: 0.55;
+}
+
+/* No scrollbar utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Premium subtle text gradient */
+.text-gradient-orange {
+  background: linear-gradient(90deg, #FF8A3D 0%, #FF6B00 50%, #E55A00 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Glow for highlighted CTA / pricing */
+.glow-orange {
+  box-shadow: 0 0 0 1px rgba(255, 107, 0, 0.35), 0 20px 50px rgba(255, 107, 0, 0.22);
+}
+
+/* Carousel mask edges */
+.fade-mask-x {
+  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
