@@ -1918,6 +1918,7 @@ function NewsletterForm() {
 }
 
 function Footer({ setCurrentView }) {
+  const navigate = useNavigate()
   return (
     <footer className="bg-navy-900 text-white/80">
       <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 pb-28 md:pb-16">
@@ -1941,6 +1942,7 @@ function Footer({ setCurrentView }) {
               <li><button onClick={() => setCurrentView('louer')} className="hover:text-orange-500 transition-colors">Louer</button></li>
               <li><a href="#" className="hover:text-orange-500 transition-colors">Colocation</a></li>
               <li><a href="#" className="hover:text-orange-500 transition-colors">Estimation gratuite</a></li>
+              <li><button onClick={() => navigate('/dashboard')} className="hover:text-orange-500 transition-colors">Mon espace</button></li>
             </ul>
           </div>
           {[
