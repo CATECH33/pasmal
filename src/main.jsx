@@ -6,6 +6,13 @@ import Login from './auth/Login.jsx'
 import Register from './auth/Register.jsx'
 import Forgot from './auth/Forgot.jsx'
 import VerifyPending from './auth/VerifyPending.jsx'
+import UserDashLayout from './userdash/UserDashLayout.jsx'
+import UDOverview from './userdash/UDOverview.jsx'
+import UDSavedSearches from './userdash/UDSavedSearches.jsx'
+import UDNotifications from './userdash/UDNotifications.jsx'
+import UDAIInsights from './userdash/UDAIInsights.jsx'
+import UDSubscription from './userdash/UDSubscription.jsx'
+import UDFavorites from './userdash/UDFavorites.jsx'
 import './index.css'
 
 class ErrorBoundary extends React.Component {
@@ -39,6 +46,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/auth/register" element={<Register />} />
           <Route path="/auth/forgot" element={<Forgot />} />
           <Route path="/auth/verify-pending" element={<VerifyPending />} />
+          <Route path="/dashboard" element={<UserDashLayout />}>
+            <Route index element={<UDOverview />} />
+            <Route path="searches" element={<UDSavedSearches />} />
+            <Route path="notifications" element={<UDNotifications />} />
+            <Route path="insights" element={<UDAIInsights />} />
+            <Route path="subscription" element={<UDSubscription />} />
+            <Route path="favorites" element={<UDFavorites />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>
