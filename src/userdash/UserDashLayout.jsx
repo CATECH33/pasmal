@@ -14,6 +14,7 @@ const NAV = [
   { to: '/dashboard/insights',     label: 'Insights IA',              icon: I.Sparkles },
   { to: '/dashboard/subscription', label: 'Abonnement',               icon: I.CreditCard },
   { to: '/dashboard/favorites',    label: 'Favoris',                  icon: I.Heart },
+  { to: '/dashboard/profile',     label: 'Mon profil',               icon: I.User  },
 ]
 
 export const ThemeContext = React.createContext({ dark: false })
