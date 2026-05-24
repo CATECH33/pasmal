@@ -740,6 +740,152 @@ function PlaceholderTab({ label, icon: Icon, dark }) {
   )
 }
 
+/* ── New Lead Modal ───────────────────────────────────── */
+
+const EMPTY_FORM = { name: '', email: '', phone: '', property: '', budget: '', source: '', profile: 'serious', notes: '' }
+
+function NewLeadModal({ dark, onClose, onAdd }) {
+  const [form, setForm] = useState(EMPTY_FORM)
+  const [error, setError] = useState('')
+
+  const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }))
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!form.name.trim() || !form.email.trim()) { setError('Le nom et l\'email sont obligatoires.'); return }
+    onAdd({
+      id: `l${Date.now()}`,
+      ...form,
+      name: form.name.trim(),
+      email: form.email.trim(),
+      status: 'new',
+      score: Math.floor(Math.random() * 30) + 50,
+      tags: [],
+      lastContact: new Date().toISOString().slice(0, 10),
+    })
+    onClose()
+  }
+
+  const inputCls = `w-full text-sm rounded-xl px-3 py-2.5 border focus:outline-none focus:ring-2 focus:ring-orange-500/30 ${
+    dark ? 'bg-white/5 border-white/10 text-white placeholder-white/30' : 'bg-slate-50 border-slate-200 text-navy-900 placeholder-slate-400'
+  }`
+  const labelCls = `block text-xs font-bold uppercase tracking-wider mb-1.5 ${dark ? 'text-white/40' : 'text-slate-400'}`
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
+    >
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <motion.div
+        initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }}
+        className={`relative z-10 w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl ${dark ? 'bg-[#0B1120]' : 'bg-white'}`}
+      >
+        {/* Header */}
+        <div className={`flex items-center justify-between px-6 py-4 border-b ${dark ? 'border-white/10' : 'border-slate-100'}`}>
+          <div>
+            <h3 className={`text-base font-bold ${dark ? 'text-white' : 'text-navy-900'}`}>Nouveau lead</h3>
+            <p className={`text-xs mt-0.5 ${dark ? 'text-white/40' : 'text-slate-400'}`}>Ajouter un prospect au pipeline</p>
+          </div>
+          <button onClick={onClose} className={`p-2 rounded-xl transition ${dark ? 'hover:bg-white/10 text-white/50' : 'hover:bg-slate-100 text-slate-400'}`}>
+            <I.X size={17} />
+          </button>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit}>
+          <div className="p-6 space-y-4 max-h-[65vh] overflow-y-auto">
+            {/* Nom + Email */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls}>Nom <span className="text-rose-500">*</span></label>
+                <input value={form.name} onChange={set('name')} placeholder="Sophie Martin" className={inputCls} />
+              </div>
+              <div>
+                <label className={labelCls}>Email <span className="text-rose-500">*</span></label>
+                <input type="email" value={form.email} onChange={set('email')} placeholder="sophie@email.com" className={inputCls} />
+              </div>
+            </div>
+
+            {/* Téléphone + Source */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls}>Téléphone</label>
+                <input value={form.phone} onChange={set('phone')} placeholder="06 12 34 56 78" className={inputCls} />
+              </div>
+              <div>
+                <label className={labelCls}>Source</label>
+                <select value={form.source} onChange={set('source')}
+                  className={`${inputCls} appearance-none cursor-pointer`}>
+                  <option value="">— Choisir —</option>
+                  {['SeLoger', 'Leboncoin', 'PAP', "Bien'ici", 'MeilleursAgents', 'Agence', 'Autre'].map(s => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Bien + Budget */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls}>Bien recherché</label>
+                <input value={form.property} onChange={set('property')} placeholder="Appt 3P Paris 11" className={inputCls} />
+              </div>
+              <div>
+                <label className={labelCls}>Budget</label>
+                <input value={form.budget} onChange={set('budget')} placeholder="350 000 €" className={inputCls} />
+              </div>
+            </div>
+
+            {/* Profil IA */}
+            <div>
+              <label className={labelCls}>Profil IA</label>
+              <div className="grid grid-cols-2 gap-2">
+                {Object.entries(PROFILES).map(([k, p]) => (
+                  <button type="button" key={k} onClick={() => setForm(f => ({ ...f, profile: k }))}
+                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm font-medium transition ${
+                      form.profile === k
+                        ? dark ? 'border-orange-500/60 bg-orange-900/20 text-orange-400' : 'border-orange-300 bg-orange-50 text-orange-700'
+                        : dark ? 'border-white/10 text-white/60 hover:border-white/20' : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                    }`}
+                  >
+                    <span>{p.icon}</span> {p.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label className={labelCls}>Notes</label>
+              <textarea value={form.notes} onChange={set('notes')} rows={3} placeholder="Infos complémentaires…"
+                className={`${inputCls} resize-none`} />
+            </div>
+
+            {error && (
+              <p className="text-xs text-rose-500 font-medium flex items-center gap-1.5">
+                <I.Alert size={13}/> {error}
+              </p>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className={`px-6 py-4 border-t flex gap-3 ${dark ? 'border-white/10' : 'border-slate-100'}`}>
+            <button type="button" onClick={onClose}
+              className={`flex-1 py-2.5 rounded-xl text-sm font-semibold border transition ${dark ? 'border-white/10 text-white/60 hover:bg-white/10' : 'border-slate-200 text-slate-600 hover:bg-slate-50'}`}>
+              Annuler
+            </button>
+            <button type="submit"
+              className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-orange-600 hover:bg-orange-700 text-white transition flex items-center justify-center gap-2">
+              <I.Plus size={15}/> Créer le lead
+            </button>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 /* ── Main Component ───────────────────────────────────── */
 
 const TABS = [
@@ -754,6 +900,7 @@ export default function UDCRM() {
   const [leads, setLeads] = useState(SEED_LEADS)
   const [tab, setTab] = useState('kanban')
   const [selected, setSelected] = useState(null)
+  const [addOpen, setAddOpen] = useState(false)
 
   const won   = leads.filter(l => l.status === 'won').length
   const total = leads.length
@@ -771,7 +918,7 @@ export default function UDCRM() {
             {total} leads · {won} gagnés · Taux de conv. {rate}%
           </p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-full transition">
+        <button onClick={() => setAddOpen(true)} className="flex items-center gap-2 px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-full transition">
           <I.Plus size={16} /> Nouveau lead
         </button>
       </div>
@@ -809,6 +956,20 @@ export default function UDCRM() {
           </button>
         ))}
       </div>
+
+      {/* Modal nouveau lead */}
+      <AnimatePresence>
+        {addOpen && (
+          <NewLeadModal
+            dark={dark}
+            onClose={() => setAddOpen(false)}
+            onAdd={(lead) => {
+              setLeads(prev => [lead, ...prev])
+              setTab('kanban')
+            }}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Modal lead */}
       <AnimatePresence>
