@@ -3865,11 +3865,22 @@ export default function App() {
   const fetchListings = useCallback(async (currentFilters) => {
     setLoading(true)
     setError('')
+
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+    if (!supabaseUrl || supabaseUrl.includes('placeholder')) {
+      if (import.meta.env.DEV) console.error('[PASMAL] VITE_SUPABASE_URL manquant ou invalide — vérifier les variables d\'environnement Vercel/Vite.')
+      const filtered = applyClientFilters(FALLBACK_LISTINGS, currentFilters)
+      setListings(filtered.length ? filtered : FALLBACK_LISTINGS)
+      setSource('fallback')
+      setLoading(false)
+      return
+    }
+
     try {
       let query = supabase.from('listings').select('*')
       if (currentFilters.type) query = query.eq('type', currentFilters.type)
       if (currentFilters.propertyType) query = query.eq('property_type', currentFilters.propertyType)
-      if (currentFilters.location) query = query.ilike('location', `%${currentFilters.location}%`)
+      if (currentFilters.location) query = query.or(`city.ilike.%${currentFilters.location}%,district.ilike.%${currentFilters.location}%`)
       if (currentFilters.priceMax) query = query.lte('price', Number(currentFilters.priceMax))
       query = query.order('is_premium', { ascending: false }).limit(8)
 
@@ -3884,6 +3895,15 @@ export default function App() {
         setListings(data); setSource('supabase')
       }
     } catch (err) {
+      const isNetworkDown = err instanceof TypeError && err.message === 'Failed to fetch'
+      const isCors = err?.message?.includes('CORS') || err?.message?.includes('NetworkError when attempting to fetch resource')
+
+      let devHint = ''
+      if (isNetworkDown) devHint = `[PASMAL] Réseau inaccessible — URL: ${import.meta.env.VITE_SUPABASE_URL}`
+      else if (isCors) devHint = `[PASMAL] Erreur CORS — vérifier les origines dans Supabase Auth > URL Configuration`
+      else devHint = `[PASMAL] Erreur Supabase: ${err?.message}`
+      if (import.meta.env.DEV) console.error(devHint, err)
+
       setError(err?.message || 'Erreur réseau')
       const filtered = applyClientFilters(FALLBACK_LISTINGS, currentFilters)
       setListings(filtered.length ? filtered : FALLBACK_LISTINGS)
@@ -4040,7 +4060,7 @@ function applyClientFilters(items, f) {
   return items.filter((i) => {
     if (f.type && i.type !== f.type) return false
     if (f.propertyType && i.property_type !== f.propertyType) return false
-    if (f.location && !(i.location || '').toLowerCase().includes(f.location.toLowerCase())) return false
+    if (f.location && !`${i.city || ''} ${i.district || ''}`.toLowerCase().includes(f.location.toLowerCase())) return false
     if (f.priceMax && typeof i.price === 'number' && i.price > Number(f.priceMax)) return false
     return true
   })
