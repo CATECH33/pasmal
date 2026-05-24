@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
+import LocationAutocomplete from './components/LocationAutocomplete.jsx'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useInView, useScroll, useTransform, animate } from 'framer-motion'
 import { TrustGuarantees } from './lib/trustBadges.jsx'
@@ -983,8 +984,18 @@ function SearchBar({ filters, setFilters, onSearch, floating = false }) {
 
       <form onSubmit={(e) => { e.preventDefault(); onSearch() }} className="grid grid-cols-2 md:grid-cols-12 gap-2 mt-2">
         <div className="col-span-2 md:col-span-4">
-          <Field icon={Icons.MapPin} label="Localisation">
-            <input value={filters.location} onChange={(e) => setFilters({ ...filters, location: e.target.value })} placeholder="Paris, Lyon, Bordeaux…" className="w-full bg-transparent text-navy-900 placeholder-slate-400 text-sm focus:outline-none" />
+          <Field icon={null} label="Localisation">
+            <LocationAutocomplete
+              value={filters.location}
+              onChange={(name) => setFilters((f) => ({ ...f, location: name || '' }))}
+              onSelect={(city) => {
+                if (city) {
+                  setFilters((f) => ({ ...f, location: city.name }))
+                  fetchListings({ ...filters, location: city.name })
+                }
+              }}
+              placeholder="Paris, Lyon, Bordeaux…"
+            />
           </Field>
         </div>
         <div className="md:col-span-2">
