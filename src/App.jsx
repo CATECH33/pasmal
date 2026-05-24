@@ -984,19 +984,23 @@ function SearchBar({ filters, setFilters, onSearch, floating = false }) {
 
       <form onSubmit={(e) => { e.preventDefault(); onSearch() }} className="grid grid-cols-2 md:grid-cols-12 gap-2 mt-2">
         <div className="col-span-2 md:col-span-4">
-          <Field icon={null} label="Localisation">
-            <LocationAutocomplete
-              value={filters.location}
-              onChange={(name) => setFilters((f) => ({ ...f, location: name || '' }))}
-              onSelect={(city) => {
-                if (city) {
-                  setFilters((f) => ({ ...f, location: city.name }))
-                  fetchListings({ ...filters, location: city.name })
-                }
-              }}
-              placeholder="Paris, Lyon, Bordeaux…"
-            />
-          </Field>
+          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition-colors group">
+            <Icons.MapPin size={20} className="text-orange-600 shrink-0 group-focus-within:scale-110 transition-transform" />
+            <div className="flex-1 min-w-0">
+              <div className="text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Localisation</div>
+              <LocationAutocomplete
+                value={filters.location}
+                onChange={(name) => setFilters((f) => ({ ...f, location: name || '' }))}
+                onSelect={(city) => {
+                  if (city) {
+                    setFilters((f) => ({ ...f, location: city.name }))
+                    fetchListings({ ...filters, location: city.name })
+                  }
+                }}
+                placeholder="Paris, Lyon, Bordeaux…"
+              />
+            </div>
+          </div>
         </div>
         <div className="md:col-span-2">
           <Field icon={Icons.Home} label="Type" divider>
