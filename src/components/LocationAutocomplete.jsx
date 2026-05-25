@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { franceCities } from '../data/franceCities.ts'
+import franceCities from '../data/franceCities.json'
 
 /* ── inline SVGs (no external lib) ──────────────────────── */
 const MapPin = () => (
@@ -33,13 +33,25 @@ export default function LocationAutocomplete({
   /* keep query in sync when value prop changes externally (e.g. cleared by parent) */
   useEffect(() => { setQuery(value ?? '') }, [value])
 
-  /* filter dataset */
-  const results = query.trim().length >= 1
-    ? franceCities.filter((c) =>
-        c.city.toLowerCase().includes(query.toLowerCase()) ||
-        c.zipcode.startsWith(query) ||
-        c.region.toLowerCase().includes(query.toLowerCase())
-      )
+  /* normalize query once, then filter — avoids re-lowercasing per entry */
+  const normQ = query.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+  const results = normQ.length >= 1
+    ? franceCities
+        .filter(c => {
+          const n = c.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+          return n.includes(normQ) ||
+            c.zipcode.startsWith(query.trim()) ||
+            (c.department || '').toLowerCase().includes(normQ)
+        })
+        .sort((a, b) => {
+          const na = a.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+          const nb = b.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+          const sa = na.startsWith(normQ) ? 1 : 0
+          const sb = nb.startsWith(normQ) ? 1 : 0
+          if (sa !== sb) return sb - sa
+          return (b.population || 0) - (a.population || 0)
+        })
+        .slice(0, 8)
     : []
 
   /* close on outside click */
@@ -56,11 +68,11 @@ export default function LocationAutocomplete({
 
   /* select a city */
   const handleSelect = (city) => {
-    setQuery(city.city)
+    setQuery(city.name)
     setOpen(false)
     setActiveIdx(-1)
-    onChange?.(city.city)
-    onSelect?.({ ...city, name: city.city })
+    onChange?.(city.name)
+    onSelect?.(city)
   }
 
   /* keyboard navigation */
@@ -151,16 +163,18 @@ export default function LocationAutocomplete({
 
                 <div className="flex-1 min-w-0">
                   <div className={`text-sm font-semibold truncate ${isActive ? 'text-white' : 'text-slate-800'}`}>
-                    {city.city}
+                    {city.name}
                   </div>
                   <div className={`text-xs truncate ${isActive ? 'text-orange-100' : 'text-slate-400'}`}>
-                    {city.region}
+                    {city.department ? `${city.department} · ${city.region}` : city.region}
                   </div>
                 </div>
 
-                <span className={`shrink-0 text-[11px] font-mono ${isActive ? 'text-orange-100' : 'text-slate-400'}`}>
-                  {city.zipcode}
-                </span>
+                {city.zipcode && (
+                  <span className={`shrink-0 text-[11px] font-mono ${isActive ? 'text-orange-100' : 'text-slate-400'}`}>
+                    {city.zipcode}
+                  </span>
+                )}
               </button>
             )
           })}
