@@ -38,25 +38,28 @@ const IconSpinner = () => (
 /* ── Props ──────────────────────────────────────────────── */
 
 type Props = {
-  /** Controlled value — set from outside to sync or clear the input. */
   value?:       string
-  /** Fired on every selection; null when the field is cleared. */
+  onChange?:    (value: string) => void
   onSelect?:    (city: City | null) => void
   placeholder?: string
   debounceMs?:  number
   dark?:        boolean
   className?:   string
+  /** Strip outer container — embed inside a parent Field wrapper. */
+  bare?:        boolean
 }
 
 /* ── Component ──────────────────────────────────────────── */
 
 export default function LocationSearch({
   value       = '',
+  onChange,
   onSelect,
   placeholder = 'Paris, Lyon, 10000…',
   debounceMs,
   dark        = false,
   className   = '',
+  bare        = false,
 }: Props) {
   const { setQuery, results, loading, clear } = useLocationSearch(debounceMs)
 
@@ -91,6 +94,7 @@ export default function LocationSearch({
     const v = e.target.value
     setInputValue(v)
     setQuery(v)
+    onChange?.(v)
     setActiveIdx(-1)
     setOpen(true)
   }
@@ -105,6 +109,7 @@ export default function LocationSearch({
 
   const handleClear = () => {
     setInputValue('')
+    onChange?.('')
     clear()
     setOpen(false)
     onSelect?.(null)
@@ -140,20 +145,21 @@ export default function LocationSearch({
     <div ref={wrapRef} className={`relative w-full ${className}`}>
 
       {/* ── Input ─────────────────────────────────────── */}
-      <div className={`flex items-center gap-2.5 px-4 h-12 rounded-2xl border transition-all ${
+      <div className={bare ? 'flex items-center gap-1.5 w-full' : `flex items-center gap-2.5 px-4 h-12 rounded-2xl border transition-all ${
         dark
           ? 'bg-white/5 border-white/10 focus-within:border-orange-500/50 focus-within:bg-white/[0.07]'
           : 'bg-white border-slate-200 shadow-sm focus-within:border-orange-400 focus-within:shadow-orange-100/60 focus-within:shadow-md'
       }`}>
 
-        {/* Left icon: spinner when loading, search otherwise */}
-        <span className={`shrink-0 transition-colors ${
-          loading
-            ? (dark ? 'text-orange-400' : 'text-orange-500')
-            : (dark ? 'text-white/30' : 'text-slate-400')
-        }`}>
-          {loading ? <IconSpinner /> : <IconSearch />}
-        </span>
+        {/* Left icon: hidden in bare mode (parent provides its own icon) */}
+        {!bare && (
+          <span className={`shrink-0 transition-colors ${loading ? (dark ? 'text-orange-400' : 'text-orange-500') : (dark ? 'text-white/30' : 'text-slate-400')}`}>
+            {loading ? <IconSpinner /> : <IconSearch />}
+          </span>
+        )}
+        {bare && loading && (
+          <span className={`shrink-0 ${dark ? 'text-orange-400' : 'text-orange-500'}`}><IconSpinner /></span>
+        )}
 
         <input
           ref={inputRef}
