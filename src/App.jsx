@@ -3956,6 +3956,18 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters.type])
 
+  const [selectedListing, setSelectedListing] = useState(null)
+  const [selectedListingIdx, setSelectedListingIdx] = useState(0)
+  const [prevView, setPrevView] = useState('home')
+
+  const handleOpenListing = (raw, idx = 0) => {
+    setSelectedListing(raw)
+    setSelectedListingIdx(idx)
+    setPrevView(currentView)
+    setCurrentView('detail')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const handleSearch = (overrides = {}) => {
     fetchListings({ ...filters, ...overrides })
     if (currentView === 'home') setCurrentView('results')
@@ -4007,6 +4019,17 @@ export default function App() {
             setFilters={setFilters}
             onSearch={handleSearch}
             onBack={() => setCurrentView('home')}
+            onSelect={handleOpenListing}
+          />
+        )}
+
+        {currentView === 'detail' && selectedListing && (
+          <PropertyDetailPage
+            listing={selectedListing}
+            idx={selectedListingIdx}
+            onBack={() => setCurrentView(prevView)}
+            onOpenListing={handleOpenListing}
+            similarListings={listings.filter(l => l.id !== selectedListing.id)}
           />
         )}
 
@@ -4124,7 +4147,7 @@ function ResultsSkeleton({ viewMode }) {
   )
 }
 
-function ResultsGrid({ listings }) {
+function ResultsGrid({ listings, onSelect }) {
   return (
     <motion.div
       initial="hidden" animate="show"
@@ -4136,6 +4159,7 @@ function ResultsGrid({ listings }) {
         return (
           <motion.article
             key={l.id}
+            onClick={() => onSelect?.(raw, idx)}
             variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } } }}
             whileHover={{ y: -6 }}
             className="group bg-white rounded-3xl overflow-hidden shadow-soft hover:shadow-cardHover transition-shadow duration-300 cursor-pointer"
@@ -4179,7 +4203,7 @@ function ResultsGrid({ listings }) {
   )
 }
 
-function ResultsList({ listings }) {
+function ResultsList({ listings, onSelect }) {
   return (
     <div className="space-y-3">
       {listings.map((raw, idx) => {
@@ -4187,6 +4211,7 @@ function ResultsList({ listings }) {
         return (
           <motion.article
             key={l.id}
+            onClick={() => onSelect?.(raw, idx)}
             initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
             transition={{ delay: idx * 0.04, duration: 0.35 }}
             className="group bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-cardHover transition-all cursor-pointer flex items-stretch"
@@ -4232,7 +4257,7 @@ function ResultsList({ listings }) {
   )
 }
 
-function SearchResultsPage({ listings, loading, error, source, filters, setFilters, onSearch, onBack }) {
+function SearchResultsPage({ listings, loading, error, source, filters, setFilters, onSearch, onBack, onSelect }) {
   const [sortBy,   setSortBy]   = useState('relevance')
   const [viewMode, setViewMode] = useState('grid')
 
@@ -4361,10 +4386,354 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
             </button>
           </div>
         ) : viewMode === 'grid' ? (
-          <ResultsGrid listings={sorted} />
+          <ResultsGrid listings={sorted} onSelect={onSelect} />
         ) : (
-          <ResultsList listings={sorted} />
+          <ResultsList listings={sorted} onSelect={onSelect} />
         )}
+      </div>
+    </div>
+  )
+}
+
+/* ============================================================================
+   Property Detail Page
+   ============================================================================ */
+
+const DPE_BANDS = {
+  A: { color: '#00A651', textColor: 'white' },
+  B: { color: '#51B948', textColor: 'white' },
+  C: { color: '#BECE00', textColor: '#1a1a1a' },
+  D: { color: '#FECB00', textColor: '#1a1a1a' },
+  E: { color: '#FB7A08', textColor: 'white' },
+  F: { color: '#EE3424', textColor: 'white' },
+  G: { color: '#C50D13', textColor: 'white' },
+}
+
+function DPEBadge({ band = 'C' }) {
+  const b = DPE_BANDS[band] || DPE_BANDS.C
+  return (
+    <div className="flex items-center gap-3">
+      <div className="text-xs text-slate-500 font-medium w-28">Étiquette DPE</div>
+      <div style={{ background: b.color, color: b.textColor }}
+        className="px-3 py-1 rounded text-sm font-bold min-w-[32px] text-center">
+        {band}
+      </div>
+    </div>
+  )
+}
+
+const _DETAIL_DESCS = [
+  "Magnifique bien en excellent état, idéalement situé dans un quartier prisé et calme. Lumineux et fonctionnel, il offre des prestations haut de gamme avec une vue dégagée.",
+  "Rare sur le marché, ce bien d'exception vous séduira par son charme et sa qualité de construction. Exposition plein sud, volumes généreux, emplacement de premier choix.",
+  "Coup de cœur assuré pour ce bien soigneusement rénové avec des matériaux nobles. Architecture élégante, intérieur design et moderne, à deux pas des commerces et transports.",
+  "Dans une résidence sécurisée à l'architecture contemporaine, ce bien bénéficie de finitions haut de gamme et d'espaces parfaitement agencés. Idéal pour une première acquisition.",
+]
+
+const _DETAIL_FEATURES = [
+  ['Double vitrage', 'Parquet bois', 'Cuisine équipée', 'Interphone vidéo'],
+  ['Cave privative', 'Gardien 24h/24', 'Fibre optique', 'Digicode'],
+  ['Parking inclus', 'Ascenseur', 'Terrasse', 'Cellier'],
+  ['Balcon', 'Lumineux', 'Traversant', 'Parquet bois'],
+]
+
+function generateDetail(l, idx = 0) {
+  const seed = typeof l.id === 'string' ? (l.id.charCodeAt(0) || idx + 1) : idx + 1
+  return {
+    dpe: ['A','B','C','C','D','D','E'][seed % 7],
+    floor: (seed % 6) + 1,
+    totalFloors: (seed % 4) + 4,
+    yearBuilt: 1970 + (seed % 55),
+    features: _DETAIL_FEATURES[seed % _DETAIL_FEATURES.length],
+    description: _DETAIL_DESCS[seed % _DETAIL_DESCS.length],
+    coOwnershipCharges: seed % 3 === 0 ? null : 150 + (seed % 12) * 25,
+    propertyTax: 800 + (seed % 20) * 50,
+  }
+}
+
+const _GALLERY_IDS = [
+  'photo-1484154218962-a197022b5858',
+  'photo-1556909114-f6e7ad7d3136',
+  'photo-1512917774080-9991f1c4c750',
+  'photo-1493809842364-78817add7ffb',
+]
+
+function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, similarListings = [] }) {
+  const l = enrichWithMeta(raw, idx)
+  const detail = generateDetail(l, idx)
+  const [photoIdx, setPhotoIdx] = useState(0)
+  const [showContact, setShowContact] = useState(false)
+  const [form, setForm] = useState({
+    name: '', email: '', phone: '',
+    message: "Bonjour, je suis intéressé(e) par ce bien et souhaite obtenir plus d'informations.",
+  })
+  const [sent, setSent] = useState(false)
+
+  const photos = [
+    l.image_url || unsplash('photo-1560448204-e02f11c3d0e2', 1200),
+    ..._GALLERY_IDS.map(id => unsplash(id, 900)),
+  ]
+
+  const handleSend = (e) => { e.preventDefault(); setSent(true) }
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+
+      {/* Breadcrumb bar */}
+      <div className="bg-white border-b border-slate-100 sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-3.5 flex items-center gap-3">
+          <button onClick={onBack}
+            className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-navy-900 transition-colors">
+            <Icons.ChevronLeft size={16} /> Retour
+          </button>
+          <span className="text-slate-200">/</span>
+          <span className="text-sm text-slate-700 truncate max-w-xs md:max-w-none">{l.title}</span>
+          {l.is_premium && (
+            <span className="ml-auto flex items-center gap-1 bg-orange-100 text-orange-700 text-xs font-bold px-2 py-0.5 rounded-full">
+              <Icons.Star size={10} fill="currentColor" /> Premium
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-6">
+        <div className="lg:grid lg:grid-cols-3 lg:gap-8">
+
+          {/* ── Left col ──────────────────────────────────── */}
+          <div className="lg:col-span-2 space-y-5">
+
+            {/* Gallery */}
+            <div className="relative rounded-2xl overflow-hidden bg-slate-200" style={{ aspectRatio: '16/9' }}>
+              <img src={photos[photoIdx]} alt={l.title}
+                className="w-full h-full object-cover"
+                onError={e => { e.currentTarget.src = unsplash('photo-1560448204-e02f11c3d0e2', 1200) }} />
+              {photoIdx > 0 && (
+                <button onClick={() => setPhotoIdx(i => i - 1)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow transition">
+                  <Icons.ChevronLeft size={18} />
+                </button>
+              )}
+              {photoIdx < photos.length - 1 && (
+                <button onClick={() => setPhotoIdx(i => i + 1)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow transition">
+                  <Icons.ChevronRight size={18} />
+                </button>
+              )}
+              <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2.5 py-1 rounded-full">
+                {photoIdx + 1} / {photos.length}
+              </div>
+              <div className="absolute top-3 left-3 flex gap-2">
+                {l.is_new     && <span className="bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Nouveau</span>}
+                {l.is_urgent  && <span className="bg-red-500    text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Urgent</span>}
+                {l.is_popular && <span className="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Populaire</span>}
+              </div>
+            </div>
+
+            {/* Thumbnails */}
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              {photos.map((src, i) => (
+                <button key={i} onClick={() => setPhotoIdx(i)}
+                  className={`shrink-0 w-20 h-14 rounded-xl overflow-hidden border-2 transition-all ${i === photoIdx ? 'border-orange-500' : 'border-transparent opacity-60 hover:opacity-90'}`}>
+                  <img src={src} alt="" className="w-full h-full object-cover"
+                    onError={e => { e.currentTarget.src = unsplash('photo-1560448204-e02f11c3d0e2', 200) }} />
+                </button>
+              ))}
+            </div>
+
+            {/* Key stats */}
+            <div className="bg-white rounded-2xl p-5 shadow-soft">
+              <h1 className="text-xl font-extrabold text-navy-900 mb-1">{l.title}</h1>
+              <div className="flex items-center gap-1.5 text-sm text-slate-500 mb-4">
+                <Icons.MapPin size={14} className="text-orange-500" /> {l.location}
+              </div>
+              <div className="flex items-center gap-6 flex-wrap border-t border-slate-100 pt-4">
+                <div>
+                  <div className="text-2xl font-extrabold text-navy-900">{formatPrice(l)}</div>
+                  {l.type === 'louer' && <div className="text-xs text-slate-400 mt-0.5">charges incluses</div>}
+                </div>
+                {l.rooms && (
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-navy-900">{l.rooms}</div>
+                    <div className="text-xs text-slate-400">pièces</div>
+                  </div>
+                )}
+                {l.surface && (
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-navy-900">{l.surface} m²</div>
+                    <div className="text-xs text-slate-400">surface</div>
+                  </div>
+                )}
+                <div className="text-center">
+                  <div className="text-lg font-bold text-navy-900">{detail.floor}<span className="text-sm font-normal text-slate-400">/{detail.totalFloors}</span></div>
+                  <div className="text-xs text-slate-400">étage</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-navy-900">{detail.yearBuilt}</div>
+                  <div className="text-xs text-slate-400">construit</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="bg-white rounded-2xl p-5 shadow-soft">
+              <h2 className="font-bold text-navy-900 mb-3">Description</h2>
+              <p className="text-sm text-slate-600 leading-relaxed">{detail.description}</p>
+            </div>
+
+            {/* Characteristics + DPE */}
+            <div className="bg-white rounded-2xl p-5 shadow-soft">
+              <h2 className="font-bold text-navy-900 mb-4">Caractéristiques</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                {detail.features.map(f => (
+                  <div key={f} className="flex items-center gap-2 text-sm text-slate-700">
+                    <Icons.Check size={14} className="text-emerald-500 shrink-0" /> {f}
+                  </div>
+                ))}
+              </div>
+              <div className="border-t border-slate-100 pt-4 space-y-3">
+                <DPEBadge band={detail.dpe} />
+                {detail.coOwnershipCharges && (
+                  <div className="flex items-center gap-3 text-sm">
+                    <span className="text-xs text-slate-500 font-medium w-28">Charges copro.</span>
+                    <span className="font-semibold text-slate-700">{detail.coOwnershipCharges} €/mois</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-3 text-sm">
+                  <span className="text-xs text-slate-500 font-medium w-28">Taxe foncière</span>
+                  <span className="font-semibold text-slate-700">{detail.propertyTax} €/an</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Similar listings */}
+            {similarListings.length > 0 && (
+              <div className="bg-white rounded-2xl p-5 shadow-soft">
+                <h2 className="font-bold text-navy-900 mb-4">Biens similaires</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {similarListings.slice(0, 4).map((raw2, i) => {
+                    const s = enrichWithMeta(raw2, i + 10)
+                    return (
+                      <div key={s.id}
+                        className="flex gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors"
+                        onClick={() => onOpenListing?.(raw2, i + 10)}>
+                        <img src={s.image_url || unsplash('photo-1560448204-e02f11c3d0e2', 400)} alt={s.title}
+                          className="w-20 h-16 rounded-xl object-cover shrink-0"
+                          onError={e => { e.currentTarget.src = unsplash('photo-1560448204-e02f11c3d0e2', 400) }} />
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-navy-900 truncate">{s.title}</div>
+                          <div className="text-xs text-slate-400 truncate">{s.location}</div>
+                          <div className="text-sm font-bold text-orange-600 mt-1">{formatPrice(s)}</div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ── Right col: sticky agent card ──────────────── */}
+          <div className="mt-6 lg:mt-0">
+            <div className="lg:sticky lg:top-[72px] space-y-4">
+
+              {/* Trust score */}
+              <div className="bg-white rounded-2xl p-5 shadow-soft">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
+                    <Icons.ShieldCheckBig size={22} className="text-emerald-600" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-navy-900">Score de confiance</div>
+                    <div className="text-xs text-slate-400">{l.agency}</div>
+                  </div>
+                </div>
+                <div className="flex items-end gap-2 mb-2">
+                  <span className="text-3xl font-extrabold text-navy-900">{l.trust_score}</span>
+                  <span className="text-slate-400 text-sm mb-1">/100</span>
+                </div>
+                <div className="w-full bg-slate-100 rounded-full h-2">
+                  <div className="bg-emerald-500 h-2 rounded-full" style={{ width: `${l.trust_score}%` }} />
+                </div>
+                <div className="mt-3 flex items-center gap-3 text-xs text-slate-400">
+                  <span className="flex items-center gap-1"><Icons.Eye size={12} /> {l.viewers} vues</span>
+                  {l.contacts_today > 0 && (
+                    <span className="flex items-center gap-1"><Icons.Users size={12} /> {l.contacts_today} contacts</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Contact card */}
+              <div className="bg-white rounded-2xl p-5 shadow-soft">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+                    <Icons.User size={18} className="text-orange-600" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-navy-900 text-sm">Agence PASMAL</div>
+                    <div className="text-xs text-slate-400">{l.agency}</div>
+                  </div>
+                </div>
+
+                {!showContact && !sent ? (
+                  <button onClick={() => setShowContact(true)}
+                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-2xl transition-colors flex items-center justify-center gap-2">
+                    <Icons.Mail size={16} /> Contacter l'agence
+                  </button>
+                ) : sent ? (
+                  <div className="text-center py-4">
+                    <Icons.CheckCircle size={32} className="text-emerald-500 mx-auto mb-2" />
+                    <div className="font-semibold text-navy-900">Message envoyé !</div>
+                    <div className="text-xs text-slate-400 mt-1">L'agence vous répondra sous 24h.</div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSend} className="space-y-3">
+                    <input type="text" required placeholder="Votre nom" value={form.name}
+                      onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                      className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                    <input type="email" required placeholder="Email" value={form.email}
+                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                      className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                    <input type="tel" placeholder="Téléphone (optionnel)" value={form.phone}
+                      onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                      className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                    <textarea rows={3} value={form.message}
+                      onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                      className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-400 resize-none" />
+                    <button type="submit"
+                      className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-2xl transition-colors flex items-center justify-center gap-2">
+                      <Icons.Send size={15} /> Envoyer
+                    </button>
+                    <button type="button" onClick={() => setShowContact(false)}
+                      className="w-full text-xs text-slate-400 hover:text-slate-600 py-1">
+                      Annuler
+                    </button>
+                  </form>
+                )}
+
+                {!sent && (
+                  <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-center gap-2 text-slate-400 text-xs">
+                    <Icons.Phone size={12} /> <span>01 23 45 67 89</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Urgency signal */}
+              {(l.is_urgent || l.viewers > 15) && (
+                <div className="bg-orange-50 border border-orange-100 rounded-2xl p-4 flex items-start gap-3">
+                  <Icons.Zap size={16} className="text-orange-500 shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold text-orange-700 text-sm">
+                      {l.is_urgent ? 'Bien en forte demande' : 'Très consulté'}
+                    </div>
+                    <p className="text-orange-600 text-xs mt-0.5">
+                      {l.viewers} personnes ont vu ce bien cette semaine. Ne tardez pas.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   )
