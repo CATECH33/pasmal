@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import LocationAutocomplete from './components/LocationAutocomplete.jsx'
+import LocationSearch from './components/LocationSearch.tsx'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useInView, useScroll, useTransform, animate } from 'framer-motion'
 import { TrustGuarantees } from './lib/trustBadges.jsx'
@@ -988,13 +988,16 @@ function SearchBar({ filters, setFilters, onSearch, floating = false }) {
             <Icons.MapPin size={20} className="text-orange-600 shrink-0 group-focus-within:scale-110 transition-transform duration-200" />
             <div className="flex-1 min-w-0">
               <div className="text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Localisation</div>
-              <LocationAutocomplete
+              <LocationSearch
+                bare
                 value={filters.location}
                 onChange={(name) => setFilters((f) => ({ ...f, location: name || '' }))}
                 onSelect={(city) => {
                   if (city) {
                     setFilters((f) => ({ ...f, location: city.name }))
                     onSearch({ location: city.name })
+                  } else {
+                    setFilters((f) => ({ ...f, location: '' }))
                   }
                 }}
                 placeholder="Paris, Lyon, Bordeaux…"
