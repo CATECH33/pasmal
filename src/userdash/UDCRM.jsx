@@ -227,26 +227,27 @@ function KanbanView({ leads, setLeads, dark, onOpen }) {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
   const activeLead = leads.find(l => l.id === activeId)
 
+  /* Live column switch while dragging — card visually moves to target column */
+  function handleDragOver({ active, over }) {
+    if (!over || active.id === over.id) return
+    const isCol      = COLS.some(c => c.id === over.id)
+    const targetCol  = isCol ? over.id : leads.find(l => l.id === over.id)?.status
+    const srcLead    = leads.find(l => l.id === active.id)
+    if (!targetCol || !srcLead || srcLead.status === targetCol) return
+    setLeads(prev => prev.map(l => l.id === active.id ? { ...l, status: targetCol } : l))
+  }
+
+  /* On drop: only handles within-column reorder (column switch done by onDragOver) */
   function handleDragEnd({ active, over }) {
-    if (!over) { setActiveId(null); return }
-    const aId = active.id
-    const oId = over.id
-    const isColDrop = COLS.some(c => c.id === oId)
-    const srcLead = leads.find(l => l.id === aId)
-    const targetColId = isColDrop ? oId : leads.find(l => l.id === oId)?.status
-    if (!targetColId || !srcLead) { setActiveId(null); return }
-    setLeads(prev => {
-      const updated = [...prev]
-      const srcIdx = updated.findIndex(l => l.id === aId)
-      if (srcLead.status !== targetColId) {
-        updated[srcIdx] = { ...updated[srcIdx], status: targetColId }
-      } else if (!isColDrop) {
-        const overIdx = updated.findIndex(l => l.id === oId)
-        return arrayMove(updated, srcIdx, overIdx)
-      }
-      return updated
-    })
     setActiveId(null)
+    if (!over || active.id === over.id) return
+    if (COLS.some(c => c.id === over.id)) return
+    const srcIdx  = leads.findIndex(l => l.id === active.id)
+    const overIdx = leads.findIndex(l => l.id === over.id)
+    if (srcIdx !== -1 && overIdx !== -1 && srcIdx !== overIdx &&
+        leads[srcIdx].status === leads[overIdx].status) {
+      setLeads(arrayMove(leads, srcIdx, overIdx))
+    }
   }
 
   return (
@@ -254,7 +255,9 @@ function KanbanView({ leads, setLeads, dark, onOpen }) {
       sensors={sensors}
       collisionDetection={closestCorners}
       onDragStart={({ active }) => setActiveId(active.id)}
+      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
+      onDragCancel={() => setActiveId(null)}
     >
       <div className="flex gap-4 overflow-x-auto pb-4" style={{ minHeight: 'calc(100vh - 300px)' }}>
         {COLS.map(col => (
@@ -346,7 +349,7 @@ function LeadsView({ leads, dark, onOpen }) {
 
 /* ── Lead Detail Modal ────────────────────────────────── */
 
-function LeadModal({ lead, dark, onClose, onStatusChange }) {
+function LeadModal({ lead, dark, onClose, onStatusChange, onNoteChange }) {
   const [note, setNote] = useState(lead.notes)
   const [editNote, setEditNote] = useState(false)
 
@@ -419,16 +422,24 @@ function LeadModal({ lead, dark, onClose, onStatusChange }) {
           <div>
             <div className="flex items-center justify-between mb-2">
               <div className={`text-xs font-bold uppercase tracking-wider ${dark ? 'text-white/40' : 'text-slate-400'}`}>Notes</div>
-              <button onClick={() => setEditNote(e => !e)} className={`text-xs flex items-center gap-1 ${dark ? 'text-white/40 hover:text-white/70' : 'text-slate-400 hover:text-slate-600'}`}>
+              <button onClick={() => { setEditNote(e => !e); if (editNote) setNote(lead.notes) }} className={`text-xs flex items-center gap-1 ${dark ? 'text-white/40 hover:text-white/70' : 'text-slate-400 hover:text-slate-600'}`}>
                 <I.Edit size={12} /> {editNote ? 'Annuler' : 'Modifier'}
               </button>
             </div>
             {editNote
-              ? <textarea value={note} onChange={e => setNote(e.target.value)} rows={3}
-                  className={`w-full text-sm rounded-xl p-3 border resize-none focus:outline-none focus:ring-2 focus:ring-orange-500/30 ${
-                    dark ? 'bg-white/5 border-white/10 text-white placeholder-white/30' : 'bg-slate-50 border-slate-200 text-navy-900'
-                  }`}
-                />
+              ? <>
+                  <textarea value={note} onChange={e => setNote(e.target.value)} rows={3}
+                    className={`w-full text-sm rounded-xl p-3 border resize-none focus:outline-none focus:ring-2 focus:ring-orange-500/30 ${
+                      dark ? 'bg-white/5 border-white/10 text-white placeholder-white/30' : 'bg-slate-50 border-slate-200 text-navy-900'
+                    }`}
+                  />
+                  <button
+                    onClick={() => { onNoteChange?.(lead.id, note); setEditNote(false) }}
+                    className="mt-2 w-full py-2 rounded-xl text-xs font-semibold bg-orange-600 hover:bg-orange-700 text-white transition"
+                  >
+                    Sauvegarder
+                  </button>
+                </>
               : <p className={`text-sm ${dark ? 'text-white/70' : 'text-slate-600'}`}>{note || '—'}</p>
             }
           </div>
@@ -981,6 +992,10 @@ export default function UDCRM() {
             onStatusChange={(id, status) => {
               setLeads(prev => prev.map(l => l.id === id ? { ...l, status } : l))
               setSelected(prev => ({ ...prev, status }))
+            }}
+            onNoteChange={(id, notes) => {
+              setLeads(prev => prev.map(l => l.id === id ? { ...l, notes } : l))
+              setSelected(prev => ({ ...prev, notes }))
             }}
           />
         )}
