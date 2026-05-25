@@ -3874,7 +3874,7 @@ export default function App() {
   }
 
   /* ---------- Listings + Filters ---------- */
-  const [filters, setFilters] = useState({ type: 'acheter', location: '', propertyType: '', priceMax: '' })
+  const [filters, setFilters] = useState({ type: 'acheter', location: '', propertyType: '', priceMax: '', surfaceMin: '', roomsMin: '' })
   const [listings, setListings] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -3956,7 +3956,10 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters.type])
 
-  const handleSearch = (overrides = {}) => fetchListings({ ...filters, ...overrides })
+  const handleSearch = (overrides = {}) => {
+    fetchListings({ ...filters, ...overrides })
+    if (currentView === 'home') setCurrentView('results')
+  }
   const handleCategoryPick = (propertyType) => {
     const next = { ...filters, propertyType }
     setFilters(next)
@@ -3992,6 +3995,19 @@ export default function App() {
             <TrustGuarantees />
             <CTA onPublish={handlePublish} />
           </>
+        )}
+
+        {currentView === 'results' && (
+          <SearchResultsPage
+            listings={listings}
+            loading={loading}
+            error={error}
+            source={source}
+            filters={filters}
+            setFilters={setFilters}
+            onSearch={handleSearch}
+            onBack={() => setCurrentView('home')}
+          />
         )}
 
         {currentView === 'acheter' && (
@@ -4074,12 +4090,294 @@ export default function App() {
   )
 }
 
+/* ============================================================================
+   Search Results Page — Étape 6
+   ============================================================================ */
+
+function ResultsSkeleton({ viewMode }) {
+  return viewMode === 'grid' ? (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[...Array(6)].map((_, i) => (
+        <div key={i} className="bg-white rounded-3xl overflow-hidden shadow-soft animate-pulse">
+          <div className="aspect-[4/3] bg-slate-100" />
+          <div className="p-5 space-y-3">
+            <div className="h-4 bg-slate-100 rounded w-3/4" />
+            <div className="h-3 bg-slate-100 rounded w-1/2" />
+            <div className="h-5 bg-slate-100 rounded w-2/5" />
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div className="space-y-3">
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-soft animate-pulse flex h-36">
+          <div className="w-48 bg-slate-100 shrink-0" />
+          <div className="flex-1 p-5 space-y-3">
+            <div className="h-4 bg-slate-100 rounded w-1/2" />
+            <div className="h-3 bg-slate-100 rounded w-1/3" />
+            <div className="h-5 bg-slate-100 rounded w-1/4" />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ResultsGrid({ listings }) {
+  return (
+    <motion.div
+      initial="hidden" animate="show"
+      variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+    >
+      {listings.map((raw, idx) => {
+        const l = enrichWithMeta(raw, idx)
+        return (
+          <motion.article
+            key={l.id}
+            variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } } }}
+            whileHover={{ y: -6 }}
+            className="group bg-white rounded-3xl overflow-hidden shadow-soft hover:shadow-cardHover transition-shadow duration-300 cursor-pointer"
+          >
+            <div className="relative overflow-hidden aspect-[4/3]">
+              <img src={l.image_url || unsplash('photo-1560448204-e02f11c3d0e2', 900)} alt={l.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                onError={e => { e.currentTarget.src = unsplash('photo-1560448204-e02f11c3d0e2', 900) }} />
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/55 to-transparent pointer-events-none" />
+              {l.is_premium && (
+                <div className="absolute top-3 left-3 flex items-center gap-1 bg-orange-600 text-white text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-soft">
+                  <Icons.Star size={11} fill="white" /> Premium
+                </div>
+              )}
+              <button className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center text-slate-400 hover:text-rose-500 transition-colors shadow-soft">
+                <Icons.Heart size={14} />
+              </button>
+              <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-white/95 backdrop-blur text-navy-900 text-[11px] font-bold px-2 py-1 rounded-full shadow-soft">
+                <Icons.ShieldCheckBig size={12} className="text-emerald-500" /> Score {l.trust_score}/100
+              </div>
+            </div>
+            <div className="p-5">
+              <div className="font-bold text-navy-900 text-base mb-1 truncate">{l.title}</div>
+              <div className="flex items-center gap-1.5 text-slate-500 text-sm mb-3">
+                <Icons.MapPin size={13} className="text-orange-500 shrink-0" />
+                <span className="truncate">{l.location}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="text-lg font-extrabold text-navy-900">{formatPrice(l)}</div>
+                <div className="flex items-center gap-3 text-xs text-slate-400">
+                  {l.rooms   && <span className="flex items-center gap-1"><Icons.Home size={12} /> {l.rooms}p.</span>}
+                  {l.surface && <span className="flex items-center gap-1"><Icons.Maximize size={12} /> {l.surface}m²</span>}
+                </div>
+              </div>
+              <div className="text-[11px] text-slate-400 mt-2">{l.agency}</div>
+            </div>
+          </motion.article>
+        )
+      })}
+    </motion.div>
+  )
+}
+
+function ResultsList({ listings }) {
+  return (
+    <div className="space-y-3">
+      {listings.map((raw, idx) => {
+        const l = enrichWithMeta(raw, idx)
+        return (
+          <motion.article
+            key={l.id}
+            initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.04, duration: 0.35 }}
+            className="group bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-cardHover transition-all cursor-pointer flex items-stretch"
+          >
+            <div className="relative w-52 shrink-0 overflow-hidden">
+              <img src={l.image_url || unsplash('photo-1560448204-e02f11c3d0e2', 900)} alt={l.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                onError={e => { e.currentTarget.src = unsplash('photo-1560448204-e02f11c3d0e2', 900) }} />
+              {l.is_premium && (
+                <div className="absolute top-2 left-2 flex items-center gap-1 bg-orange-600 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">
+                  <Icons.Star size={10} fill="white" /> Premium
+                </div>
+              )}
+            </div>
+            <div className="flex-1 min-w-0 px-5 py-4 flex flex-col justify-between">
+              <div>
+                <div className="font-bold text-navy-900 text-base mb-1">{l.title}</div>
+                <div className="flex items-center gap-1.5 text-sm text-slate-500">
+                  <Icons.MapPin size={13} className="text-orange-500 shrink-0" /> {l.location}
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center gap-4 flex-wrap mt-3">
+                  <span className="text-xl font-extrabold text-navy-900">{formatPrice(l)}</span>
+                  {l.rooms   && <span className="flex items-center gap-1 text-sm text-slate-500"><Icons.Home size={13} /> {l.rooms} p.</span>}
+                  {l.surface && <span className="flex items-center gap-1 text-sm text-slate-500"><Icons.Maximize size={13} /> {l.surface} m²</span>}
+                  <span className="flex items-center gap-1 text-[11px] text-slate-400">
+                    <Icons.ShieldCheckBig size={12} className="text-emerald-500" /> Score {l.trust_score}/100
+                  </span>
+                </div>
+                <div className="text-[11px] text-slate-400 mt-1">{l.agency}</div>
+              </div>
+            </div>
+            <div className="flex items-center pr-4">
+              <div className="w-9 h-9 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                <Icons.ArrowRight size={15} />
+              </div>
+            </div>
+          </motion.article>
+        )
+      })}
+    </div>
+  )
+}
+
+function SearchResultsPage({ listings, loading, error, source, filters, setFilters, onSearch, onBack }) {
+  const [sortBy,   setSortBy]   = useState('relevance')
+  const [viewMode, setViewMode] = useState('grid')
+
+  const sorted = useMemo(() => {
+    const arr = [...listings]
+    if (sortBy === 'price-asc')  arr.sort((a, b) => (a.price||0) - (b.price||0))
+    if (sortBy === 'price-desc') arr.sort((a, b) => (b.price||0) - (a.price||0))
+    if (sortBy === 'surface')    arr.sort((a, b) => (b.surface||0) - (a.surface||0))
+    return arr
+  }, [listings, sortBy])
+
+  const chips = [
+    filters.location     && { key: 'location',     label: filters.location,                                           reset: { location: '' } },
+    filters.propertyType && { key: 'propertyType',  label: filters.propertyType,                                        reset: { propertyType: '' } },
+    filters.priceMax     && { key: 'priceMax',      label: `≤ ${Number(filters.priceMax).toLocaleString('fr-FR')} €`,  reset: { priceMax: '' } },
+    filters.surfaceMin   && { key: 'surfaceMin',    label: `≥ ${filters.surfaceMin} m²`,                               reset: { surfaceMin: '' } },
+    filters.roomsMin     && { key: 'roomsMin',      label: `${filters.roomsMin}+ pièces`,                              reset: { roomsMin: '' } },
+  ].filter(Boolean)
+
+  const removeChip = ({ reset }) => { const next = { ...filters, ...reset }; setFilters(next); onSearch(reset) }
+  const resetAll   = () => {
+    const next = { ...filters, location: '', propertyType: '', priceMax: '', surfaceMin: '', roomsMin: '' }
+    setFilters(next); onSearch(next)
+  }
+
+  const typeLabel = filters.type === 'louer' ? 'à louer' : filters.type === 'investir' ? 'à investir' : 'à acheter'
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+
+      {/* ── Breadcrumb bar ──────────────────────────────── */}
+      <div className="bg-white border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-3.5 flex items-center gap-3">
+          <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-navy-900 transition-colors">
+            <Icons.ChevronLeft size={16} /> Accueil
+          </button>
+          <span className="text-slate-200">/</span>
+          {loading
+            ? <span className="h-4 w-36 bg-slate-100 rounded animate-pulse inline-block" />
+            : <span className="text-sm text-slate-700">
+                <span className="font-bold text-navy-900">{sorted.length} bien{sorted.length !== 1 ? 's' : ''}</span>
+                {' '}{typeLabel}
+                {filters.location && <span className="text-orange-600"> · {filters.location}</span>}
+                {source === 'fallback' && <span className="ml-1.5 text-xs text-slate-400">(démo)</span>}
+              </span>
+          }
+        </div>
+      </div>
+
+      {/* ── Refinement SearchBar ─────────────────────────── */}
+      <div className="bg-white border-b border-slate-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-5">
+          <SearchBar filters={filters} setFilters={setFilters} onSearch={onSearch} />
+        </div>
+      </div>
+
+      {/* ── Content ─────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8">
+
+        {/* Toolbar */}
+        <div className="flex flex-wrap items-center gap-3 mb-5">
+          <div className="flex items-center gap-2 mr-auto">
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Trier par</span>
+            <select value={sortBy} onChange={e => setSortBy(e.target.value)}
+              className="h-9 pl-3 pr-8 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 focus:outline-none focus:border-orange-400 appearance-none cursor-pointer">
+              <option value="relevance">Pertinence</option>
+              <option value="price-asc">Prix croissant</option>
+              <option value="price-desc">Prix décroissant</option>
+              <option value="surface">Surface</option>
+            </select>
+          </div>
+
+          {/* Grid / List toggle */}
+          <div className="flex items-center gap-0.5 p-1 bg-white border border-slate-200 rounded-xl">
+            {[
+              { id: 'grid', title: 'Grille', path: <><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></> },
+              { id: 'list', title: 'Liste',  path: <><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></> },
+            ].map(({ id, title, path }) => (
+              <button key={id} onClick={() => setViewMode(id)} title={title}
+                className={`flex items-center justify-center w-8 h-7 rounded-lg transition-colors ${viewMode === id ? 'bg-navy-900 text-white' : 'text-slate-400 hover:text-slate-600'}`}>
+                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">{path}</svg>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Active filter chips */}
+        {chips.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-6">
+            {chips.map(chip => (
+              <button key={chip.key} onClick={() => removeChip(chip)}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-navy-900 hover:bg-orange-600 text-white text-xs font-semibold rounded-full transition-colors">
+                {chip.label} <Icons.X size={11} />
+              </button>
+            ))}
+            {chips.length > 1 && (
+              <button onClick={resetAll}
+                className="px-3 py-1.5 text-xs font-semibold text-slate-500 hover:text-rose-500 border border-slate-200 rounded-full transition-colors">
+                Tout effacer
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Error */}
+        {error && (
+          <div className="flex items-start gap-2 px-4 py-3 mb-6 bg-orange-50 border border-orange-100 text-orange-700 rounded-2xl text-sm">
+            <Icons.AlertCircle size={16} className="mt-0.5 shrink-0" />
+            <span>Affichage de la sélection démo — {error}</span>
+          </div>
+        )}
+
+        {/* Results */}
+        {loading ? (
+          <ResultsSkeleton viewMode={viewMode} />
+        ) : sorted.length === 0 ? (
+          <div className="bg-white rounded-3xl p-16 text-center shadow-soft">
+            <div className="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-4">
+              <Icons.Search size={24} className="text-orange-600" />
+            </div>
+            <h3 className="text-lg font-bold text-navy-900 mb-2">Aucun bien ne correspond</h3>
+            <p className="text-slate-500 text-sm mb-6">Essayez d'élargir vos critères de recherche.</p>
+            <button onClick={resetAll}
+              className="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-full transition-colors">
+              Réinitialiser les filtres
+            </button>
+          </div>
+        ) : viewMode === 'grid' ? (
+          <ResultsGrid listings={sorted} />
+        ) : (
+          <ResultsList listings={sorted} />
+        )}
+      </div>
+    </div>
+  )
+}
+
 function applyClientFilters(items, f) {
   return items.filter((i) => {
     if (f.type && i.type !== f.type) return false
     if (f.propertyType && i.property_type !== f.propertyType) return false
-    if (f.location && !`${i.city || ''} ${i.district || ''}`.toLowerCase().includes(f.location.toLowerCase())) return false
-    if (f.priceMax && typeof i.price === 'number' && i.price > Number(f.priceMax)) return false
+    if (f.location && !`${i.city || ''} ${i.district || ''} ${i.location || ''}`.toLowerCase().includes(f.location.toLowerCase())) return false
+    if (f.priceMax   && typeof i.price   === 'number' && i.price   > Number(f.priceMax))   return false
+    if (f.surfaceMin && typeof i.surface === 'number' && i.surface < Number(f.surfaceMin)) return false
+    if (f.roomsMin   && typeof i.rooms   === 'number' && i.rooms   < Number(f.roomsMin))   return false
     return true
   })
 }
