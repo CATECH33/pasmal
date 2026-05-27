@@ -19,8 +19,8 @@ const MODULES = {
   settings:  AdminSettings,
 }
 
-export default function AdminPreview() {
-  const [activeId, setActiveId] = useState('dashboard')
+export default function AdminPreview({ initialModule = 'dashboard' }) {
+  const [activeId, setActiveId] = useState(initialModule)
   const Module = MODULES[activeId] || AdminDashboard
 
   return (
