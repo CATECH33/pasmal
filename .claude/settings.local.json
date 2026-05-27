@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} | bytes=%{size_download}\\\\n\" \"https://vvjmcrcakmmjuhpbtzbu.supabase.co/rest/v1/listings?select=*&limit=1\" -H \"apikey: sb_publishable_qKBjGQqT5wWfEM2MWbEJAA_7sC6L-vt\" -H \"Authorization: Bearer sb_publishable_qKBjGQqT5wWfEM2MWbEJAA_7sC6L-vt\")"
+    ]
+  }
+}

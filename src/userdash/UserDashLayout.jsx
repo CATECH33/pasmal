@@ -9,6 +9,7 @@ const Sun  = (p) => <svg width={p?.size||20} height={p?.size||20} viewBox="0 0 2
 
 const NAV = [
   { to: '/dashboard',              label: 'Vue d\'ensemble',          icon: I.LayoutDashboard, end: true },
+  { to: '/dashboard/listings',     label: 'Mes annonces',             icon: I.Building },
   { to: '/dashboard/searches',     label: 'Recherches sauvegardées',  icon: I.Search },
   { to: '/dashboard/notifications',label: 'Notifications',            icon: I.Bell,            badge: 4 },
   { to: '/dashboard/insights',     label: 'Insights IA',              icon: I.Sparkles },

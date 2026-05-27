@@ -32,6 +32,24 @@ const DEMO_NOTIFS = [
   { id: 'n3', listing_title: 'Studio meublé proche tram',              listing_price: 720,    listing_city: 'Bordeaux', listing_type: 'apartment', is_read: false, created_at: '2026-05-20T09:05:00Z' },
 ]
 
+const DEMO_HISTORY = [
+  { id: 'h1', alert_name: 'Appartement Paris 8e',     listing_title: 'T4 haussmannien terrasse Batignolles',   listing_price: 498000, listing_city: 'Paris',    listing_surface: 89, listing_rooms: 4, listing_type: 'apartment', img_id: 'photo-1502672260266-1c1ef2d93688', created_at: '2026-05-21T08:14:00Z' },
+  { id: 'h2', alert_name: 'Appartement Paris 8e',     listing_title: 'Appartement 3p rénové Madeleine',        listing_price: 520000, listing_city: 'Paris',    listing_surface: 72, listing_rooms: 3, listing_type: 'apartment', img_id: 'photo-1560185893-a55cbc8c57e8', created_at: '2026-05-19T14:22:00Z' },
+  { id: 'h3', alert_name: 'Maison Lyon avec jardin',  listing_title: 'Maison 5p Saint-Priest — jardin 400m²',  listing_price: 375000, listing_city: 'Lyon',     listing_surface:135, listing_rooms: 5, listing_type: 'house',     img_id: 'photo-1564013799919-ab600027ffc6', created_at: '2026-05-20T17:30:00Z' },
+  { id: 'h4', alert_name: 'Studio à louer Bordeaux',  listing_title: 'Studio meublé proche tram',              listing_price: 720,    listing_city: 'Bordeaux', listing_surface: 25, listing_rooms: 1, listing_type: 'apartment', img_id: 'photo-1522708323590-d24dbb6b0267', created_at: '2026-05-20T09:05:00Z' },
+  { id: 'h5', alert_name: 'Appartement Paris 8e',     listing_title: 'Grand 3p vue dégagée République',        listing_price: 435000, listing_city: 'Paris',    listing_surface: 80, listing_rooms: 3, listing_type: 'apartment', img_id: 'photo-1502672023488-70e25813eb80', created_at: '2026-05-17T11:45:00Z' },
+  { id: 'h6', alert_name: 'Studio à louer Bordeaux',  listing_title: 'T1bis lumineux Chartrons',               listing_price: 680,    listing_city: 'Bordeaux', listing_surface: 30, listing_rooms: 1, listing_type: 'apartment', img_id: 'photo-1484154218962-a197022b5858', created_at: '2026-05-15T16:10:00Z' },
+  { id: 'h7', alert_name: 'Maison Lyon avec jardin',  listing_title: 'Belle villa Caluire — terrasse sud',     listing_price: 392000, listing_city: 'Lyon',     listing_surface:150, listing_rooms: 6, listing_type: 'villa',     img_id: 'photo-1568605114967-8130f3a36994', created_at: '2026-05-14T09:20:00Z' },
+]
+
+const FRANCE_CITIES_QUICK = [
+  'Paris','Lyon','Marseille','Toulouse','Nice','Nantes','Strasbourg',
+  'Montpellier','Bordeaux','Lille','Rennes','Reims','Le Havre',
+  'Saint-Étienne','Toulon','Grenoble','Dijon','Angers','Nîmes',
+  'Villeurbanne','Aix-en-Provence','Brest','Le Mans','Tours','Amiens',
+  'Limoges','Clermont-Ferrand','Metz','Besançon','Perpignan',
+]
+
 const BILLING_HISTORY = [
   { id: 'inv1', date: '2026-05-01', amount: '4,90 €', status: 'Payé',    period: 'mai 2026' },
   { id: 'inv2', date: '2026-04-01', amount: '4,90 €', status: 'Payé',    period: 'avr. 2026' },
@@ -49,6 +67,7 @@ function criteriaLabel(a) {
   if (a.city) parts.push(a.city)
   if (a.property_type) parts.push(PROPERTY_TYPES.find(t => t.value === a.property_type)?.label || a.property_type)
   if (a.rooms_min) parts.push(`${a.rooms_min}+ pièces`)
+  if (a.surface_min) parts.push(`≥${a.surface_min}m²`)
   const lo = fmtPrice(a.price_min), hi = fmtPrice(a.price_max)
   if (lo && hi) parts.push(`${lo} – ${hi}`)
   else if (hi)  parts.push(`≤ ${hi}`)
@@ -63,6 +82,7 @@ function criteriaLabel(a) {
 export default function AlertsView({ user }) {
   const [alerts,        setAlerts]        = useState([])
   const [notifications, setNotifications] = useState([])
+  const [history,       setHistory]       = useState([])
   const [loading,       setLoading]       = useState(true)
   const [plan,          setPlan]          = useState('free')
   const [creatorOpen,   setCreatorOpen]   = useState(false)
@@ -78,19 +98,21 @@ export default function AlertsView({ user }) {
 
   /* ── Data loading ─────────────────────────────────────── */
   const loadAll = useCallback(async () => {
-    if (!user) { setAlerts(DEMO_ALERTS); setNotifications(DEMO_NOTIFS); setLoading(false); return }
+    if (!user) { setAlerts(DEMO_ALERTS); setNotifications(DEMO_NOTIFS); setHistory(DEMO_HISTORY); setLoading(false); return }
     try {
-      const [{ data: pf }, { data: al }, { data: no }] = await Promise.all([
+      const [{ data: pf }, { data: al }, { data: no }, { data: hi }] = await Promise.all([
         supabase.from('profiles').select('smart_alerts_plan,notif_email_freq,notif_in_app,notif_digest_hour').eq('id', user.id).single(),
         supabase.from('alerts').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
         supabase.from('alert_notifications').select('*').eq('user_id', user.id).eq('is_read', false).order('created_at', { ascending: false }).limit(20),
+        supabase.from('alert_notifications').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50),
       ])
       setPlan(pf?.smart_alerts_plan || 'free')
       if (pf) setNotifPrefs({ notif_email_freq: pf.notif_email_freq || 'instant', notif_in_app: pf.notif_in_app ?? true, notif_digest_hour: pf.notif_digest_hour ?? 8 })
       setAlerts(al || [])
       setNotifications(no || [])
+      setHistory(hi || [])
     } catch {
-      setAlerts(DEMO_ALERTS); setNotifications(DEMO_NOTIFS)
+      setAlerts(DEMO_ALERTS); setNotifications(DEMO_NOTIFS); setHistory(DEMO_HISTORY)
     } finally { setLoading(false) }
   }, [user])
 
@@ -214,6 +236,7 @@ export default function AlertsView({ user }) {
       <div className="flex gap-1 p-1 rounded-xl bg-current/[0.05] w-fit">
         {[
           { id: 'alertes',      label: 'Alertes' },
+          { id: 'historique',   label: 'Historique' },
           { id: 'preferences',  label: 'Préférences' },
           { id: 'statistiques', label: 'Statistiques' },
         ].map(({ id, label }) => (
@@ -260,6 +283,11 @@ export default function AlertsView({ user }) {
             Upgrader — 4,90€/mois
           </button>
         </motion.div>
+      )}
+
+      {/* ── Historique tab ───────────────────────────────── */}
+      {tab === 'historique' && (
+        <HistoriqueTab history={history} />
       )}
 
       {/* ── Preferences tab ─────────────────────────────── */}
@@ -446,16 +474,18 @@ function EmptyState({ onCreate }) {
 function AlertCreatorModal({ alert: initial, isPremium, onSave, onClose }) {
   const isEdit = !!initial
 
-  const [name,        setName]        = useState(initial?.name            || '')
-  const [txType,      setTxType]      = useState(initial?.transaction_type || 'buy')
-  const [city,        setCity]        = useState(initial?.city             || '')
-  const [propType,    setPropType]    = useState(initial?.property_type    || null)
-  const [priceMin,    setPriceMin]    = useState(initial?.price_min        || '')
-  const [priceMax,    setPriceMax]    = useState(initial?.price_max        || '')
-  const [roomsMin,    setRoomsMin]    = useState(initial?.rooms_min        || null)
-  const [keywords,    setKeywords]    = useState(initial?.keywords         || '')
-  const [frequency,   setFrequency]   = useState(initial?.frequency        || 'daily')
-  const [error,       setError]       = useState('')
+  const [name,           setName]           = useState(initial?.name            || '')
+  const [txType,         setTxType]         = useState(initial?.transaction_type || 'buy')
+  const [city,           setCity]           = useState(initial?.city             || '')
+  const [citySuggestions,setCitySuggestions]= useState([])
+  const [propType,       setPropType]       = useState(initial?.property_type    || null)
+  const [priceMin,       setPriceMin]       = useState(initial?.price_min        || '')
+  const [priceMax,       setPriceMax]       = useState(initial?.price_max        || '')
+  const [roomsMin,       setRoomsMin]       = useState(initial?.rooms_min        || null)
+  const [surfaceMin,     setSurfaceMin]     = useState(initial?.surface_min      || '')
+  const [keywords,       setKeywords]       = useState(initial?.keywords         || '')
+  const [frequency,      setFrequency]      = useState(initial?.frequency        || 'daily')
+  const [error,          setError]          = useState('')
 
   const handleSubmit = () => {
     if (!name.trim()) { setError('Donnez un nom à cette alerte.'); return }
@@ -468,6 +498,7 @@ function AlertCreatorModal({ alert: initial, isPremium, onSave, onClose }) {
       price_min: priceMin ? Number(priceMin) : null,
       price_max: priceMax ? Number(priceMax) : null,
       rooms_min: roomsMin,
+      surface_min: surfaceMin ? Number(surfaceMin) : null,
       keywords: keywords.trim(),
       frequency: isPremium ? frequency : 'daily',
       is_active: initial?.is_active ?? true,
@@ -520,13 +551,35 @@ function AlertCreatorModal({ alert: initial, isPremium, onSave, onClose }) {
           </div>
 
           {/* City */}
-          <div>
+          <div className="relative">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Ville *</label>
             <div className="flex items-center gap-2 px-4 h-11 bg-slate-50 border border-slate-200 rounded-xl focus-within:ring-2 focus-within:ring-orange-500/30 focus-within:border-orange-300 transition">
               <I.MapPin size={14} className="text-slate-400 shrink-0" />
-              <input value={city} onChange={e => setCity(e.target.value)} placeholder="Paris, Lyon, Bordeaux…"
+              <input value={city}
+                onChange={e => {
+                  const v = e.target.value; setCity(v)
+                  setCitySuggestions(v.length >= 2 ? FRANCE_CITIES_QUICK.filter(c => c.toLowerCase().startsWith(v.toLowerCase())).slice(0, 5) : [])
+                }}
+                onBlur={() => setTimeout(() => setCitySuggestions([]), 150)}
+                placeholder="Paris, Lyon, Bordeaux…"
                 className="flex-1 bg-transparent text-sm placeholder-slate-400 focus:outline-none" />
+              {city && <button type="button" onClick={() => { setCity(''); setCitySuggestions([]) }} className="shrink-0"><I.X size={12} className="text-slate-300 hover:text-slate-500" /></button>}
             </div>
+            <AnimatePresence>
+              {citySuggestions.length > 0 && (
+                <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.12 }}
+                  className="absolute z-20 mt-1 w-full bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden">
+                  {citySuggestions.map(c => (
+                    <button key={c} type="button" onMouseDown={() => { setCity(c); setCitySuggestions([]) }}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm hover:bg-orange-50 text-left transition-colors">
+                      <I.MapPin size={12} className="text-orange-400 shrink-0" />
+                      <span>{c}</span>
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Property type */}
@@ -574,6 +627,17 @@ function AlertCreatorModal({ alert: initial, isPremium, onSave, onClose }) {
                   {r === null ? 'Tous' : `${r}+`}
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Surface */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Surface minimum (m²)</label>
+            <div className="flex items-center gap-2 px-4 h-11 bg-slate-50 border border-slate-200 rounded-xl focus-within:ring-2 focus-within:ring-orange-500/30 focus-within:border-orange-300 transition">
+              <svg className="shrink-0 text-slate-400" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h6M3 15h6"/></svg>
+              <input type="number" min="1" value={surfaceMin} onChange={e => setSurfaceMin(e.target.value)} placeholder="Ex: 40"
+                className="flex-1 bg-transparent text-sm placeholder-slate-400 focus:outline-none" />
+              {surfaceMin && <span className="text-xs text-slate-400 shrink-0">m²</span>}
             </div>
           </div>
 
@@ -931,23 +995,36 @@ function StatsTab({ alerts, notifications, totalMatches }) {
 
       {alerts.length > 0 && (
         <div className="rounded-2xl border border-current/10 overflow-hidden">
-          <div className="px-5 py-3.5 border-b border-current/10 bg-slate-50/60">
+          <div className="px-5 py-3.5 border-b border-current/10 bg-slate-50/60 flex items-center justify-between">
             <span className="font-bold text-sm">Performance par alerte</span>
+            <span className="text-xs text-slate-500">{alerts.length} alertes</span>
           </div>
-          <div className="divide-y divide-slate-100">
-            {alerts.map(a => (
-              <div key={a.id} className="flex items-center gap-3 px-5 py-3.5">
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold truncate">{a.name}</div>
-                  <div className="text-[11px] text-slate-500 truncate">{criteriaLabel(a)}</div>
+          <div className="px-5 py-4 space-y-5">
+            {(() => {
+              const maxM = Math.max(...alerts.map(a => a.match_count || 0), 1)
+              return alerts.map((a, idx) => (
+                <div key={a.id}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className={`w-2 h-2 rounded-full shrink-0 ${a.is_active ? 'bg-emerald-500' : 'bg-slate-300'}`} />
+                      <span className="text-xs font-semibold text-slate-700 truncate">{a.name}</span>
+                    </div>
+                    <span className="text-xs font-extrabold text-[#0F172A] ml-2 shrink-0">{a.match_count || 0} annonces</span>
+                  </div>
+                  <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${Math.round(((a.match_count || 0) / maxM) * 100)}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.9, ease: 'easeOut', delay: idx * 0.08 }}
+                      className="h-full rounded-full"
+                      style={{ background: a.is_active ? 'linear-gradient(90deg,#F97316,#fb923c)' : '#CBD5E1' }}
+                    />
+                  </div>
+                  <div className="text-[10px] text-slate-400 mt-1 truncate">{criteriaLabel(a)}</div>
                 </div>
-                <div className="text-right shrink-0">
-                  <div className="text-sm font-extrabold text-[#0F172A]">{a.match_count || 0}</div>
-                  <div className="text-[10px] text-slate-400">annonces</div>
-                </div>
-                <span className={`w-2 h-2 rounded-full shrink-0 ${a.is_active ? 'bg-emerald-500' : 'bg-slate-300'}`} />
-              </div>
-            ))}
+              ))
+            })()}
           </div>
         </div>
       )}
@@ -958,6 +1035,93 @@ function StatsTab({ alerts, notifications, totalMatches }) {
           <p className="text-sm text-slate-500">Créez des alertes pour voir les statistiques ici.</p>
         </div>
       )}
+    </div>
+  )
+}
+
+/* ============================================================
+   HistoriqueTab — timeline of triggered matches
+   ============================================================ */
+function HistoriqueTab({ history }) {
+  const unsplash = (id, w) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=70`
+
+  if (history.length === 0) return (
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+      className="rounded-3xl border border-dashed border-slate-200 p-12 text-center">
+      <div className="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-4">
+        <I.Bell size={24} className="text-orange-300" />
+      </div>
+      <h3 className="font-extrabold text-base text-[#0F172A] mb-2">Aucune correspondance pour l'instant</h3>
+      <p className="text-slate-500 text-sm max-w-xs mx-auto">Les annonces qui déclencheront vos alertes apparaîtront ici.</p>
+    </motion.div>
+  )
+
+  const groups = history.reduce((acc, n) => {
+    const d = new Date(n.created_at).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
+    if (!acc[d]) acc[d] = []
+    acc[d].push(n)
+    return acc
+  }, {})
+
+  return (
+    <div className="space-y-7">
+      {Object.entries(groups).map(([date, items]) => (
+        <div key={date}>
+          <div className="flex items-center gap-3 mb-3.5">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-slate-500 capitalize">{date}</span>
+            <div className="flex-1 h-px bg-slate-100" />
+            <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{items.length} annonce{items.length > 1 ? 's' : ''}</span>
+          </div>
+          <div className="space-y-2.5">
+            {items.map((n, i) => {
+              const isRent = (n.listing_price || 0) < 5000
+              return (
+                <motion.div key={n.id}
+                  initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }} transition={{ delay: i * 0.06, duration: 0.3 }}
+                  className="flex items-center gap-3 p-3 rounded-2xl border border-slate-100 bg-white hover:shadow-md transition-shadow cursor-pointer group">
+
+                  {/* Thumbnail */}
+                  {n.img_id ? (
+                    <img src={unsplash(n.img_id, 120)} alt=""
+                      className="w-16 h-16 rounded-xl object-cover shrink-0 bg-slate-100" />
+                  ) : (
+                    <div className="w-16 h-16 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
+                      <I.Home size={20} className="text-orange-300" />
+                    </div>
+                  )}
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
+                      <span className="text-[9px] font-extrabold uppercase tracking-wider text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded-md">{n.alert_name}</span>
+                    </div>
+                    <div className="text-sm font-semibold text-[#0F172A] truncate leading-snug">{n.listing_title}</div>
+                    <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                      <span className="text-[11px] text-slate-500">{n.listing_city}</span>
+                      {n.listing_surface && <span className="text-[11px] text-slate-400">· {n.listing_surface} m²</span>}
+                      {n.listing_rooms && <span className="text-[11px] text-slate-400">· {n.listing_rooms} p.</span>}
+                    </div>
+                  </div>
+
+                  {/* Price + time */}
+                  <div className="text-right shrink-0 pl-2">
+                    <div className="text-sm font-extrabold text-[#0F172A]">
+                      {(n.listing_price || 0).toLocaleString('fr-FR')}€{isRent ? '/mois' : ''}
+                    </div>
+                    <div className="text-[10px] text-slate-400 mt-0.5">
+                      {new Date(n.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                    <div className="mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded-md">Voir →</span>
+                    </div>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
