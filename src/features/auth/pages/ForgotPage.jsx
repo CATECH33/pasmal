@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I } from '../../../lib/ui.jsx'
 import { supabase } from '../../../lib/supabase.js'
+import { friendlyAuthError } from '../validators/authValidators.js'
 
 const TIPS = [
   { Icon: I.Mail,    title: 'Vérifiez vos spams',       body: 'Le lien peut atterrir dans votre dossier indésirables.' },
@@ -122,7 +123,7 @@ export default function ForgotPage() {
       if (error) throw error
       setSent(true)
     } catch (err) {
-      setError(err?.message || 'Une erreur est survenue.')
+      setError(friendlyAuthError(err?.message))
     } finally {
       setLoading(false)
     }
