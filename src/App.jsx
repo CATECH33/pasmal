@@ -9,6 +9,7 @@ import AlertsView          from './alerts/AlertsView.jsx'
 import AuthModal           from './auth/AuthModal.jsx'
 import NotificationCenter from './notifications/NotificationCenter.jsx'
 import { supabase } from './lib/supabase.js'
+import LoggedInHome          from './components/LoggedInHome.jsx'
 import PersonalDashboard     from './components/PersonalDashboard.jsx'
 import ProfessionalDashboard from './components/ProfessionalDashboard.jsx'
 
@@ -9769,7 +9770,21 @@ export default function App() {
       />
 
       <main>
-        {currentView === 'home' && (
+        {currentView === 'home' && user && (
+          <LoggedInHome
+            user={user}
+            role={role}
+            listings={listings}
+            loading={loading}
+            setCurrentView={setCurrentView}
+            onSearch={handleSearch}
+            setFilters={setFilters}
+            onOpenListing={handleOpenListing}
+            onPublish={handlePublish}
+          />
+        )}
+
+        {currentView === 'home' && !user && (
           <>
             <Hero filters={filters} setFilters={setFilters} onSearch={handleSearch} />
             <Categories onPick={handleCategoryPick} />
