@@ -97,6 +97,7 @@ export default function PersonalRegisterForm({ onBack }) {
   /* inline field errors */
   const [fe, setFe] = useState({})
   const touch = (field, value) => {
+    setError('')
     if (!value?.trim() && ['firstName','lastName'].includes(field))
       setFe(p => ({ ...p, [field]: 'Requis' }))
     else if (field === 'email' && value && !isValidEmail(value))
@@ -181,9 +182,9 @@ export default function PersonalRegisterForm({ onBack }) {
           >
             <AvatarUpload value={avatar} onChange={setAvatar} />
             <div className="grid grid-cols-2 gap-3">
-              <FormField label="Téléphone" value={phone} onChange={setPhone}
+              <FormField label="Téléphone" value={phone} onChange={v => { setPhone(v); setError('') }}
                 placeholder="+33 6 12 34 56 78" icon={I.Phone} />
-              <FormField label="Ville" value={city} onChange={setCity}
+              <FormField label="Ville" value={city} onChange={v => { setCity(v); setError('') }}
                 placeholder="Paris" icon={I.MapPin} />
             </div>
             <div>
