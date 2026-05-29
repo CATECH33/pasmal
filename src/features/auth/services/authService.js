@@ -4,7 +4,7 @@ export async function signUp(email, password, meta = {}) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: meta },
+    options: { data: meta, emailRedirectTo: `${window.location.origin}/auth/callback` },
   })
   if (error) throw error
   return data
