@@ -79,7 +79,7 @@ export default function PageLeads({ dark }) {
                   { label: 'Annonce', val: lead.prop },
                   { label: 'Budget', val: lead.budget },
                   { label: 'Téléphone', val: lead.phone },
-                  { label: 'Contact', val: lead.time + ' ago' },
+                  { label: 'Contact', val: 'Il y a ' + lead.time },
                 ].map(({ label, val }) => (
                   <div key={label}>
                     <p className={`text-[10px] font-bold uppercase tracking-wider ${sx}`}>{label}</p>
