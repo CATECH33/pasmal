@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { I, BrandLogo, PasswordStrength } from '../../../lib/ui.jsx'
+import { useAuthAction, svc } from '../hooks/useAuth.js'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const STEPS = {
@@ -374,10 +375,12 @@ function StepContent({ tab, step, s, set, errors }) {
 
 // ── Main export ───────────────────────────────────────────────────────────────
 export default function RegisterPage() {
+  const navigate = useNavigate()
+  const { loading, error: apiError, run } = useAuthAction()
+
   const [tab, setTab]   = useState('personal')
   const [step, setStep] = useState(0)
   const [dir, setDir]   = useState(1)
-  const [done, setDone] = useState(false)
   const [errors, setErrors] = useState({})
 
   const [firstName,    setFirstName]    = useState('')
@@ -432,11 +435,18 @@ export default function RegisterPage() {
     return e
   }
 
-  const advance = () => {
+  const advance = async () => {
     const e = validate()
     if (Object.keys(e).length) { setErrors(e); return }
     setErrors({})
-    if (isLast) { setDone(true); return }
+    if (isLast) {
+      const meta = tab === 'pro'
+        ? { account_type: 'professional', first_name: firstName, last_name: lastName, company_name: companyName, activity_type: activityType, siret }
+        : { account_type: 'personal',     first_name: firstName, last_name: lastName, phone }
+      const result = await run(() => svc.signUp(email, password, meta))
+      if (result) navigate('/auth/verify-pending', { state: { email } })
+      return
+    }
     setDir(1)
     setStep(n => n + 1)
   }
@@ -450,32 +460,6 @@ export default function RegisterPage() {
   const switchTab = (t) => {
     setTab(t); setStep(0); setDir(1); setErrors({})
   }
-
-  // ── Success screen
-  if (done) return (
-    <div className="min-h-screen flex bg-white">
-      <LeftPanel />
-      <div className="flex-1 flex items-center justify-center p-10">
-        <motion.div initial={{ opacity: 0, scale: 0.88 }} animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.45, ease: [0.34, 1.56, 0.64, 1] }}
-          className="text-center max-w-sm w-full">
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
-            transition={{ delay: 0.15, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-            className="w-20 h-20 rounded-full bg-emerald-50 border-2 border-emerald-100 flex items-center justify-center mx-auto mb-6">
-            <I.CheckCircle size={40} className="text-emerald-500" />
-          </motion.div>
-          <h2 className="text-2xl font-extrabold text-[#0F172A] mb-2">Compte créé !</h2>
-          <p className="text-slate-500 text-sm leading-relaxed mb-8">
-            Bienvenue sur PASMAL. Vérifiez votre boîte mail pour activer votre compte.
-          </p>
-          <Link to="/auth/login"
-            className="inline-flex items-center gap-2 px-6 h-12 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition shadow-lg shadow-orange-200">
-            Accéder à mon compte <I.ArrowRight size={15} />
-          </Link>
-        </motion.div>
-      </div>
-    </div>
-  )
 
   // ── Register screen
   return (
@@ -536,19 +520,31 @@ export default function RegisterPage() {
               </AnimatePresence>
             </div>
 
+            {/* API error (shown on last step after failed submit) */}
+            <AnimatePresence>
+              {isLast && apiError && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+                  className="mt-5 flex items-start gap-2.5 px-4 py-3 bg-rose-50 border border-rose-100 text-rose-700 rounded-xl text-sm overflow-hidden">
+                  <I.Alert size={15} className="mt-0.5 shrink-0" /><span>{apiError}</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Navigation buttons */}
-            <div className={`mt-7 flex gap-3 ${step > 0 ? '' : 'justify-end'}`}>
+            <div className={`mt-5 flex gap-3 ${step > 0 ? '' : 'justify-end'}`}>
               {step > 0 && (
-                <button type="button" onClick={back}
-                  className="flex items-center gap-2 px-5 h-12 rounded-xl border-2 border-slate-200 text-sm font-semibold text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition shrink-0">
+                <button type="button" onClick={back} disabled={loading}
+                  className="flex items-center gap-2 px-5 h-12 rounded-xl border-2 border-slate-200 text-sm font-semibold text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition shrink-0 disabled:opacity-40 disabled:pointer-events-none">
                   <I.ArrowLeft size={15} />Retour
                 </button>
               )}
-              <button type="button" onClick={advance}
-                className="flex-1 h-12 flex items-center justify-center gap-2 rounded-xl bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-bold text-sm transition-all shadow-lg shadow-orange-200/60 hover:shadow-orange-300/70 hover:-translate-y-0.5">
-                {isLast
-                  ? <><I.CheckCircle size={16} />Créer mon compte</>
-                  : <>Continuer <I.ArrowRight size={15} /></>}
+              <button type="button" onClick={advance} disabled={loading}
+                className="flex-1 h-12 flex items-center justify-center gap-2 rounded-xl bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-bold text-sm transition-all shadow-lg shadow-orange-200/60 hover:shadow-orange-300/70 hover:-translate-y-0.5 disabled:opacity-60 disabled:pointer-events-none">
+                {loading
+                  ? <><I.Loader size={16} />Création…</>
+                  : isLast
+                    ? <><I.CheckCircle size={16} />Créer mon compte</>
+                    : <>Continuer <I.ArrowRight size={15} /></>}
               </button>
             </div>
 
