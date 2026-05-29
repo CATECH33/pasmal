@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { I } from '../../lib/ui.jsx'
 
@@ -20,6 +20,17 @@ const NOTIFS = [
 
 export default function DashTopbar({ page, dark, userName = 'Jean' }) {
   const [open, setOpen] = useState(false)
+  const dropRef = useRef(null)
+
+  useEffect(() => {
+    if (!open) return
+    const handler = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
+
   const bg   = dark ? 'bg-[#111827] border-white/10' : 'bg-white border-slate-200'
   const text = dark ? 'text-white'    : 'text-navy-900'
   const sub  = dark ? 'text-white/40' : 'text-slate-400'
@@ -32,7 +43,7 @@ export default function DashTopbar({ page, dark, userName = 'Jean' }) {
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="relative">
+        <div className="relative" ref={dropRef}>
           <button onClick={() => setOpen(o => !o)}
             className={`relative w-9 h-9 rounded-xl flex items-center justify-center transition ${
               dark ? 'hover:bg-white/10 text-white/70' : 'hover:bg-slate-100 text-slate-500'
