@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I } from '../../../lib/ui.jsx'
-import { supabase } from '../../../lib/supabase.js'
+import { useAuth } from '../providers/AuthProvider.jsx'
+import { svc } from '../hooks/useAuth.js'
 
 const TOTAL_STEPS = 4 // welcome, goal, location, done
 
@@ -21,8 +22,8 @@ const variants = {
 }
 
 // ── Step 0: Welcome ───────────────────────────────────────────────────────────
-function WelcomeStep({ user }) {
-  const name = user?.user_metadata?.first_name || user?.email?.split('@')[0] || 'là'
+function WelcomeStep({ user, profile }) {
+  const name = profile?.first_name || user?.user_metadata?.first_name || user?.email?.split('@')[0] || 'là'
 
   return (
     <div className="text-center">
@@ -188,32 +189,28 @@ function DoneStep({ goal }) {
 // ── Main export ───────────────────────────────────────────────────────────────
 export default function OnboardingPage() {
   const navigate = useNavigate()
+  const { user, profile, loading: authLoading } = useAuth()
 
-  const [user,     setUser]     = useState(null)
-  const [loading,  setLoading]  = useState(true)
-  const [step,     setStep]     = useState(0)
-  const [dir,      setDir]      = useState(1)
-  const [saving,   setSaving]   = useState(false)
+  const [step,    setStep]    = useState(0)
+  const [dir,     setDir]     = useState(1)
+  const [saving,  setSaving]  = useState(false)
 
-  // Collected data
   const [goal,     setGoal]     = useState(null)
   const [location, setLocation] = useState('')
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) { navigate('/auth/login'); return }
-      if (session.user?.user_metadata?.onboarded) { navigate('/'); return }
-      setUser(session.user)
-      setLoading(false)
-    })
-  }, [navigate])
+    if (authLoading) return
+    if (!user) { navigate('/auth/login', { replace: true }); return }
+    if (user.user_metadata?.onboarded) { navigate('/', { replace: true }); return }
+  }, [user, authLoading, navigate])
 
   const advance = async () => {
-    // Before moving to done step, persist data
     if (step === TOTAL_STEPS - 2) {
       setSaving(true)
-      await supabase.auth.updateUser({
-        data: { goal: goal ?? 'buy', preferred_location: location || null, onboarded: true },
+      await svc.updateUserMeta({
+        goal: goal ?? 'buy',
+        preferred_location: location || null,
+        onboarded: true,
       }).catch(() => {})
       setSaving(false)
     }
@@ -232,7 +229,7 @@ export default function OnboardingPage() {
   const isDone    = step === TOTAL_STEPS - 1
   const progress  = ((step) / (TOTAL_STEPS - 1)) * 100
 
-  if (loading) {
+  if (authLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
@@ -268,7 +265,7 @@ export default function OnboardingPage() {
               variants={variants} initial="enter" animate="center" exit="exit"
               transition={{ duration: 0.25, ease: 'easeInOut' }}>
 
-              {step === 0 && <WelcomeStep  user={user} />}
+              {step === 0 && <WelcomeStep  user={user} profile={profile} />}
               {step === 1 && <GoalStep     goal={goal}         setGoal={setGoal} />}
               {step === 2 && <LocationStep location={location} setLocation={setLocation} />}
               {step === 3 && <DoneStep     goal={goal} />}
