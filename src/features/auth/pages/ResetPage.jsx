@@ -121,6 +121,13 @@ export default function ResetPage() {
   const [done,        setDone]        = useState(false)
 
   useEffect(() => {
+    if (done) {
+      const t = setTimeout(() => navigate('/auth/login'), 3000)
+      return () => clearTimeout(t)
+    }
+  }, [done, navigate])
+
+  useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') setSessionReady(true)
     })
@@ -137,7 +144,10 @@ export default function ResetPage() {
     if (password !== confirm) { setMatchError('Les mots de passe ne correspondent pas.'); return }
     if (password.length < 6)  { setMatchError('Le mot de passe doit comporter au moins 6 caractères.'); return }
     const result = await run(() => svc.updatePassword(password))
-    if (result !== null) setDone(true)
+    if (result !== null) {
+      await svc.signOut().catch(() => {})
+      setDone(true)
+    }
   }
 
   return (

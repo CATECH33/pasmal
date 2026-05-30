@@ -74,6 +74,14 @@ async function uploadRegistrationFiles(userId, accountType, files) {
   await Promise.all(jobs)
 }
 
+// ── Password reset request ────────────────────────────────────────────────────
+export async function resetPasswordForEmail(email) {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/auth/reset`,
+  })
+  if (error) throw error
+}
+
 // ── Sign in ───────────────────────────────────────────────────────────────────
 export async function signIn(email, password) {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password })

@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I } from '../../../lib/ui.jsx'
-import { supabase } from '../../../lib/supabase.js'
-import { friendlyAuthError } from '../validators/authValidators.js'
+import { useAuthAction, svc } from '../hooks/useAuth.js'
 
 const TIPS = [
   { Icon: I.Mail,    title: 'Vérifiez vos spams',       body: 'Le lien peut atterrir dans votre dossier indésirables.' },
@@ -108,25 +107,14 @@ function LeftPanel() {
 
 // ── Main export ───────────────────────────────────────────────────────────────
 export default function ForgotPage() {
-  const [email,   setEmail]   = useState('')
-  const [loading, setLoading] = useState(false)
-  const [sent,    setSent]    = useState(false)
-  const [error,   setError]   = useState('')
+  const [email, setEmail] = useState('')
+  const [sent,  setSent]  = useState(false)
+  const { loading, error, run } = useAuthAction()
 
   const submit = async (e) => {
     e.preventDefault()
-    setLoading(true); setError('')
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset`,
-      })
-      if (error) throw error
-      setSent(true)
-    } catch (err) {
-      setError(friendlyAuthError(err?.message))
-    } finally {
-      setLoading(false)
-    }
+    const result = await run(() => svc.resetPasswordForEmail(email))
+    if (result !== null) setSent(true)
   }
 
   return (
