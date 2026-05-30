@@ -834,11 +834,11 @@ function UserChip({ user, role, onSignOut, onGoAdmin, onNavigate }) {
             <button onClick={() => go('mes-annonces')} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-navy-900 hover:bg-slate-50 text-left">
               <Icons.Home size={16} className="text-slate-600" /> Mes annonces
             </button>
-            <button onClick={() => go('crm')} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-navy-900 hover:bg-slate-50 text-left">
+            <Link to="/crm" onClick={() => setOpen(false)} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-navy-900 hover:bg-slate-50">
               <Icons.Users size={16} className="text-orange-500" />
               CRM Pro
               <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-orange-50 text-orange-600 ring-1 ring-orange-200">Pro</span>
-            </button>
+            </Link>
             <button onClick={() => go('verification')} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-navy-900 hover:bg-slate-50 text-left">
               <Icons.BadgeCheck size={16} className="text-emerald-600" />
               Vérification agence
@@ -946,6 +946,16 @@ function Header({ currentView, setCurrentView, user, role, onSignIn, onPublish, 
                 className={`text-sm font-medium transition-colors px-3 py-2 rounded-full ${isOverlay ? 'text-white hover:text-orange-400' : 'text-navy-900 hover:text-orange-600'}`}
               >
                 Mon espace
+              </button>
+              <button
+                onClick={() => navigate('/crm')}
+                className={`flex items-center gap-1.5 text-sm font-semibold transition-colors px-3 py-1.5 rounded-full border ${
+                  isOverlay
+                    ? 'border-white/30 text-white/90 hover:text-orange-400 hover:border-orange-400/50'
+                    : 'border-orange-200 text-orange-600 hover:bg-orange-50'
+                }`}
+              >
+                <Icons.Users size={14} /> CRM
               </button>
               <UserChip user={user} role={role} onSignOut={onSignOut} onGoAdmin={() => setCurrentView('admin')} onNavigate={setCurrentView} />
             </>
