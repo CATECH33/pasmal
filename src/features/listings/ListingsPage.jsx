@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I } from '../../lib/ui.jsx'
 import { supabase } from '../../lib/supabase.js'
@@ -73,6 +73,7 @@ function CardSkeleton() {
 function PropertyCard({ raw, idx, onSave, saved }) {
   const l = useMemo(() => enrich(raw, idx), [raw, idx])
   const [imgErr, setImgErr] = useState(false)
+  const navigate = useNavigate()
   const fallbackImg = unsplash('photo-1560448204-e02f11c3d0e2')
   const ppsqm = fmtPricePerSqm(l)
 
@@ -81,6 +82,7 @@ function PropertyCard({ raw, idx, onSave, saved }) {
       layout
       variants={{ hidden:{ opacity:0, y:20 }, show:{ opacity:1, y:0, transition:{ duration:0.4, ease:[0.22,1,0.36,1] } } }}
       whileHover={{ y:-5, transition:{ duration:0.2 } }}
+      onClick={() => navigate(`/annonces/${l.id}`)}
       className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-slate-200/60 transition-shadow duration-300 cursor-pointer flex flex-col"
     >
       {/* Image */}
@@ -181,6 +183,7 @@ function PropertyCard({ raw, idx, onSave, saved }) {
 function PropertyRow({ raw, idx, onSave, saved }) {
   const l = useMemo(() => enrich(raw, idx), [raw, idx])
   const [imgErr, setImgErr] = useState(false)
+  const navigate = useNavigate()
   const fallbackImg = unsplash('photo-1560448204-e02f11c3d0e2')
 
   return (
@@ -188,6 +191,7 @@ function PropertyRow({ raw, idx, onSave, saved }) {
       layout
       initial={{ opacity:0, x:-8 }} animate={{ opacity:1, x:0 }}
       transition={{ delay: idx * 0.04, duration:0.35 }}
+      onClick={() => navigate(`/annonces/${l.id}`)}
       className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:shadow-slate-200/60 transition-all cursor-pointer flex items-stretch"
     >
       <div className="relative w-44 sm:w-56 shrink-0 overflow-hidden">
