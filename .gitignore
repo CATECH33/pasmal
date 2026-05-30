@@ -6,3 +6,8 @@ dist-ssr
 .DS_Store
 .env
 .env.local
+
+# Screenshots de tests
+*.png
+*.jpg
+*.jpeg
