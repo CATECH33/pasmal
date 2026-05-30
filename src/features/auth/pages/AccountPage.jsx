@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I, PasswordStrength } from '../../../lib/ui.jsx'
-import { supabase } from '../../../lib/supabase.js'
 import { useAuthAction, svc } from '../hooks/useAuth.js'
-import { friendlyAuthError } from '../validators/authValidators.js'
+import { useAuth } from '../providers/AuthProvider.jsx'
 
 const TABS = [
   { id: 'profile',       Icon: I.User,     label: 'Informations'  },
@@ -43,13 +42,12 @@ function Toggle({ checked, onChange }) {
 }
 
 // ── Left panel ────────────────────────────────────────────────────────────────
-function LeftPanel({ user, tab, setTab }) {
-  const meta        = user?.user_metadata ?? {}
-  const firstName   = meta.first_name ?? ''
-  const lastName    = meta.last_name  ?? ''
+function LeftPanel({ user, profile, tab, setTab }) {
+  const firstName   = profile?.first_name ?? user?.user_metadata?.first_name ?? ''
+  const lastName    = profile?.last_name  ?? user?.user_metadata?.last_name  ?? ''
   const email       = user?.email ?? ''
   const initials    = ((firstName[0] ?? '') + (lastName[0] ?? '')).toUpperCase() || email[0]?.toUpperCase() || '?'
-  const accountLabel = meta.account_type === 'professional' ? 'Professionnel' : 'Particulier'
+  const accountLabel = (profile?.account_type ?? user?.user_metadata?.account_type) === 'professional' ? 'Professionnel' : 'Particulier'
 
   return (
     <div className="hidden lg:flex flex-col relative w-[300px] xl:w-[340px] shrink-0 overflow-hidden">
@@ -72,8 +70,10 @@ function LeftPanel({ user, tab, setTab }) {
 
         {/* Avatar + identity */}
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-20 h-20 rounded-2xl bg-orange-500/20 border-2 border-orange-400/30 flex items-center justify-center text-orange-300 font-bold text-2xl mb-3 uppercase">
-            {initials}
+          <div className="w-20 h-20 rounded-2xl bg-orange-500/20 border-2 border-orange-400/30 flex items-center justify-center text-orange-300 font-bold text-2xl mb-3 uppercase overflow-hidden">
+            {profile?.avatar_url
+              ? <img src={profile.avatar_url} alt="avatar" className="w-full h-full object-cover" />
+              : initials}
           </div>
           <div className="text-white font-bold text-base leading-tight">
             {firstName && lastName ? `${firstName} ${lastName}` : email}
@@ -121,18 +121,21 @@ function LeftPanel({ user, tab, setTab }) {
 }
 
 // ── Profile tab ───────────────────────────────────────────────────────────────
-function ProfileTab({ user }) {
-  const meta = user?.user_metadata ?? {}
-  const [firstName, setFirstName] = useState(meta.first_name ?? '')
-  const [lastName,  setLastName]  = useState(meta.last_name  ?? '')
-  const [phone,     setPhone]     = useState(meta.phone      ?? '')
+function ProfileTab({ user, profile, loadProfile }) {
+  const [firstName, setFirstName] = useState(profile?.first_name ?? user?.user_metadata?.first_name ?? '')
+  const [lastName,  setLastName]  = useState(profile?.last_name  ?? user?.user_metadata?.last_name  ?? '')
+  const [phone,     setPhone]     = useState(profile?.phone      ?? user?.user_metadata?.phone      ?? '')
   const [success,   setSuccess]   = useState('')
   const { loading, error, run }   = useAuthAction()
 
   const save = async (e) => {
     e.preventDefault()
-    const result = await run(() => svc.updateProfile({ first_name: firstName, last_name: lastName, phone }))
-    if (result !== null) { setSuccess('Profil mis à jour avec succès.'); setTimeout(() => setSuccess(''), 3500) }
+    const result = await run(() => svc.updateProfile(user.id, { first_name: firstName, last_name: lastName, phone }))
+    if (result !== null) {
+      loadProfile(user.id)
+      setSuccess('Profil mis à jour avec succès.')
+      setTimeout(() => setSuccess(''), 3500)
+    }
   }
 
   return (
@@ -277,7 +280,7 @@ function NotificationsTab({ user }) {
 
   const save = async (e) => {
     e.preventDefault()
-    const result = await run(() => svc.updateProfile({ notifs }))
+    const result = await run(() => svc.updateUserMeta({ notifs }))
     if (result !== null) { setSuccess('Préférences enregistrées.'); setTimeout(() => setSuccess(''), 3500) }
   }
 
@@ -328,7 +331,7 @@ function AccountTab({ user }) {
     if (confirmEmail !== user?.email) { setError("L'adresse e-mail ne correspond pas."); return }
     setDeleting(true)
     // Sign out and redirect — actual deletion requires a server-side Edge Function
-    await supabase.auth.signOut().catch(() => {})
+    await svc.signOut().catch(() => {})
     navigate('/auth/login')
   }
 
@@ -411,23 +414,14 @@ function AccountTab({ user }) {
 // ── Main export ───────────────────────────────────────────────────────────────
 export default function AccountPage() {
   const navigate = useNavigate()
-  const [user,    setUser]    = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [tab,     setTab]     = useState('profile')
+  const { user, profile, loading: authLoading, loadProfile } = useAuth()
+  const [tab, setTab] = useState('profile')
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) { navigate('/auth/login'); return }
-      setUser(session.user)
-      setLoading(false)
-    })
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
-      if (session?.user) setUser(session.user)
-    })
-    return () => subscription.unsubscribe()
-  }, [navigate])
+    if (!authLoading && !user) navigate('/auth/login', { replace: true })
+  }, [user, authLoading, navigate])
 
-  if (loading) {
+  if (authLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
@@ -437,7 +431,7 @@ export default function AccountPage() {
   }
 
   const TAB_CONTENT = {
-    profile:       <ProfileTab       user={user} />,
+    profile:       <ProfileTab       user={user} profile={profile} loadProfile={loadProfile} />,
     security:      <SecurityTab      user={user} />,
     notifications: <NotificationsTab user={user} />,
     account:       <AccountTab       user={user} />,
@@ -447,7 +441,7 @@ export default function AccountPage() {
 
   return (
     <div className="min-h-screen flex bg-white">
-      <LeftPanel user={user} tab={tab} setTab={setTab} />
+      <LeftPanel user={user} profile={profile} tab={tab} setTab={setTab} />
 
       <div className="flex-1 flex flex-col min-h-screen overflow-y-auto">
         {/* Top bar */}
