@@ -8,12 +8,14 @@ import { supabase } from './supabase.js'
    - Hierarchy: user < agency < moderator < admin < super_admin
    ============================================================ */
 
-export const ROLES = ['user', 'premium_seller', 'agency', 'agency_admin', 'moderator', 'admin', 'super_admin']
+export const ROLES = ['user', 'private_user', 'premium_seller', 'agency', 'agency_admin', 'pro_user', 'moderator', 'admin', 'super_admin']
 
 export const ROLE_META = {
   user:           { label: 'Utilisateur',   rank: 0, color: 'slate'   },
+  private_user:   { label: 'Particulier',   rank: 0, color: 'slate'   },
   premium_seller: { label: 'Premium',       rank: 1, color: 'indigo'  },
   agency:         { label: 'Agence',        rank: 1, color: 'indigo'  },
+  pro_user:       { label: 'Professionnel', rank: 1, color: 'indigo'  },
   agency_admin:   { label: 'Admin Agence',  rank: 2, color: 'indigo'  },
   moderator:      { label: 'Modérateur',    rank: 3, color: 'amber'   },
   admin:          { label: 'Admin',         rank: 4, color: 'orange'  },

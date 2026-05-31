@@ -144,8 +144,10 @@ export default function LoginPage() {
         throw e
       }
     })
-    if (result) navigate('/')
-    else if (unconfirmed) navigate('/auth/verify-pending', { state: { email } })
+    if (result) {
+      const isPro = result.user?.user_metadata?.account_type === 'professional'
+      navigate(isPro ? '/pro' : '/')
+    } else if (unconfirmed) navigate('/auth/verify-pending', { state: { email } })
   }
 
   return (

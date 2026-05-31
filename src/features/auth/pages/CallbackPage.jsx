@@ -132,7 +132,13 @@ export default function CallbackPage() {
   // Countdown + auto-redirect after success
   useEffect(() => {
     if (status !== 'success') return
-    if (countdown === 0) { navigate('/onboarding'); return }
+    if (countdown === 0) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        const isPro = session?.user?.user_metadata?.account_type === 'professional'
+        navigate(isPro ? '/pro' : '/onboarding')
+      })
+      return
+    }
     const t = setTimeout(() => setCountdown(n => n - 1), 1000)
     return () => clearTimeout(t)
   }, [status, countdown, navigate])
@@ -201,7 +207,11 @@ export default function CallbackPage() {
                     </div>
                   </div>
 
-                  <button onClick={() => navigate('/onboarding')}
+                  <button onClick={async () => {
+                    const { data: { session } } = await supabase.auth.getSession()
+                    const isPro = session?.user?.user_metadata?.account_type === 'professional'
+                    navigate(isPro ? '/pro' : '/onboarding')
+                  }}
                     className="w-full h-12 flex items-center justify-center gap-2 rounded-xl bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-bold text-sm transition-all shadow-lg shadow-orange-200/60 hover:shadow-orange-300/70 hover:-translate-y-0.5">
                     <I.Home size={15} />Accéder à PASMAL
                   </button>

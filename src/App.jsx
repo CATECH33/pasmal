@@ -816,7 +816,7 @@ function UserChip({ user, role, onSignOut, onGoAdmin, onNavigate }) {
               <Icons.Home2 size={16} className="text-orange-500" />
               Mon tableau de bord
             </button>
-            <button onClick={() => go('pro-dash')} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-navy-900 hover:bg-slate-50 text-left">
+            <button onClick={() => navigate('/pro')} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-navy-900 hover:bg-slate-50 text-left">
               <Icons.Building size={16} className="text-orange-500" />
               Dashboard Pro
               <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-orange-50 text-orange-600 ring-1 ring-orange-200">Pro</span>

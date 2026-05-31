@@ -5,6 +5,8 @@ import App from './App.jsx'
 import LoginPage        from './features/auth/pages/LoginPage.jsx'
 import RegisterPage     from './features/auth/pages/RegisterPage.jsx'
 import RegisterProPage  from './features/auth/pages/RegisterProPage.jsx'
+import ProDashboardPage from './features/pro/ProDashboardPage.jsx'
+import ProtectedRoute   from './lib/ProtectedRoute.jsx'
 import ForgotPage       from './features/auth/pages/ForgotPage.jsx'
 import VerifyPendingPage from './features/auth/pages/VerifyPendingPage.jsx'
 import ResetPage          from './features/auth/pages/ResetPage.jsx'
@@ -63,6 +65,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/early-access"        element={<EarlyAccessPage />} />
           <Route path="/crm"               element={<CRMPage />} />
           <Route path="/forms"             element={<FormsPage />} />
+          <Route path="/pro" element={
+            <ProtectedRoute anyOf={['pro_user', 'agency', 'agency_admin', 'super_admin']}>
+              <ProDashboardPage />
+            </ProtectedRoute>
+          } />
         </Routes>
       </BrowserRouter>
       </AuthProvider>
