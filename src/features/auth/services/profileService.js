@@ -42,6 +42,16 @@ export async function insertVerificationDoc(userId, docType, filePath) {
   return data
 }
 
+export async function getAgency(userId) {
+  const { data, error } = await supabase
+    .from('agencies')
+    .select('*')
+    .eq('user_id', userId)
+    .single()
+  if (error) throw error
+  return data
+}
+
 export async function getVerificationDocs(userId) {
   const { data, error } = await supabase
     .from('verification_documents')

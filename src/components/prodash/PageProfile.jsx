@@ -1,12 +1,62 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { I } from '../../lib/ui.jsx'
+import { useAuth } from '../../features/auth/providers/AuthProvider.jsx'
+import { useAuthAction, svc } from '../../features/auth/hooks/useAuth.js'
+import { supabase } from '../../lib/supabase.js'
+
+const PLAN_LABEL = { basic: 'Plan Basic', premium: 'Plan Premium', enterprise: 'Plan Enterprise' }
 
 export default function PageProfile({ dark }) {
-  const [editMode, setEditMode] = useState(false)
-  const [desc, setDesc] = useState('Agence immobilière premium spécialisée dans les biens de prestige à Paris et en Île-de-France. 15 ans d\'expérience, 500+ transactions réussies.')
-  const [phone, setPhone] = useState('+33 1 23 45 67 89')
-  const [website, setWebsite] = useState('https://dupont-immo.fr')
+  const { user, profile, loadProfile } = useAuth()
+  const { run, loading: saving } = useAuthAction()
+
+  const [agency,       setAgency]       = useState(null)
+  const [editMode,     setEditMode]     = useState(false)
+  const [desc,         setDesc]         = useState('')
+  const [phone,        setPhone]        = useState('')
+  const [website,      setWebsite]      = useState('')
+  const [listingCount, setListingCount] = useState(null)
+
+  useEffect(() => {
+    if (!user) return
+    svc.getAgency(user.id)
+      .then(a => {
+        setAgency(a)
+        setDesc(a?.description ?? '')
+        setPhone(a?.phone ?? '')
+        setWebsite(a?.website ?? '')
+      })
+      .catch(() => {})
+  }, [user])
+
+  useEffect(() => {
+    if (!user) return
+    supabase
+      .from('listings')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .eq('status', 'active')
+      .then(({ count }) => setListingCount(count ?? 0))
+  }, [user])
+
+  const save = async () => {
+    const updated = await run(() => svc.updateAgency(user.id, { description: desc, phone, website }))
+    if (updated !== null) {
+      setAgency(updated)
+      await loadProfile(user.id)
+      setEditMode(false)
+    }
+  }
+
+  const cancel = () => {
+    setDesc(agency?.description ?? '')
+    setPhone(agency?.phone ?? '')
+    setWebsite(agency?.website ?? '')
+    setEditMode(false)
+  }
+
+  const verified = profile?.kyc_status === 'approved'
 
   const bd = dark ? 'bg-[#1f2937] border-white/10' : 'bg-white border-slate-200'
   const tx = dark ? 'text-white' : 'text-navy-900'
@@ -19,12 +69,11 @@ export default function PageProfile({ dark }) {
 
   return (
     <div className="p-6 space-y-5 max-w-3xl mx-auto">
-      {/* Preview toggle */}
       <div className="flex items-center justify-between">
         <p className={`text-sm font-extrabold ${tx}`}>{editMode ? 'Modifier le profil' : 'Aperçu public'}</p>
         <button onClick={() => setEditMode(m => !m)}
           className="flex items-center gap-2 h-8 px-4 rounded-xl border-2 border-orange-400 text-orange-500 font-bold text-xs hover:bg-orange-50 transition">
-          {editMode ? <><I.Globe size={13}/> Aperçu</> : <><I.Edit size={13}/> Modifier</>}
+          {editMode ? <><I.Globe size={13} /> Aperçu</> : <><I.Edit size={13} /> Modifier</>}
         </button>
       </div>
 
@@ -33,29 +82,50 @@ export default function PageProfile({ dark }) {
           <motion.div key="preview"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="space-y-4">
-            {/* Cover + Logo */}
             <div className={`rounded-2xl border overflow-hidden shadow-sm ${bd}`}>
-              <div className="h-32 bg-gradient-to-r from-[#0B1F3A] to-[#1a3a6b] relative">
-                <div className="absolute bottom-0 left-5 translate-y-1/2 w-16 h-16 rounded-2xl border-4 border-white bg-orange-500 flex items-center justify-center shadow-lg">
-                  <I.Building size={22} className="text-white" />
+              {/* Cover */}
+              <div className="h-32 relative overflow-hidden">
+                {agency?.cover_url
+                  ? <img src={agency.cover_url} alt="cover" className="w-full h-full object-cover" />
+                  : <div className="w-full h-full bg-gradient-to-r from-[#0B1F3A] to-[#1a3a6b]" />}
+                {/* Logo */}
+                <div className="absolute bottom-0 left-5 translate-y-1/2 w-16 h-16 rounded-2xl border-4 border-white shadow-lg overflow-hidden bg-orange-500 flex items-center justify-center">
+                  {agency?.logo_url
+                    ? <img src={agency.logo_url} alt="logo" className="w-full h-full object-cover" />
+                    : <I.Building size={22} className="text-white" />}
                 </div>
               </div>
+
               <div className="px-5 pt-10 pb-5">
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className={`text-lg font-extrabold ${tx}`}>Agence Dupont Immobilier</h2>
-                      <I.BadgeCheck size={18} className="text-emerald-500" />
+                      <h2 className={`text-lg font-extrabold ${tx}`}>{agency?.name ?? '—'}</h2>
+                      {verified && <I.BadgeCheck size={18} className="text-emerald-500" />}
                     </div>
-                    <p className={`text-sm ${sx} mt-0.5`}>Agence immobilière · Paris & ÎdF</p>
+                    <p className={`text-sm ${sx} mt-0.5`}>
+                      {agency?.business_type ?? 'Agence'}{agency?.city ? ` · ${agency.city}` : ''}
+                    </p>
                   </div>
-                  <span className="text-xs font-bold text-orange-600 bg-orange-100 px-2.5 py-1 rounded-full">Plan Visibilité</span>
+                  {agency?.plan && (
+                    <span className="text-xs font-bold text-orange-600 bg-orange-100 px-2.5 py-1 rounded-full">
+                      {PLAN_LABEL[agency.plan] ?? agency.plan}
+                    </span>
+                  )}
                 </div>
-                <p className={`text-sm mt-3 leading-relaxed ${dark ? 'text-white/70' : 'text-slate-600'}`}>{desc}</p>
+
+                {desc && (
+                  <p className={`text-sm mt-3 leading-relaxed ${dark ? 'text-white/70' : 'text-slate-600'}`}>{desc}</p>
+                )}
+
                 <div className={`flex flex-wrap gap-4 mt-4 pt-4 border-t text-sm ${dark ? 'border-white/10' : 'border-slate-100'}`}>
-                  <span className={`flex items-center gap-1.5 ${sx}`}><I.Phone size={13}/> {phone}</span>
-                  <span className={`flex items-center gap-1.5 ${sx}`}><I.Globe size={13}/> {website}</span>
-                  <span className={`flex items-center gap-1.5 ${sx}`}><I.Building size={13}/> 8 annonces actives</span>
+                  {phone   && <span className={`flex items-center gap-1.5 ${sx}`}><I.Phone size={13} /> {phone}</span>}
+                  {website && <span className={`flex items-center gap-1.5 ${sx}`}><I.Globe size={13} /> {website}</span>}
+                  {listingCount !== null && (
+                    <span className={`flex items-center gap-1.5 ${sx}`}>
+                      <I.Building size={13} /> {listingCount} annonce{listingCount !== 1 ? 's' : ''} active{listingCount !== 1 ? 's' : ''}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -80,13 +150,13 @@ export default function PageProfile({ dark }) {
               </div>
             </div>
             <div className="flex gap-3 pt-2">
-              <button onClick={() => setEditMode(false)}
+              <button onClick={cancel}
                 className="flex-1 h-10 rounded-xl border-2 border-slate-200 text-sm font-bold text-slate-600 hover:border-slate-300 transition">
                 Annuler
               </button>
-              <button onClick={() => setEditMode(false)}
-                className="flex-1 h-10 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold transition">
-                Sauvegarder
+              <button onClick={save} disabled={saving}
+                className="flex-1 h-10 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold transition disabled:opacity-50">
+                {saving ? 'Enregistrement…' : 'Sauvegarder'}
               </button>
             </div>
           </motion.div>

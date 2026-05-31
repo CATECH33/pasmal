@@ -1,7 +1,7 @@
 import { supabase } from '../../../lib/supabase.js'
 import { updateProfile, updateAgency, insertVerificationDoc } from './profileService.js'
 
-export { updateProfile, updateAgency, getProfile, getVerificationDocs } from './profileService.js'
+export { updateProfile, updateAgency, getProfile, getAgency, getVerificationDocs } from './profileService.js'
 import { uploadAvatar, uploadAgencyLogo, uploadAgencyCover, uploadKycDoc } from './storageService.js'
 
 // ── Sign up ───────────────────────────────────────────────────────────────────
@@ -72,6 +72,12 @@ async function uploadRegistrationFiles(userId, accountType, files) {
   }
 
   await Promise.all(jobs)
+}
+
+// ── Resend confirmation email ─────────────────────────────────────────────────
+export async function resendConfirmation(email) {
+  const { error } = await supabase.auth.resend({ type: 'signup', email })
+  if (error) throw error
 }
 
 // ── Password reset request ────────────────────────────────────────────────────
