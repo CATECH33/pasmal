@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App.jsx'
 import LoginPage        from './features/auth/pages/LoginPage.jsx'
 import RegisterPage     from './features/auth/pages/RegisterPage.jsx'
-import RegisterProPage  from './features/auth/pages/RegisterProPage.jsx'
 import ProDashboardPage from './features/pro/ProDashboardPage.jsx'
 import ProtectedRoute   from './lib/ProtectedRoute.jsx'
 import ForgotPage       from './features/auth/pages/ForgotPage.jsx'
@@ -19,6 +18,7 @@ import ListingDetailPage  from './features/listings/ListingDetailPage.jsx'
 import EarlyAccessPage  from './earlyaccess/EarlyAccessPage.jsx'
 import CRMPage          from './features/crm/CRMPage.jsx'
 import FormsPage        from './features/forms/FormsPage.jsx'
+import AgencesPage      from './features/agencies/AgencesPage.jsx'
 import { AuthProvider } from './features/auth/providers/AuthProvider.jsx'
 import './index.css'
 
@@ -52,7 +52,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/"                    element={<App />} />
           <Route path="/auth/login"          element={<LoginPage />} />
           <Route path="/auth/register"       element={<RegisterPage />} />
-          <Route path="/auth/register/pro"   element={<RegisterProPage />} />
           <Route path="/auth/forgot"         element={<ForgotPage />} />
           <Route path="/auth/verify-pending" element={<VerifyPendingPage />} />
           <Route path="/auth/reset"          element={<ResetPage />} />
@@ -63,6 +62,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/annonces"            element={<ListingsPage />} />
           <Route path="/annonces/:id"        element={<ListingDetailPage />} />
           <Route path="/early-access"        element={<EarlyAccessPage />} />
+          <Route path="/agences"           element={<AgencesPage />} />
           <Route path="/crm"               element={<CRMPage />} />
           <Route path="/forms"             element={<FormsPage />} />
           <Route path="/pro" element={

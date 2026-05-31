@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { I, BrandLogo, PasswordStrength } from '../../../lib/ui.jsx'
 import { useAuthAction, svc } from '../hooks/useAuth.js'
+import { isValidEmail } from '../validators/authValidators.js'
 
 const DRAFT_KEY = 'pasmal_pro_reg_draft'
 
@@ -994,7 +995,7 @@ export default function RegisterPage() {
         if (!firstName.trim()) e.firstName = 'Prénom requis'
         if (!lastName.trim())  e.lastName  = 'Nom requis'
       } else if (step === 1) {
-        if (!email.includes('@'))    e.email      = 'E-mail invalide'
+        if (!isValidEmail(email))    e.email      = 'E-mail invalide'
         if (password.length < 8)     e.password   = 'Minimum 8 caractères'
         if (confirmPwd !== password) e.confirmPwd = 'Les mots de passe ne correspondent pas'
       } else if (step === 3) {
@@ -1011,7 +1012,7 @@ export default function RegisterPage() {
       } else if (step === 1) {
         if (!firstName.trim())    e.firstName  = 'Prénom requis'
         if (!lastName.trim())     e.lastName   = 'Nom requis'
-        if (!email.includes('@')) e.email      = 'E-mail invalide'
+        if (!isValidEmail(email)) e.email      = 'E-mail invalide'
         if (!phone.trim())        e.phone      = 'Téléphone requis'
         if (password.length < 8)  e.password   = 'Minimum 8 caractères'
         if (confirmPwd !== password) e.confirmPwd = 'Les mots de passe ne correspondent pas'
