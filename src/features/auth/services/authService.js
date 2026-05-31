@@ -90,8 +90,9 @@ export async function signIn(email, password) {
 }
 
 // ── Sign out ──────────────────────────────────────────────────────────────────
-export async function signOut() {
-  const { error } = await supabase.auth.signOut()
+// scope: 'local' (default) | 'global' (all devices) | 'others'
+export async function signOut(scope = 'local') {
+  const { error } = await supabase.auth.signOut({ scope })
   if (error) throw error
 }
 

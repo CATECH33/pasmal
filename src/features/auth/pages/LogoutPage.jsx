@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I } from '../../../lib/ui.jsx'
-import { supabase } from '../../../lib/supabase.js'
+import { useAuth } from '../providers/AuthProvider.jsx'
+import { svc } from '../hooks/useAuth.js'
 
 const formatDate = (iso) =>
   iso ? new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(iso)) : null
@@ -104,24 +105,22 @@ function LeftPanel() {
 // ── Main export ───────────────────────────────────────────────────────────────
 export default function LogoutPage() {
   const navigate = useNavigate()
+  const { user, profile, loading: authLoading } = useAuth()
 
   // 'loading' | 'confirm' | 'signing-out' | 'done' | 'guest'
   const [status,    setStatus]    = useState('loading')
-  const [user,      setUser]      = useState(null)
   const [scopeDone, setScopeDone] = useState('local')
   const [countdown, setCountdown] = useState(4)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) { setUser(session.user); setStatus('confirm') }
-      else setStatus('guest')
-    })
-  }, [])
+    if (authLoading) return
+    setStatus(user ? 'confirm' : 'guest')
+  }, [user, authLoading])
 
   const handleSignOut = async (scope) => {
     setScopeDone(scope)
     setStatus('signing-out')
-    await supabase.auth.signOut({ scope }).catch(() => {})
+    await svc.signOut(scope).catch(() => {})
     setStatus('done')
   }
 
@@ -134,13 +133,13 @@ export default function LogoutPage() {
   }, [status, countdown, navigate])
 
   // Derived session info
-  const meta          = user?.user_metadata ?? {}
-  const email         = user?.email ?? ''
-  const firstName     = meta.first_name ?? ''
-  const lastName      = meta.last_name  ?? ''
-  const initials      = (firstName[0] ?? '') + (lastName[0] ?? '') || email[0]?.toUpperCase() || '?'
-  const accountLabel  = meta.account_type === 'professional' ? 'Compte Professionnel' : 'Compte Particulier'
-  const lastSignIn    = formatDate(user?.last_sign_in_at)
+  const email        = user?.email ?? ''
+  const firstName    = profile?.first_name ?? user?.user_metadata?.first_name ?? ''
+  const lastName     = profile?.last_name  ?? user?.user_metadata?.last_name  ?? ''
+  const initials     = ((firstName[0] ?? '') + (lastName[0] ?? '')).toUpperCase() || email[0]?.toUpperCase() || '?'
+  const accountType  = profile?.account_type ?? user?.user_metadata?.account_type
+  const accountLabel = accountType === 'professional' ? 'Compte Professionnel' : 'Compte Particulier'
+  const lastSignIn   = formatDate(user?.last_sign_in_at)
 
   return (
     <div className="min-h-screen flex bg-white">
