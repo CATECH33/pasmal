@@ -21,6 +21,7 @@ import FormsPage        from './features/forms/FormsPage.jsx'
 import AgencesPage      from './features/agencies/AgencesPage.jsx'
 import TarifsPage      from './features/tarifs/TarifsPage.jsx'
 import SimulateurPage from './features/simulateur/SimulateurPage.jsx'
+import EstimationPage from './features/estimation/EstimationPage.jsx'
 import { AuthProvider } from './features/auth/providers/AuthProvider.jsx'
 import './index.css'
 
@@ -67,6 +68,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/agences"           element={<AgencesPage />} />
           <Route path="/tarifs"            element={<TarifsPage />} />
           <Route path="/simulateur"        element={<SimulateurPage />} />
+          <Route path="/estimation"         element={<EstimationPage />} />
           <Route path="/crm"               element={<CRMPage />} />
           <Route path="/forms"             element={<FormsPage />} />
           <Route path="/pro" element={
