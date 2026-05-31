@@ -9,6 +9,7 @@ import AlertsView          from './alerts/AlertsView.jsx'
 import AuthModal           from './features/auth/components/AuthModal.jsx'
 import NotificationCenter from './notifications/NotificationCenter.jsx'
 import { supabase } from './lib/supabase.js'
+import { svc } from './features/auth/hooks/useAuth.js'
 import LoggedInHome          from './components/LoggedInHome.jsx'
 import PersonalDashboard     from './components/PersonalDashboard.jsx'
 import ProfessionalDashboard from './components/ProfessionalDashboard.jsx'
@@ -4031,11 +4032,28 @@ function RegisterProView({ setCurrentView }) {
     if (err) { setError(err); return }
     setLoading(true); setError('')
     try {
-      const { error } = await supabase.auth.signUp({
-        email, password,
-        options: { data: { account_type: 'professional', full_name: fullName, agency_name: agencyName, siret: siret.replace(/\s/g, ''), phone, website, city, address, agency_type: agencyType, plan, kyc_status: 'pending' } },
-      })
-      if (error) throw error
+      const nameParts = fullName.trim().split(/\s+/)
+      const firstName = nameParts[0] ?? ''
+      const lastName  = nameParts.slice(1).join(' ')
+      await svc.signUp(
+        email,
+        password,
+        {
+          account_type:  'professional',
+          first_name:    firstName,
+          last_name:     lastName,
+          company_name:  agencyName,
+          business_type: agencyType,
+          siret:         siret.replace(/\s/g, ''),
+          phone,
+          city,
+          address,
+          website,
+          plan,
+          description,
+        },
+        { logo, kbis: legalDoc, idDoc },
+      )
       try { localStorage.removeItem(PRO_DRAFT_KEY) } catch {}
       setSubmitted(true)
     } catch (err) {
