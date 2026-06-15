@@ -25,6 +25,8 @@ import EstimationPage from './features/estimation/EstimationPage.jsx'
 import GuidesPage       from './features/guides/GuidesPage.jsx'
 import ProRegisterPage          from './features/pro/ProRegisterPage.jsx'
 import AgencyVerificationPage  from './features/pro/AgencyVerificationPage.jsx'
+import SubscriptionSuccessPage from './features/subscription/SubscriptionSuccessPage.jsx'
+import PersonalDashboardPage   from './features/dashboard/PersonalDashboardPage.jsx'
 import { AuthProvider } from './features/auth/providers/AuthProvider.jsx'
 import './index.css'
 
@@ -77,6 +79,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/guides"            element={<GuidesPage />} />
           <Route path="/crm"               element={<CRMPage />} />
           <Route path="/forms"             element={<FormsPage />} />
+          <Route path="/subscription/success" element={<SubscriptionSuccessPage />} />
+          <Route path="/mon-espace" element={<PersonalDashboardPage />} />
           <Route path="/pro" element={
             <ProtectedRoute anyOf={['pro_user', 'agency', 'agency_admin', 'super_admin']}>
               <ProDashboardPage />

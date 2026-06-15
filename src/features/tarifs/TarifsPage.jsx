@@ -2,6 +2,32 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useInView, animate } from 'framer-motion'
 import { I, BrandLogo } from '../../lib/ui.jsx'
+import { checkout } from '../subscription/checkoutService.js'
+
+// Wraps a checkout call — shows loading/error without crashing the page
+function useCheckout() {
+  const [loading, setLoading] = useState(null) // stores the priceType being processed
+  const [error,   setError]   = useState('')
+  const navigate = useNavigate()
+
+  const pay = async (priceType, fn) => {
+    setError('')
+    const { data: { session } } = await import('../../lib/supabase.js')
+      .then(m => m.supabase.auth.getSession())
+    if (!session) { navigate('/auth/login', { state: { redirect: '/tarifs' } }); return }
+
+    setLoading(priceType)
+    try {
+      await fn()
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(null)
+    }
+  }
+
+  return { pay, loading, error, setError }
+}
 
 const unsplash = (id, w = 400) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`
@@ -136,6 +162,14 @@ function Counter({ to, suffix = '', duration = 1.8 }) {
 }
 
 function PersonalPlans({ onPublish }) {
+  const { pay, loading, error, setError } = useCheckout()
+
+  // Plan → checkout type mapping
+  const PLAN_CHECKOUT = {
+    'Pack Visibilité': 'pack_visibilite',
+    'Premium':         'listing_premium',
+  }
+
   return (
     <section className="py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
@@ -144,64 +178,121 @@ function PersonalPlans({ onPublish }) {
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#0B1F3A] tracking-tight">Des prix simples, sans surprise</h2>
           <p className="text-slate-500 mt-3">Choisissez le pack adapté à vos besoins. Sans engagement, résiliable à tout moment.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {PLANS.map((p, i) => (
-            <motion.div key={p.name}
-              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}
-              whileHover={{ y: -6 }}
-              className={`relative rounded-3xl p-8 transition-shadow ${p.highlight ? 'bg-[#0B1F3A] text-white border-2 border-orange-500 md:scale-[1.04] shadow-xl shadow-orange-500/20' : 'bg-white text-[#0B1F3A] border border-slate-100 shadow-sm hover:shadow-lg'}`}>
-              {p.highlight && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full flex items-center gap-1">
-                  <I.Star size={10} fill="white" className="text-white" /> LE PLUS CHOISI
-                </div>
-              )}
-              <div className={`text-sm font-semibold mb-2 ${p.highlight ? 'text-orange-400' : 'text-orange-600'}`}>{p.name}</div>
-              <div className="flex items-baseline gap-1 mb-1">
-                <span className="text-5xl font-extrabold tracking-tight">{p.price}</span>
-                <span className={`text-sm ${p.highlight ? 'text-white/60' : 'text-slate-500'}`}>{p.period}</span>
-              </div>
-              {p.duration && <div className={`text-[11px] font-semibold uppercase tracking-wider mb-4 ${p.highlight ? 'text-white/45' : 'text-slate-400'}`}>{p.duration}</div>}
-              <p className={`text-sm mb-5 ${p.highlight ? 'text-white/70' : 'text-slate-500'}`}>{p.desc}</p>
-              {p.badge && (
-                <div className={`mb-5 flex items-center gap-2 px-3 py-2 rounded-2xl ${p.highlight ? 'bg-white/10 ring-1 ring-white/15' : 'bg-slate-50 ring-1 ring-slate-100'}`}>
-                  <span className={`inline-flex items-center text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full ring-1 ${p.badge.tone}`}>{p.badge.label}</span>
-                  <span className={`text-[11px] ${p.highlight ? 'text-white/60' : 'text-slate-400'}`}>affiché sur vos annonces</span>
-                </div>
-              )}
-              <ul className="space-y-3 mb-8">
-                {p.features.map(f => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm">
-                    <I.Check size={15} className={`mt-0.5 shrink-0 ${p.highlight ? 'text-orange-400' : 'text-orange-500'}`} />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <button onClick={onPublish}
-                className={`w-full py-3 rounded-full font-semibold text-sm transition-all hover:-translate-y-0.5 ${p.highlight ? 'bg-orange-500 hover:bg-orange-600 text-white shadow-md shadow-orange-500/30' : 'bg-slate-100 hover:bg-[#0B1F3A] hover:text-white text-[#0B1F3A]'}`}>
-                {p.cta}
-              </button>
+
+        {/* Error banner */}
+        <AnimatePresence>
+          {error && (
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              className="max-w-5xl mx-auto mb-6 flex items-center gap-3 px-4 py-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-sm">
+              <I.Alert size={15} className="shrink-0" />
+              <span>{error}</span>
+              <button onClick={() => setError('')} className="ml-auto text-rose-400 hover:text-rose-600"><I.X size={14} /></button>
             </motion.div>
-          ))}
+          )}
+        </AnimatePresence>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {PLANS.map((p, i) => {
+            const priceType = PLAN_CHECKOUT[p.name]
+            const isLoading = loading === priceType
+            return (
+              <motion.div key={p.name}
+                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}
+                whileHover={{ y: -6 }}
+                className={`relative rounded-3xl p-8 transition-shadow ${p.highlight ? 'bg-[#0B1F3A] text-white border-2 border-orange-500 md:scale-[1.04] shadow-xl shadow-orange-500/20' : 'bg-white text-[#0B1F3A] border border-slate-100 shadow-sm hover:shadow-lg'}`}>
+                {p.highlight && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full flex items-center gap-1">
+                    <I.Star size={10} fill="white" className="text-white" /> LE PLUS CHOISI
+                  </div>
+                )}
+                <div className={`text-sm font-semibold mb-2 ${p.highlight ? 'text-orange-400' : 'text-orange-600'}`}>{p.name}</div>
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-5xl font-extrabold tracking-tight">{p.price}</span>
+                  <span className={`text-sm ${p.highlight ? 'text-white/60' : 'text-slate-500'}`}>{p.period}</span>
+                </div>
+                {p.duration && <div className={`text-[11px] font-semibold uppercase tracking-wider mb-4 ${p.highlight ? 'text-white/45' : 'text-slate-400'}`}>{p.duration}</div>}
+                <p className={`text-sm mb-5 ${p.highlight ? 'text-white/70' : 'text-slate-500'}`}>{p.desc}</p>
+                {p.badge && (
+                  <div className={`mb-5 flex items-center gap-2 px-3 py-2 rounded-2xl ${p.highlight ? 'bg-white/10 ring-1 ring-white/15' : 'bg-slate-50 ring-1 ring-slate-100'}`}>
+                    <span className={`inline-flex items-center text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full ring-1 ${p.badge.tone}`}>{p.badge.label}</span>
+                    <span className={`text-[11px] ${p.highlight ? 'text-white/60' : 'text-slate-400'}`}>affiché sur vos annonces</span>
+                  </div>
+                )}
+                <ul className="space-y-3 mb-8">
+                  {p.features.map(f => (
+                    <li key={f} className="flex items-start gap-2.5 text-sm">
+                      <I.Check size={15} className={`mt-0.5 shrink-0 ${p.highlight ? 'text-orange-400' : 'text-orange-500'}`} />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  disabled={!!loading}
+                  onClick={() => priceType
+                    ? pay(priceType, () => checkout[priceType === 'pack_visibilite' ? 'packVisibilite' : 'listingPremium']())
+                    : onPublish()
+                  }
+                  className={`w-full py-3 rounded-full font-semibold text-sm transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:pointer-events-none flex items-center justify-center gap-2 ${p.highlight ? 'bg-orange-500 hover:bg-orange-600 text-white shadow-md shadow-orange-500/30' : 'bg-slate-100 hover:bg-[#0B1F3A] hover:text-white text-[#0B1F3A]'}`}>
+                  {isLoading ? <><I.Loader size={14} /> Redirection…</> : p.cta}
+                </button>
+              </motion.div>
+            )
+          })}
         </div>
 
-        {/* À la carte */}
-        <div className="mt-14 max-w-5xl mx-auto">
+        {/* Alertes Premium Banner */}
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          className="mt-10 max-w-5xl mx-auto overflow-hidden rounded-2xl border border-orange-500/20 relative"
+          style={{ background: 'linear-gradient(135deg, #0B1F3A 0%, #1a2740 60%, #0F2D50 100%)' }}>
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 right-0 w-64 h-32 bg-orange-500/10 blur-3xl rounded-full" />
+          </div>
+          <div className="relative z-10 px-7 py-5 flex items-center justify-between gap-6 flex-wrap">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center shrink-0">
+                <I.Bell size={22} className="text-orange-400" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-white font-extrabold">Alertes Premium</span>
+                  <span className="text-[10px] font-bold text-orange-400 bg-orange-500/20 border border-orange-500/30 px-2 py-0.5 rounded-full">7,50 € / mois</span>
+                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/25 px-2 py-0.5 rounded-full">Sans engagement</span>
+                </div>
+                <p className="text-white/55 text-sm">Recevez les nouvelles annonces avant tout le monde · Alertes email en temps réel</p>
+              </div>
+            </div>
+            <button
+              disabled={loading === 'premium_alerts'}
+              onClick={() => pay('premium_alerts', checkout.premiumAlerts)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition-all shadow-lg shadow-orange-500/25 hover:-translate-y-0.5 shrink-0 disabled:opacity-60 disabled:pointer-events-none">
+              {loading === 'premium_alerts' ? <><I.Loader size={14} />Redirection…</> : <><I.Bell size={14} />S'abonner</>}
+            </button>
+          </div>
+        </motion.div>
+
+        {/* À la carte — Pack Photos Pro supprimé */}
+        <div className="mt-10 max-w-5xl mx-auto">
           <div className="text-center mb-7">
             <div className="text-orange-600 font-semibold text-xs tracking-wider uppercase mb-1">À la carte</div>
             <h3 className="text-xl font-extrabold text-[#0B1F3A]">Boostez selon vos besoins</h3>
             <p className="text-slate-500 text-sm mt-1">Disponibles avec tous les plans, sans engagement.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
             {[
-              { Icon: I.Zap,      title: 'Remonter en tête',  price: '4,90 €', sub: 'paiement unique', desc: 'Première position des résultats pendant 72h. Effet immédiat.', cta: 'Activer le boost',    tag: null,      color: '#F97316' },
-              { Icon: I.Image,    title: 'Pack Photos Pro',    price: '49 €',   sub: 'par annonce',     desc: 'Photographe professionnel + retouches HDR livrées en 48h.',  cta: 'Réserver un shoot',  tag: 'Nouveau', color: '#6366F1' },
-              { Icon: I.Sparkles, title: 'Estimation IA',      price: '0 €',    sub: 'gratuit',         desc: 'Valeur vénale estimée en 30 secondes par notre modèle propriétaire.', cta: 'Estimer maintenant', tag: 'Gratuit', color: '#10B981' },
-            ].map(({ Icon, title, price, sub, desc, cta, tag, color }, ai) => (
+              { Icon: I.Zap, title: 'Remonter en tête', price: '4,90 €', sub: 'paiement unique',
+                desc: 'Première position des résultats pendant 72h. Effet immédiat.',
+                cta: 'Activer le boost', tag: null, color: '#F97316',
+                action: () => pay('boost_top', checkout.boostTop) },
+              { Icon: I.Sparkles, title: 'Estimation IA', price: '0 €', sub: 'gratuit',
+                desc: "Valeur vénale estimée en 30 secondes par notre modèle propriétaire.",
+                cta: 'Estimer maintenant', tag: 'Gratuit', color: '#10B981',
+                action: onPublish },
+            ].map(({ Icon, title, price, sub, desc, cta, tag, color, action }, ai) => (
               <motion.div key={title}
                 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ delay: ai * 0.1 }}
-                className="relative bg-white border border-slate-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow overflow-hidden group cursor-pointer">
+                className="relative bg-white border border-slate-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
                 {tag && (
                   <span className="absolute top-3 right-3 text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded-full border"
                     style={{ background: color + '18', color, borderColor: color + '60' }}>{tag}</span>
@@ -215,7 +306,12 @@ function PersonalPlans({ onPublish }) {
                   <span className="text-xs text-slate-400">{sub}</span>
                 </div>
                 <p className="text-xs text-slate-500 leading-relaxed mb-4">{desc}</p>
-                <button className="w-full py-2 rounded-xl text-xs font-bold transition-all bg-slate-50 hover:bg-[#0B1F3A] hover:text-white border border-slate-100 hover:border-[#0B1F3A]">{cta}</button>
+                <button
+                  disabled={loading === 'boost_top' && title === 'Remonter en tête'}
+                  onClick={action}
+                  className="w-full py-2 rounded-xl text-xs font-bold transition-all bg-slate-50 hover:bg-[#0B1F3A] hover:text-white border border-slate-100 hover:border-[#0B1F3A] disabled:opacity-60 flex items-center justify-center gap-1.5">
+                  {loading === 'boost_top' && title === 'Remonter en tête' ? <><I.Loader size={12} />Redirection…</> : cta}
+                </button>
               </motion.div>
             ))}
           </div>
@@ -229,6 +325,13 @@ function AgencyPlans() {
   const [billing, setBilling] = useState('monthly')
   const yearly = billing === 'yearly'
   const price = (base) => yearly ? Math.round(base * 0.8) : base
+  const { pay, loading, error, setError } = useCheckout()
+
+  const AGENCY_CHECKOUT = {
+    'Starter':    (y) => pay(y ? 'agency_starter_yearly' : 'agency_starter_monthly', () => checkout.agencyStarter(y)),
+    'Pro':        (y) => pay(y ? 'agency_pro_yearly'     : 'agency_pro_monthly',     () => checkout.agencyPro(y)),
+    'Enterprise': () => { /* Contact sales */ window.location.href = 'mailto:sales@pasmal.fr?subject=Offre Enterprise' },
+  }
 
   return (
     <section className="relative py-20 overflow-hidden bg-[#0B1F3A] text-white">
@@ -288,8 +391,14 @@ function AgencyPlans() {
                     </li>
                   ))}
                 </ul>
-                <button className={`w-full inline-flex items-center justify-center gap-2 py-3 rounded-full font-semibold text-sm transition-all hover:-translate-y-0.5 ${p.highlight ? 'bg-orange-500 hover:bg-orange-600 text-white shadow-md shadow-orange-500/30' : 'bg-white/10 hover:bg-white text-white hover:text-[#0B1F3A] border border-white/15'}`}>
-                  {p.cta} <I.ArrowRight size={14} />
+                <button
+                  disabled={!!loading}
+                  onClick={() => AGENCY_CHECKOUT[p.name]?.(yearly)}
+                  className={`w-full inline-flex items-center justify-center gap-2 py-3 rounded-full font-semibold text-sm transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:pointer-events-none ${p.highlight ? 'bg-orange-500 hover:bg-orange-600 text-white shadow-md shadow-orange-500/30' : 'bg-white/10 hover:bg-white text-white hover:text-[#0B1F3A] border border-white/15'}`}>
+                  {loading && loading.startsWith('agency_' + p.name.toLowerCase())
+                    ? <><I.Loader size={14} />Redirection…</>
+                    : <>{p.cta} <I.ArrowRight size={14} /></>
+                  }
                 </button>
               </motion.div>
             )
@@ -320,11 +429,12 @@ function AgencyPlans() {
         <div className="mt-10 text-center">
           <div className="inline-flex flex-col md:flex-row items-center gap-3 md:gap-5 bg-white/5 border border-white/10 rounded-full p-2 pl-5">
             <span className="text-sm text-white/80">Besoin d'une démo personnalisée ?</span>
-            <button className="inline-flex items-center gap-2 bg-white text-[#0B1F3A] hover:bg-orange-50 font-semibold text-sm px-5 py-2.5 rounded-full transition-all hover:-translate-y-0.5">
-              Parler à un expert <I.ArrowRight size={14} />
-            </button>
+            <a href="mailto:contact@pasmal.fr?subject=Demande%20de%20d%C3%A9mo"
+              className="inline-flex items-center gap-2 bg-white text-[#0B1F3A] hover:bg-orange-50 font-semibold text-sm px-5 py-2.5 rounded-full transition-all hover:-translate-y-0.5">
+              Nous écrire <I.ArrowRight size={14} />
+            </a>
           </div>
-          <div className="text-[11px] text-white/35 mt-3">Réponse sous 24h ouvrées · ☎ 01 84 80 19 26</div>
+          <div className="text-[11px] text-white/35 mt-3">Réponse sous 24h ouvrées</div>
         </div>
       </div>
     </section>
@@ -692,13 +802,11 @@ export default function TarifsPage() {
                   ))}
                 </div>
               </div>
-              <div className="flex flex-col gap-3 shrink-0">
-                <button className="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full transition-all hover:-translate-y-0.5 whitespace-nowrap">
-                  <I.Phone size={15} /> Parler à un expert
-                </button>
-                <button className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/15 text-white font-semibold px-6 py-3 rounded-full transition-all text-sm whitespace-nowrap">
-                  <I.Mail size={15} /> Envoyer un brief
-                </button>
+              <div className="shrink-0">
+                <a href="mailto:contact@pasmal.fr?subject=Offre%20Enterprise"
+                  className="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full transition-all hover:-translate-y-0.5 whitespace-nowrap">
+                  <I.Mail size={15} /> Nous contacter
+                </a>
               </div>
             </div>
           </motion.div>
@@ -715,13 +823,10 @@ export default function TarifsPage() {
           </div>
           <h2 className="text-white text-3xl md:text-4xl font-extrabold tracking-tight mb-4">Prêt à booster vos annonces ?</h2>
           <p className="text-white/65 text-lg mb-8 max-w-xl mx-auto">Rejoignez plus de 1 850 propriétaires et agences qui font confiance à PASMAL pour leurs transactions immobilières.</p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex justify-center">
             <button onClick={() => navigate('/auth/register')}
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full transition-all hover:-translate-y-0.5 hover:shadow-lg">
               Publier gratuitement <I.ArrowRight size={16} />
-            </button>
-            <button className="inline-flex items-center gap-2 px-7 py-3.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold rounded-full transition-all">
-              <I.Phone size={14} /> Parler à un conseiller
             </button>
           </div>
           <p className="text-white/35 text-xs mt-6">Aucune carte requise pour le plan gratuit · Résiliable en 1 clic</p>

@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { I } from '../../lib/ui.jsx'
+import { useAuth } from '../../features/auth/providers/AuthProvider.jsx'
+import { startCheckout } from '../../features/subscription/checkoutService.js'
+import { getSubscriptionStatus } from '../../features/subscription/subscriptionService.js'
 
 const PLANS = [
   {
@@ -30,6 +33,7 @@ const PLANS = [
     Icon: I.Star,
     color: 'orange',
     badge: 'Recommandé',
+    stripePrice: 'premium_alerts',
     features: [
       'Favoris illimités',
       'Alertes illimitées',
@@ -42,16 +46,46 @@ const PLANS = [
   },
 ]
 
-const INVOICES = [
-  { date: '01/05/2026', amount: '9,00 €', status: 'Payé' },
-  { date: '01/04/2026', amount: '9,00 €', status: 'Payé' },
-  { date: '01/03/2026', amount: '9,00 €', status: 'Payé' },
-]
-
 export default function PageAbonnement({ dark }) {
-  const [current] = useState('free')
+  const { user, profile } = useAuth()
+  const [current, setCurrent] = useState('free')
   const [selected, setSelected] = useState('premium')
-  const tx = dark ? 'text-white' : 'text-navy-900'
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (!user) return
+    if (profile?.premium_alerts) {
+      setCurrent('premium')
+      setSelected('premium')
+      return
+    }
+    getSubscriptionStatus(user.id)
+      .then(sub => {
+        if (sub) { setCurrent('premium'); setSelected('premium') }
+      })
+      .catch(() => {})
+  }, [user, profile])
+
+  const handleSubscribe = async () => {
+    if (!user) return
+    const plan = PLANS.find(p => p.id === selected)
+    if (!plan?.stripePrice) return
+
+    setLoading(true)
+    setError('')
+    try {
+      await startCheckout(plan.stripePrice, {
+        successUrl: `${window.location.origin}/subscription/success?session_id={CHECKOUT_SESSION_ID}&type=${plan.stripePrice}`,
+        cancelUrl: window.location.href,
+      })
+    } catch (err) {
+      setError(err.message || 'Erreur lors du paiement.')
+      setLoading(false)
+    }
+  }
+
+  const tx = dark ? 'text-white' : 'text-[#0F172A]'
   const sx = dark ? 'text-white/50' : 'text-slate-400'
   const bd = dark ? 'bg-[#1f2937] border-white/10' : 'bg-white border-slate-200'
 
@@ -65,7 +99,7 @@ export default function PageAbonnement({ dark }) {
             <motion.div key={plan.id}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              onClick={() => setSelected(plan.id)}
+              onClick={() => !loading && setSelected(plan.id)}
               className={`relative rounded-2xl border-2 p-5 cursor-pointer transition-all shadow-sm ${
                 isSelected
                   ? plan.color === 'orange'
@@ -114,10 +148,27 @@ export default function PageAbonnement({ dark }) {
         })}
       </div>
 
+      {error && (
+        <div className="rounded-xl bg-rose-50 border border-rose-200 px-4 py-3 text-sm text-rose-600 font-medium">
+          {error}
+        </div>
+      )}
+
       {selected !== current && (
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
-          <button className="w-full h-11 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold transition shadow">
-            {selected === 'premium' ? 'Passer à Premium — 9€/mois' : 'Repasser en Gratuit'}
+          <button
+            onClick={handleSubscribe}
+            disabled={loading}
+            className={`w-full h-11 rounded-xl text-white text-sm font-bold transition shadow flex items-center justify-center gap-2 ${
+              loading ? 'bg-orange-400 cursor-wait' : 'bg-orange-500 hover:bg-orange-600'
+            }`}>
+            {loading ? (
+              <><I.Loader size={15} /> Redirection vers Stripe...</>
+            ) : selected === 'premium' ? (
+              'Passer à Premium — 9€/mois'
+            ) : (
+              'Repasser en Gratuit'
+            )}
           </button>
         </motion.div>
       )}
@@ -125,17 +176,21 @@ export default function PageAbonnement({ dark }) {
       {current === 'premium' && (
         <div className={`rounded-2xl border shadow-sm overflow-hidden ${bd}`}>
           <div className={`flex items-center justify-between px-5 py-4 border-b ${dark ? 'border-white/10' : 'border-slate-100'}`}>
-            <p className={`text-sm font-extrabold ${tx}`}>Historique de facturation</p>
+            <p className={`text-sm font-extrabold ${tx}`}>Votre abonnement</p>
+            <span className="text-[10px] font-bold bg-emerald-100 text-emerald-600 px-2.5 py-1 rounded-full uppercase">Actif</span>
           </div>
-          <div className="divide-y" style={{ borderColor: dark ? 'rgba(255,255,255,0.05)' : '#f8fafc' }}>
-            {INVOICES.map((inv, i) => (
-              <div key={i} className="flex items-center gap-4 px-5 py-3.5">
-                <I.FileText size={14} className={sx} />
-                <p className={`flex-1 text-sm ${tx}`}>{inv.date}</p>
-                <p className={`text-sm font-semibold ${tx}`}>{inv.amount}</p>
-                <span className="text-[10px] font-bold bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full">{inv.status}</span>
-              </div>
-            ))}
+          <div className="px-5 py-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className={`text-sm ${tx}`}>Plan Premium</span>
+              <span className={`text-sm font-bold ${tx}`}>9,00 €/mois</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className={`text-xs ${sx}`}>Prochain renouvellement</span>
+              <span className={`text-xs ${sx}`}>{new Date(Date.now() + 30 * 86400000).toLocaleDateString('fr-FR')}</span>
+            </div>
+            <p className={`text-[11px] ${sx}`}>
+              Gérez votre abonnement et vos moyens de paiement depuis le portail Stripe.
+            </p>
           </div>
         </div>
       )}

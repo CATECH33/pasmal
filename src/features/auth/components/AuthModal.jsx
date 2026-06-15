@@ -66,7 +66,10 @@ function RegisterForm({ onSuccess }) {
           { value: 'personal',     label: 'Particulier',   Icon: I.User     },
           { value: 'professional', label: 'Professionnel', Icon: I.Building },
         ].map(({ value, label, Icon }) => (
-          <button key={value} type="button" onClick={() => setAccountType(value)}
+          <button key={value} type="button" onClick={() => {
+              if (value === 'professional') { onSuccess(); navigate('/auth/register/pro'); return }
+              setAccountType(value)
+            }}
             className={`rounded-2xl border-2 px-3 py-2.5 text-left transition-all ${
               accountType === value ? 'border-orange-400 bg-orange-50' : 'border-slate-200 bg-white hover:border-slate-300'
             }`}>

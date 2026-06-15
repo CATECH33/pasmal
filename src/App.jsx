@@ -87,7 +87,7 @@ const Icons = {
 }
 
 /* ============================================================================
-   Brand Logo (inline SVG â€” house + upward arrow)
+   Brand Logo (inline SVG — house + upward arrow)
    ============================================================================ */
 function BrandLogo({ compact = false, dark = false }) {
   const navy = '#0F172A'
@@ -130,20 +130,20 @@ const unsplash = (id, w = 1200) =>
 const HERO_IMG = unsplash('photo-1600607687939-ce8a6c25118c', 1920)
 
 const FALLBACK_LISTINGS = [
-  { id: 'f1', title: 'Studio cosy lumineux',      location: 'Paris 11áµ‰ Â· Bastille', price: 320000,  rooms: 1, surface: 28,  type: 'acheter', property_type: 'Studio',     is_premium: true,                   image_url: unsplash('photo-1502672260266-1c1ef2d93688', 900) },
-  { id: 'f2', title: 'T3 avec balcon vue dÃ©gagÃ©e', location: 'Lyon 6áµ‰ Â· Foch',      price: 485000,  rooms: 3, surface: 65,  type: 'acheter', property_type: 'T3',         is_exclusive: true,                 image_url: unsplash('photo-1560448204-e02f11c3d0e2', 900) },
-  { id: 'f3', title: 'Maison contemporaine',        location: 'Bordeaux Â· CaudÃ©ran', price: 780000,  rooms: 5, surface: 142, type: 'acheter', property_type: 'Maison',                                         image_url: unsplash('photo-1564013799919-ab600027ffc6', 900) },
-  { id: 'f4', title: 'Colocation design 4 ch.',     location: 'Nantes Â· Centre',     price: 590,     rooms: 4, surface: 110, type: 'colocation', property_type: 'Colocation',                                  image_url: unsplash('photo-1522708323590-d24dbb6b0267', 900) },
-  { id: 'f5', title: 'Loft industriel rÃ©novÃ©',      location: 'Marseille Â· Joliette',price: 1450,    rooms: 2, surface: 72,  type: 'louer',   property_type: 'T2',         is_premium: true,                   image_url: unsplash('photo-1493809842364-78817add7ffb', 900) },
-  { id: 'f6', title: 'Appartement haussmannien',    location: 'Paris 8áµ‰ Â· Monceau', price: 1250000, rooms: 4, surface: 98,  type: 'acheter', property_type: 'Appartement', is_prestige: true,                  image_url: unsplash('photo-1600585154340-be6161a56a0c', 900) },
-  { id: 'f7', title: 'Studio Ã©tudiant moderne',     location: 'Toulouse Â· Capitole', price: 620,     rooms: 1, surface: 24,  type: 'louer',   property_type: 'Studio',                                         image_url: unsplash('photo-1554995207-c18c203602cb', 900) },
-  { id: 'f8', title: 'Villa avec piscine',           location: 'Nice Â· Cimiez',      price: 2100000, rooms: 6, surface: 220, type: 'acheter', property_type: 'Villa',       is_prestige: true,                  image_url: unsplash('photo-1613490493576-7fde63acd811', 900) },
+  { id: 'f1', title: 'Studio cosy lumineux',      location: 'Paris 11áµ‰ · Bastille', price: 320000,  rooms: 1, surface: 28,  type: 'acheter', property_type: 'Studio',     is_premium: true,                   image_url: unsplash('photo-1502672260266-1c1ef2d93688', 900) },
+  { id: 'f2', title: 'T3 avec balcon vue dégagée', location: 'Lyon 6áµ‰ · Foch',      price: 485000,  rooms: 3, surface: 65,  type: 'acheter', property_type: 'T3',         is_exclusive: true,                 image_url: unsplash('photo-1560448204-e02f11c3d0e2', 900) },
+  { id: 'f3', title: 'Maison contemporaine',        location: 'Bordeaux · Caudéran', price: 780000,  rooms: 5, surface: 142, type: 'acheter', property_type: 'Maison',                                         image_url: unsplash('photo-1564013799919-ab600027ffc6', 900) },
+  { id: 'f4', title: 'Colocation design 4 ch.',     location: 'Nantes · Centre',     price: 590,     rooms: 4, surface: 110, type: 'colocation', property_type: 'Colocation',                                  image_url: unsplash('photo-1522708323590-d24dbb6b0267', 900) },
+  { id: 'f5', title: 'Loft industriel rénové',      location: 'Marseille · Joliette',price: 1450,    rooms: 2, surface: 72,  type: 'louer',   property_type: 'T2',         is_premium: true,                   image_url: unsplash('photo-1493809842364-78817add7ffb', 900) },
+  { id: 'f6', title: 'Appartement haussmannien',    location: 'Paris 8áµ‰ · Monceau', price: 1250000, rooms: 4, surface: 98,  type: 'acheter', property_type: 'Appartement', is_prestige: true,                  image_url: unsplash('photo-1600585154340-be6161a56a0c', 900) },
+  { id: 'f7', title: 'Studio étudiant moderne',     location: 'Toulouse · Capitole', price: 620,     rooms: 1, surface: 24,  type: 'louer',   property_type: 'Studio',                                         image_url: unsplash('photo-1554995207-c18c203602cb', 900) },
+  { id: 'f8', title: 'Villa avec piscine',           location: 'Nice · Cimiez',      price: 2100000, rooms: 6, surface: 220, type: 'acheter', property_type: 'Villa',       is_prestige: true,                  image_url: unsplash('photo-1613490493576-7fde63acd811', 900) },
 ]
 
 const formatPrice = (l) => {
   if (l.price_label) return l.price_label
   if (typeof l.price !== 'number') return l.price ?? ''
-  const formatted = l.price.toLocaleString('fr-FR') + ' â‚¬'
+  const formatted = l.price.toLocaleString('fr-FR') + ' €'
   return l.type === 'louer' || l.type === 'colocation' ? `${formatted}/mois` : formatted
 }
 
@@ -158,7 +158,7 @@ const CATEGORIES = [
   { label: 'Investissement', icon: Icons.TrendingUp, value: 'Investissement' },
 ]
 
-const AGENCIES = ['Foncia Premium', 'Century 21 Ã‰lite', 'PASMAL Verified', 'Sotheby\'s Realty', 'BARNES', 'Engel & VÃ¶lkers']
+const AGENCIES = ['Foncia Premium', 'Century 21 Élite', 'PASMAL Verified', 'Sotheby\'s Realty', 'BARNES', 'Engel & Völkers']
 
 const enrichWithMeta = (l, idx = 0) => {
   const seed = (typeof l.id === 'string' ? (l.id.charCodeAt(1) || idx + 1) : idx + 1)
@@ -166,7 +166,7 @@ const enrichWithMeta = (l, idx = 0) => {
     ...l,
     agency: l.agency || AGENCIES[seed % AGENCIES.length],
     trust_score: l.trust_score ?? (90 + ((idx * 7) % 9)),
-    // Conversion psychology â€” deterministic but realistic-looking
+    // Conversion psychology — deterministic but realistic-looking
     viewers: l.viewers ?? (4 + ((seed * 3 + idx * 5) % 24)),               // 4 â†’ 27
     contacts_today: l.contacts_today ?? ((seed + idx * 2) % 8),             // 0 â†’ 7
     is_new: l.is_new ?? ((seed + idx) % 4 === 0),
@@ -176,21 +176,21 @@ const enrichWithMeta = (l, idx = 0) => {
 }
 
 const REASONS = [
-  { icon: Icons.Zap, title: 'Publication Express', text: 'Mettez votre bien en ligne en moins de 3 minutes grÃ¢ce Ã  notre Ã©diteur intuitif.' },
-  { icon: Icons.Shield, title: 'Paiement SÃ©curisÃ©', text: 'Transactions protÃ©gÃ©es par sÃ©questre certifiÃ©. SÃ©rÃ©nitÃ© garantie de A Ã  Z.' },
-  { icon: Icons.Eye, title: 'VisibilitÃ© Maximale', text: "Diffusion premium auprÃ¨s de 2,4M d'acquÃ©reurs qualifiÃ©s chaque mois." },
+  { icon: Icons.Zap, title: 'Publication Express', text: 'Mettez votre bien en ligne en moins de 3 minutes grâce à notre éditeur intuitif.' },
+  { icon: Icons.Shield, title: 'Paiement Sécurisé', text: 'Transactions protégées par séquestre certifié. Sérénité garantie de A à Z.' },
+  { icon: Icons.Eye, title: 'Visibilité Maximale', text: "Diffusion premium auprès de 2,4M d'acquéreurs qualifiés chaque mois." },
 ]
 
 const PLANS = [
   {
     name: 'Gratuit',
     price: '0',
-    period: 'â‚¬',
+    period: '€',
     duration: '7 jours en ligne',
     desc: 'Pour publier sans engagement et tester PASMAL.',
     features: [
       '3 photos par annonce',
-      'VisibilitÃ© standard',
+      'Visibilité standard',
       'Messagerie incluse',
       'Annonce active 7 jours',
     ],
@@ -198,34 +198,34 @@ const PLANS = [
     highlight: false,
   },
   {
-    name: 'Pack VisibilitÃ©',
+    name: 'Pack Visibilité',
     price: '9,90',
-    period: 'â‚¬',
+    period: '€',
     duration: '30 jours en ligne',
-    desc: "Le plus populaire â€” jusqu'Ã  4Ã— plus de contacts qualifiÃ©s.",
+    desc: "Le plus populaire — jusqu'à 4× plus de contacts qualifiés.",
     features: [
       '8 photos par annonce',
-      'Boost visibilitÃ© +200%',
+      'Boost visibilité +200%',
       'Annonce active 30 jours',
       'Statistiques de base',
       'Support prioritaire',
     ],
-    cta: 'Choisir VisibilitÃ©',
+    cta: 'Choisir Visibilité',
     highlight: true,
     listingBadge: { label: 'Nouveau', tone: 'bg-orange-100 text-orange-700 ring-orange-200' },
   },
   {
     name: 'Premium',
     price: '14,90',
-    period: 'â‚¬',
+    period: '€',
     duration: '30 jours en ligne',
-    desc: 'Pour vendre vite, en haut des rÃ©sultats.',
+    desc: 'Pour vendre vite, en haut des résultats.',
     features: [
       '12 photos par annonce',
-      'Top placement dans les rÃ©sultats',
-      'Analytics avancÃ©s',
+      'Top placement dans les résultats',
+      'Analytics avancés',
       'Annonce active 30 jours',
-      'Support dÃ©diÃ©',
+      'Support dédié',
     ],
     cta: 'Passer Premium',
     highlight: false,
@@ -233,34 +233,34 @@ const PLANS = [
   },
 ]
 
-/* B2B â€” agency subscriptions (dark navy + orange) */
+/* B2B — agency subscriptions (dark navy + orange) */
 const AGENCY_PLANS = [
   {
     name: 'Starter',
-    tagline: 'Agences indÃ©pendantes',
+    tagline: 'Agences indépendantes',
     price: 49,
-    desc: 'DÃ©marrez avec les essentiels pour gÃ©rer vos premiÃ¨res annonces.',
+    desc: 'Démarrez avec les essentiels pour gérer vos premières annonces.',
     features: [
-      "Jusqu'Ã  20 annonces actives",
+      "Jusqu'à 20 annonces actives",
       'CRM basique pour vos leads',
       'Profil d\'agence personnalisable',
-      'Messagerie sÃ©curisÃ©e intÃ©grÃ©e',
+      'Messagerie sécurisée intégrée',
       'Support par e-mail (48h)',
     ],
-    cta: 'DÃ©marrer Starter',
+    cta: 'Démarrer Starter',
     highlight: false,
   },
   {
     name: 'Pro',
     tagline: 'Agences en croissance',
     price: 129,
-    desc: 'Le standard du marchÃ© â€” toutes les agences performantes l\'utilisent.',
+    desc: 'Le standard du marché — toutes les agences performantes l\'utilisent.',
     features: [
-      'Annonces illimitÃ©es',
-      'CRM avancÃ© + pipeline Kanban',
+      'Annonces illimitées',
+      'CRM avancé + pipeline Kanban',
       'Comptes multi-agents (5 inclus)',
-      'Analytics complets en temps rÃ©el',
-      'Boost visibilitÃ© +200%',
+      'Analytics complets en temps réel',
+      'Boost visibilité +200%',
       'Support prioritaire 7j/7',
     ],
     cta: 'Passer Pro',
@@ -269,16 +269,16 @@ const AGENCY_PLANS = [
   },
   {
     name: 'Enterprise',
-    tagline: 'RÃ©seaux & groupes',
+    tagline: 'Réseaux & groupes',
     price: 399,
-    desc: 'Pour les groupes immobiliers et rÃ©seaux nationaux.',
+    desc: 'Pour les groupes immobiliers et réseaux nationaux.',
     features: [
       'API REST + webhooks',
-      'VisibilitÃ© premium garantie',
-      'Account manager dÃ©diÃ©',
-      'Onboarding personnalisÃ©',
+      'Visibilité premium garantie',
+      'Account manager dédié',
+      'Onboarding personnalisé',
       'SLA 99,9% + contrat sur mesure',
-      'Comptes agents illimitÃ©s',
+      'Comptes agents illimités',
     ],
     cta: 'Contacter les ventes',
     highlight: false,
@@ -287,42 +287,42 @@ const AGENCY_PLANS = [
 ]
 
 const TESTIMONIALS = [
-  { name: 'Camille LefÃ¨vre', role: 'AcquÃ©reuse Ã  Paris', text: "J'ai trouvÃ© mon T3 en 11 jours. L'interface est limpide et les annonces sont vraiment qualitatives.", avatar: unsplash('photo-1494790108377-be9c29b29330', 200), rating: 5 },
-  { name: 'Julien Moreau', role: 'PropriÃ©taire bailleur', text: 'Pack VisibilitÃ© activÃ© un lundi, mon studio louÃ© le vendredi. Rapport qualitÃ©-prix imbattable.', avatar: unsplash('photo-1500648767791-00dcc994a43e', 200), rating: 5 },
-  { name: 'Sofia Benali', role: 'Investisseuse', text: 'Le seul service Premium qui tient ses promesses. Annonces ciblÃ©es, contacts sÃ©rieux, zÃ©ro spam.', avatar: unsplash('photo-1438761681033-6461ffad8d80', 200), rating: 5 },
+  { name: 'Camille Lefèvre', role: 'Acquéreuse à Paris', text: "J'ai trouvé mon T3 en 11 jours. L'interface est limpide et les annonces sont vraiment qualitatives.", avatar: unsplash('photo-1494790108377-be9c29b29330', 200), rating: 5 },
+  { name: 'Julien Moreau', role: 'Propriétaire bailleur', text: 'Pack Visibilité activé un lundi, mon studio loué le vendredi. Rapport qualité-prix imbattable.', avatar: unsplash('photo-1500648767791-00dcc994a43e', 200), rating: 5 },
+  { name: 'Sofia Benali', role: 'Investisseuse', text: 'Le seul service Premium qui tient ses promesses. Annonces ciblées, contacts sérieux, zéro spam.', avatar: unsplash('photo-1438761681033-6461ffad8d80', 200), rating: 5 },
 ]
 
 const HOW_IT_WORKS_TABS = [
   {
     id: 'acheteur', label: 'Acheteur', icon: Icons.Home, badge: '12 480 biens',
     steps: [
-      { icon: Icons.Search,      title: 'Cherchez & filtrez',   desc: 'AccÃ©dez Ã  + de 12 000 annonces vÃ©rifiÃ©es. Filtres avancÃ©s : surface, prix, DPE, quartier.' },
-      { icon: Icons.Eye,         title: 'Visitez en confiance', desc: 'Chaque annonce est certifiÃ©e PASMAL Trust. Visite virtuelle 3D disponible sur tous les biens Premium.' },
-      { icon: Icons.CheckCircle, title: 'Signez sereinement',   desc: 'Accompagnement juridique offert. De la promesse de vente Ã  l\'acte authentique chez le notaire.' },
+      { icon: Icons.Search,      title: 'Cherchez & filtrez',   desc: 'Accédez à + de 12 000 annonces vérifiées. Filtres avancés : surface, prix, DPE, quartier.' },
+      { icon: Icons.Eye,         title: 'Visitez en confiance', desc: 'Chaque annonce est certifiée PASMAL Trust. Visite virtuelle 3D disponible sur tous les biens Premium.' },
+      { icon: Icons.CheckCircle, title: 'Signez sereinement',   desc: 'Accompagnement juridique offert. De la promesse de vente à l\'acte authentique chez le notaire.' },
     ],
   },
   {
-    id: 'vendeur', label: 'Vendeur', icon: Icons.PlusSquare, badge: '11 j dÃ©lai moyen',
+    id: 'vendeur', label: 'Vendeur', icon: Icons.PlusSquare, badge: '11 j délai moyen',
     steps: [
-      { icon: Icons.Upload,      title: 'Publiez en 5 minutes', desc: 'Interface intuitive, photos optimisÃ©es automatiquement, description IA incluse dans l\'offre Premium.' },
-      { icon: Icons.Sparkles,    title: 'Boostez votre visibilitÃ©', desc: 'Mise en avant en tÃªte des rÃ©sultats, alerte push aux acheteurs ciblÃ©s, accÃ¨s anticipÃ© Premium.' },
-      { icon: Icons.BadgeCheck,  title: 'Vendez plus vite',     desc: 'DÃ©lai moyen de vente : 11 jours. Gestion des contacts et offres directement dans votre espace.' },
+      { icon: Icons.Upload,      title: 'Publiez en 5 minutes', desc: 'Interface intuitive, photos optimisées automatiquement, description IA incluse dans l\'offre Premium.' },
+      { icon: Icons.Sparkles,    title: 'Boostez votre visibilité', desc: 'Mise en avant en tête des résultats, alerte push aux acheteurs ciblés, accès anticipé Premium.' },
+      { icon: Icons.BadgeCheck,  title: 'Vendez plus vite',     desc: 'Délai moyen de vente : 11 jours. Gestion des contacts et offres directement dans votre espace.' },
     ],
   },
   {
     id: 'investisseur', label: 'Investisseur', icon: Icons.TrendingUp, badge: '5,8 % rendement moy.',
     steps: [
-      { icon: Icons.Zap,         title: 'DÃ©tectez les opportunitÃ©s', desc: 'Alertes en temps rÃ©el sur les biens Ã  fort potentiel locatif. Simulateur rendement intÃ©grÃ©.' },
-      { icon: Icons.Tag,         title: 'Analysez & comparez',   desc: 'Prix au mÂ² par quartier, historique DPE, taux de vacance locative, fiscalitÃ© LMNP / Pinel.' },
-      { icon: Icons.TrendingUp,  title: 'Maximisez votre rendement', desc: 'AccÃ¨s exclusif aux dossiers off-market et aux ventes avant publication publique.' },
+      { icon: Icons.Zap,         title: 'Détectez les opportunités', desc: 'Alertes en temps réel sur les biens à fort potentiel locatif. Simulateur rendement intégré.' },
+      { icon: Icons.Tag,         title: 'Analysez & comparez',   desc: 'Prix au m² par quartier, historique DPE, taux de vacance locative, fiscalité LMNP / Pinel.' },
+      { icon: Icons.TrendingUp,  title: 'Maximisez votre rendement', desc: 'Accès exclusif aux dossiers off-market et aux ventes avant publication publique.' },
     ],
   },
 ]
 
 const HOME_GUIDES = [
-  { tag: 'Achat',          title: 'Primo-accÃ©dants : le guide complet 2026',          img: unsplash('photo-1554224155-6726b3ff858f', 400), time: '8 min' },
-  { tag: 'Location',       title: 'Comprendre le bail de location en 5 points clÃ©s',  img: unsplash('photo-1560518883-ce09059eeffa', 400), time: '5 min' },
-  { tag: 'Investissement', title: "LMNP : amortir son bien et rÃ©duire ses impÃ´ts",    img: unsplash('photo-1486325212027-8081e485255e', 400), time: '6 min' },
+  { tag: 'Achat',          title: 'Primo-accédants : le guide complet 2026',          img: unsplash('photo-1554224155-6726b3ff858f', 400), time: '8 min' },
+  { tag: 'Location',       title: 'Comprendre le bail de location en 5 points clés',  img: unsplash('photo-1560518883-ce09059eeffa', 400), time: '5 min' },
+  { tag: 'Investissement', title: "LMNP : amortir son bien et réduire ses impôts",    img: unsplash('photo-1486325212027-8081e485255e', 400), time: '6 min' },
 ]
 
 
@@ -360,7 +360,7 @@ function UserChip({ user, role, onSignOut, onGoAdmin, onNavigate }) {
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
           <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-cardHover border border-slate-100 overflow-hidden z-20 fade-in-up">
             <div className="px-4 py-3 border-b border-slate-100">
-              <div className="text-xs text-slate-500">ConnectÃ© en tant que</div>
+              <div className="text-xs text-slate-500">Connecté en tant que</div>
               <div className="text-sm font-semibold text-navy-900 truncate">{user?.email || displayName}</div>
             </div>
             <button onClick={() => go('personal-dash')} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-navy-900 hover:bg-slate-50 text-left">
@@ -398,7 +398,7 @@ function UserChip({ user, role, onSignOut, onGoAdmin, onNavigate }) {
             </Link>
             <button onClick={() => go('verification')} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-navy-900 hover:bg-slate-50 text-left">
               <Icons.BadgeCheck size={16} className="text-emerald-600" />
-              VÃ©rification agence
+              Vérification agence
               <span className="ml-auto text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200">Pro</span>
             </button>
             <button onClick={() => go('alerts')} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-navy-900 hover:bg-slate-50 text-left">
@@ -417,7 +417,7 @@ function UserChip({ user, role, onSignOut, onGoAdmin, onNavigate }) {
               </button>
             )}
             <Link to="/auth/logout" onClick={() => setOpen(false)} className={`w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 ${isAdmin ? '' : 'border-t border-slate-100'}`}>
-              <Icons.LogOut size={16} /> DÃ©connexion
+              <Icons.LogOut size={16} /> Déconnexion
             </Link>
           </div>
         </>
@@ -492,7 +492,7 @@ function Header({ currentView, setCurrentView, user, role, onSignIn, onPublish, 
                     : 'border-orange-200 text-orange-600 hover:bg-orange-50'
                 }`}
               >
-                âš¡ AccÃ¨s anticipÃ©
+                âš¡ Accès anticipé
               </button>
               <button
                 onClick={() => navigate('/dashboard')}
@@ -536,7 +536,7 @@ function Header({ currentView, setCurrentView, user, role, onSignIn, onPublish, 
             onClick={onPublish}
             className="text-sm font-semibold text-white bg-orange-600 hover:bg-orange-700 transition-colors px-5 py-2.5 rounded-full shadow-soft"
           >
-            DÃ©poser une annonce
+            Déposer une annonce
           </motion.button>
         </div>
         <div className="lg:hidden flex items-center gap-1">
@@ -561,12 +561,12 @@ function Header({ currentView, setCurrentView, user, role, onSignIn, onPublish, 
               {user ? (
                 <>
                   <button onClick={() => { navigate('/dashboard'); setOpen(false) }} className="w-full text-navy-900 font-medium text-left">Mon espace</button>
-                  <button onClick={onSignOut} className="w-full text-navy-900 font-medium text-left">DÃ©connexion</button>
+                  <button onClick={onSignOut} className="w-full text-navy-900 font-medium text-left">Déconnexion</button>
                 </>
               ) : (
                 <button onClick={onSignIn} className="w-full text-navy-900 font-medium text-left">Connexion</button>
               )}
-              <button onClick={onPublish} className="w-full text-white bg-orange-600 px-4 py-2.5 rounded-full font-semibold">DÃ©poser une annonce</button>
+              <button onClick={onPublish} className="w-full text-white bg-orange-600 px-4 py-2.5 rounded-full font-semibold">Déposer une annonce</button>
             </div>
           </motion.div>
         )}
@@ -633,7 +633,7 @@ function SearchBar({ filters, setFilters, onSearch, floating = false }) {
                     setFilters((f) => ({ ...f, location: '' }))
                   }
                 }}
-                placeholder="Paris, Lyon, Bordeauxâ€¦"
+                placeholder="Paris, Lyon, Bordeaux…"
               />
             </div>
           </div>
@@ -648,16 +648,16 @@ function SearchBar({ filters, setFilters, onSearch, floating = false }) {
         </div>
         <div className="md:col-span-2">
           <Field label="Budget" divider>
-            <input type="number" value={filters.priceMax} onChange={(e) => setFilters({ ...filters, priceMax: e.target.value })} placeholder="500 000 â‚¬" className="w-full bg-transparent text-navy-900 placeholder-slate-400 text-sm focus:outline-none" />
+            <input type="number" value={filters.priceMax} onChange={(e) => setFilters({ ...filters, priceMax: e.target.value })} placeholder="500 000 €" className="w-full bg-transparent text-navy-900 placeholder-slate-400 text-sm focus:outline-none" />
           </Field>
         </div>
         <div className="md:col-span-1">
           <Field label="Surface" divider>
-            <input type="number" value={filters.surfaceMin || ''} onChange={(e) => setFilters({ ...filters, surfaceMin: e.target.value })} placeholder="mÂ²" className="w-full bg-transparent text-navy-900 placeholder-slate-400 text-sm focus:outline-none" />
+            <input type="number" value={filters.surfaceMin || ''} onChange={(e) => setFilters({ ...filters, surfaceMin: e.target.value })} placeholder="m²" className="w-full bg-transparent text-navy-900 placeholder-slate-400 text-sm focus:outline-none" />
           </Field>
         </div>
         <div className="md:col-span-1">
-          <Field label="PiÃ¨ces" divider>
+          <Field label="Pièces" divider>
             <input type="number" value={filters.roomsMin || ''} onChange={(e) => setFilters({ ...filters, roomsMin: e.target.value })} placeholder="3+" className="w-full bg-transparent text-navy-900 placeholder-slate-400 text-sm focus:outline-none" />
           </Field>
         </div>
@@ -693,7 +693,7 @@ function Hero({ filters, setFilters, onSearch }) {
     <section className="relative pt-0 min-h-[100vh] flex items-center overflow-hidden">
       {/* Parallax background image */}
       <motion.div style={{ y: yImg }} className="absolute inset-0 will-change-transform">
-        <img src={HERO_IMG} alt="IntÃ©rieur premium" className="w-full h-[120%] object-cover" />
+        <img src={HERO_IMG} alt="Intérieur premium" className="w-full h-[120%] object-cover" />
         <div className="absolute inset-0 hero-overlay" />
       </motion.div>
 
@@ -728,7 +728,7 @@ function Hero({ filters, setFilters, onSearch }) {
             variants={reveal} initial="hidden" animate="show" custom={2}
             className="mt-6 text-white/85 text-lg md:text-xl max-w-2xl leading-relaxed"
           >
-            Marketplace immobiliÃ¨re premium pour acheter, louer et investir intelligemment.
+            Marketplace immobilière premium pour acheter, louer et investir intelligemment.
           </motion.p>
         </div>
 
@@ -742,7 +742,7 @@ function Hero({ filters, setFilters, onSearch }) {
         >
           <div><span className="text-2xl font-bold text-white">2,4M</span> visiteurs / mois</div>
           <div className="w-px h-8 bg-white/25 hidden md:block" />
-          <div><span className="text-2xl font-bold text-white">98%</span> de biens vÃ©rifiÃ©s</div>
+          <div><span className="text-2xl font-bold text-white">98%</span> de biens vérifiés</div>
           <div className="w-px h-8 bg-white/25 hidden md:block" />
           <div><span className="text-2xl font-bold text-white">4.9/5</span> avis clients</div>
         </motion.div>
@@ -753,7 +753,7 @@ function Hero({ filters, setFilters, onSearch }) {
         animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/70 z-10 pointer-events-none"
       >
-        <div className="text-[10px] uppercase tracking-[0.3em]">DÃ©couvrir</div>
+        <div className="text-[10px] uppercase tracking-[0.3em]">Découvrir</div>
         <Icons.ChevronDown size={18} />
       </motion.div>
     </section>
@@ -787,10 +787,10 @@ function Categories({ onPick }) {
         <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
           <div>
             <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Explorer</div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-navy-900 tracking-tight">Trouvez par catÃ©gorie</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-navy-900 tracking-tight">Trouvez par catégorie</h2>
           </div>
           <a href="#" className="text-navy-700 hover:text-orange-600 font-medium text-sm flex items-center gap-1 transition-colors">
-            Voir toutes les catÃ©gories <Icons.ArrowRight size={16} />
+            Voir toutes les catégories <Icons.ArrowRight size={16} />
           </a>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -814,7 +814,7 @@ function Categories({ onPick }) {
 /* ============================================================================
    Listings grid
    ============================================================================ */
-function Listings({ listings, loading, error, source, title = 'Biens Ã  la une', kicker = 'SÃ©lection' }) {
+function Listings({ listings, loading, error, source, title = 'Biens à la une', kicker = 'Sélection' }) {
   return (
     <section id="listings" className="py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
@@ -824,10 +824,10 @@ function Listings({ listings, loading, error, source, title = 'Biens Ã  la une
             <h2 className="text-3xl md:text-4xl font-extrabold text-navy-900 tracking-tight">{title}</h2>
             <p className="text-slate-600 mt-2 max-w-xl">
               {loading
-                ? 'Chargement de notre sÃ©lectionâ€¦'
+                ? 'Chargement de notre sélection…'
                 : source === 'fallback'
-                  ? 'SÃ©lection Ã©ditoriale (mode dÃ©mo â€” donnÃ©es live indisponibles).'
-                  : `${listings.length} bien${listings.length > 1 ? 's' : ''} correspondant Ã  votre recherche.`}
+                  ? 'Sélection éditoriale (mode démo — données live indisponibles).'
+                  : `${listings.length} bien${listings.length > 1 ? 's' : ''} correspondant à votre recherche.`}
             </p>
           </div>
           <a href="#" className="text-white bg-navy-900 hover:bg-navy-700 rounded-full px-5 py-2.5 font-semibold text-sm flex items-center gap-2 transition-all hover:shadow-card">
@@ -838,7 +838,7 @@ function Listings({ listings, loading, error, source, title = 'Biens Ã  la une
         {error && (
           <div className="mb-6 flex items-start gap-2 px-4 py-3 bg-orange-50 border border-orange-100 text-orange-700 rounded-2xl text-sm">
             <Icons.AlertCircle size={16} className="mt-0.5 shrink-0" />
-            <span>Impossible de charger les annonces ({error}). Affichage de la sÃ©lection dÃ©mo.</span>
+            <span>Impossible de charger les annonces ({error}). Affichage de la sélection démo.</span>
           </div>
         )}
 
@@ -861,7 +861,7 @@ function Listings({ listings, loading, error, source, title = 'Biens Ã  la une
               <Icons.Search size={24} className="text-orange-600" />
             </div>
             <h3 className="text-lg font-bold text-navy-900 mb-1">Aucun bien ne correspond</h3>
-            <p className="text-slate-600 text-sm">{"Essayez d'Ã©largir vos critÃ¨res de recherche."}</p>
+            <p className="text-slate-600 text-sm">{"Essayez d'élargir vos critères de recherche."}</p>
           </div>
         ) : (
           <motion.div
@@ -950,10 +950,10 @@ function Listings({ listings, loading, error, source, title = 'Biens Ã  la une
                     <div className="flex items-center gap-4 text-sm text-navy-700 mb-3">
                       <div className="flex items-center gap-1.5"><Icons.Bed size={16} className="text-orange-600" /> {l.rooms} p.</div>
                       <div className="w-px h-4 bg-slate-200" />
-                      <div className="flex items-center gap-1.5"><Icons.Maximize size={16} className="text-orange-600" /> {l.surface} mÂ²</div>
+                      <div className="flex items-center gap-1.5"><Icons.Maximize size={16} className="text-orange-600" /> {l.surface} m²</div>
                     </div>
 
-                    {/* Live activity strip â€” social proof */}
+                    {/* Live activity strip — social proof */}
                     {(l.viewers > 0 || l.contacts_today > 0) && (
                       <div className="flex items-center gap-2.5 text-[11px] text-slate-500 mb-3">
                         {l.viewers > 0 && (
@@ -993,7 +993,7 @@ function Listings({ listings, loading, error, source, title = 'Biens Ã  la une
 }
 
 /* ============================================================================
-   HowItWorks â€” tabbed 3-step explainer
+   HowItWorks — tabbed 3-step explainer
    ============================================================================ */
 function HowItWorks() {
   const [activeTab, setActiveTab] = useState('acheteur')
@@ -1005,12 +1005,12 @@ function HowItWorks() {
 
         {/* heading */}
         <div className="text-center mb-12">
-          <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Comment Ã§a marche</div>
+          <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Comment ça marche</div>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#0B1F3A] tracking-tight">
-            Simple, rapide, sÃ©curisÃ©
+            Simple, rapide, sécurisé
           </h2>
           <p className="text-slate-500 mt-3 max-w-xl mx-auto">
-            Que vous achetiez, vendiez ou investissiez â€” PASMAL vous guide Ã  chaque Ã©tape.
+            Que vous achetiez, vendiez ou investissiez — PASMAL vous guide à chaque étape.
           </p>
         </div>
 
@@ -1074,7 +1074,7 @@ function HowItWorks() {
 }
 
 /* ============================================================================
-   HomeCities â€” top cities with avg price (reuses ACHAT_CITIES)
+   HomeCities — top cities with avg price (reuses ACHAT_CITIES)
    ============================================================================ */
 function HomeCities({ onSearch }) {
   return (
@@ -1083,7 +1083,7 @@ function HomeCities({ onSearch }) {
         <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
           <div>
             <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Par ville</div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#0B1F3A] tracking-tight">Villes les plus recherchÃ©es</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#0B1F3A] tracking-tight">Villes les plus recherchées</h2>
           </div>
           <button onClick={() => onSearch?.('France')} className="text-navy-700 hover:text-orange-600 font-medium text-sm flex items-center gap-1 transition-colors">
             Voir toutes les villes <Icons.ArrowRight size={16} />
@@ -1100,7 +1100,7 @@ function HomeCities({ onSearch }) {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/80 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-3 text-left">
                 <div className="text-white font-bold text-sm truncate">{city.name}</div>
-                <div className="text-white/70 text-[11px]">{(city.price / 1000).toFixed(0)}k â‚¬/mÂ²</div>
+                <div className="text-white/70 text-[11px]">{(city.price / 1000).toFixed(0)}k €/m²</div>
               </div>
             </button>
           ))}
@@ -1111,7 +1111,7 @@ function HomeCities({ onSearch }) {
 }
 
 /* ============================================================================
-   HomeGuides â€” 3 editorial guides
+   HomeGuides — 3 editorial guides
    ============================================================================ */
 function HomeGuides({ onViewAll }) {
   return (
@@ -1120,7 +1120,7 @@ function HomeGuides({ onViewAll }) {
         <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
           <div>
             <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Guides & conseils</div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#0B1F3A] tracking-tight">L'immobilier, expliquÃ© simplement</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#0B1F3A] tracking-tight">L'immobilier, expliqué simplement</h2>
           </div>
           <button onClick={onViewAll} className="text-navy-700 hover:text-orange-600 font-medium text-sm flex items-center gap-1 transition-colors">
             Tous nos guides <Icons.ArrowRight size={16} />
@@ -1153,9 +1153,9 @@ function HomeGuides({ onViewAll }) {
 function EarlyAccessTeaser() {
   const navigate = useNavigate()
   const MOCK = [
-    { img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300&q=60', price: '680 000 â‚¬', mins: 18 },
-    { img: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=300&q=60', price: '1 890 000 â‚¬', mins: 7  },
-    { img: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=300&q=60', price: '498 000 â‚¬', mins: 26 },
+    { img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300&q=60', price: '680 000 €', mins: 18 },
+    { img: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=300&q=60', price: '1 890 000 €', mins: 7  },
+    { img: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=300&q=60', price: '498 000 €', mins: 26 },
   ]
   return (
     <section className="py-20 bg-gradient-to-br from-[#0B1F3A] via-[#0B1F3A] to-[#162E52] overflow-hidden relative">
@@ -1169,19 +1169,19 @@ function EarlyAccessTeaser() {
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <span className="inline-flex items-center gap-2 bg-orange-600/20 border border-orange-500/30 text-orange-400 text-[11px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full mb-5">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
-              AccÃ¨s AnticipÃ© Â· Premium
+              Accès Anticipé · Premium
             </span>
             <h2 className="text-3xl xl:text-4xl font-extrabold text-white leading-tight mb-4">
               Voyez les annonces<br />
               <span className="text-orange-400">avant tout le monde</span>
             </h2>
             <p className="text-slate-400 text-base mb-8 max-w-md">
-              Les membres Premium accÃ¨dent aux nouvelles annonces <strong className="text-white">15 Ã  30 minutes avant le grand public</strong>. Dans l'immobilier, chaque minute compte.
+              Les membres Premium accèdent aux nouvelles annonces <strong className="text-white">15 à 30 minutes avant le grand public</strong>. Dans l'immobilier, chaque minute compte.
             </p>
             <div className="space-y-3 mb-8">
               {[
-                'Compteur en temps rÃ©el avant mise en ligne publique',
-                'Alertes instantanÃ©es SMS, email et push',
+                'Compteur en temps réel avant mise en ligne publique',
+                'Alertes instantanées SMS, email et push',
                 '"Vous voyez cette annonce avant 94% des utilisateurs"',
               ].map(t => (
                 <div key={t} className="flex items-center gap-3 text-sm text-white/80">
@@ -1197,13 +1197,13 @@ function EarlyAccessTeaser() {
                 whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }}
                 onClick={() => navigate('/early-access')}
                 className="h-12 px-7 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-full transition shadow-soft text-sm">
-                DÃ©couvrir l'accÃ¨s anticipÃ©
+                Découvrir l'accès anticipé
               </motion.button>
-              <span className="text-white/40 text-xs">Ã€ partir de 29â‚¬/mois</span>
+              <span className="text-white/40 text-xs">À partir de 29€/mois</span>
             </div>
           </motion.div>
 
-          {/* Right â€” blurred cards preview */}
+          {/* Right — blurred cards preview */}
           <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}
             className="relative flex gap-3">
             {MOCK.map((m, i) => (
@@ -1215,7 +1215,7 @@ function EarlyAccessTeaser() {
                   <div className="w-8 h-8 rounded-xl bg-orange-600/80 flex items-center justify-center mb-2">
                     <Icons.Lock size={14} className="text-white"/>
                   </div>
-                  <div className="text-white/80 text-xs font-bold text-center px-2">RÃ©servÃ© Premium</div>
+                  <div className="text-white/80 text-xs font-bold text-center px-2">Réservé Premium</div>
                 </div>
                 {/* Countdown badge */}
                 <div className="absolute top-2 right-2 bg-orange-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -1242,8 +1242,8 @@ function WhyPasmal() {
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Pourquoi PASMAL</div>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-navy-900 tracking-tight">Une expÃ©rience pensÃ©e pour vous</h2>
-          <p className="text-slate-600 mt-4">Trois engagements simples qui font la diffÃ©rence entre une plateforme et une expÃ©rience premium.</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-navy-900 tracking-tight">Une expérience pensée pour vous</h2>
+          <p className="text-slate-600 mt-4">Trois engagements simples qui font la différence entre une plateforme et une expérience premium.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {REASONS.map((r) => {
@@ -1293,16 +1293,16 @@ function Counter({ to, suffix = '', duration = 1.8 }) {
    ============================================================================ */
 function TrustSection() {
   const counters = [
-    { value: 124800, suffix: '+', label: 'Annonces publiÃ©es' },
-    { value: 86400, suffix: '+', label: 'Utilisateurs vÃ©rifiÃ©s' },
+    { value: 124800, suffix: '+', label: 'Annonces publiées' },
+    { value: 86400, suffix: '+', label: 'Utilisateurs vérifiés' },
     { value: 2400, suffix: '+', label: 'Agences partenaires' },
     { value: 98, suffix: '%', label: 'Taux de satisfaction' },
   ]
   const badges = [
-    { icon: Icons.BadgeCheck, title: 'Agences vÃ©rifiÃ©es', text: 'Chaque agence est validÃ©e par notre Ã©quipe avant publication.', color: 'text-emerald-600 bg-emerald-50' },
-    { icon: Icons.CreditCard, title: 'Paiements Stripe sÃ©curisÃ©s', text: 'Encaissement protÃ©gÃ© par Stripe Connect, conforme PSD2 et 3DS2.', color: 'text-indigo-600 bg-indigo-50' },
-    { icon: Icons.Sparkles, title: 'ModÃ©ration IA', text: 'Notre IA dÃ©tecte instantanÃ©ment les annonces frauduleuses ou en double.', color: 'text-orange-600 bg-orange-50' },
-    { icon: Icons.ShieldCheckBig, title: 'Anti-arnaque', text: 'NumÃ©ro de tÃ©lÃ©phone vÃ©rifiÃ©, KYC, signalement instantanÃ©.', color: 'text-rose-600 bg-rose-50' },
+    { icon: Icons.BadgeCheck, title: 'Agences vérifiées', text: 'Chaque agence est validée par notre équipe avant publication.', color: 'text-emerald-600 bg-emerald-50' },
+    { icon: Icons.CreditCard, title: 'Paiements Stripe sécurisés', text: 'Encaissement protégé par Stripe Connect, conforme PSD2 et 3DS2.', color: 'text-indigo-600 bg-indigo-50' },
+    { icon: Icons.Sparkles, title: 'Modération IA', text: 'Notre IA détecte instantanément les annonces frauduleuses ou en double.', color: 'text-orange-600 bg-orange-50' },
+    { icon: Icons.ShieldCheckBig, title: 'Anti-arnaque', text: 'Numéro de téléphone vérifié, KYC, signalement instantané.', color: 'text-rose-600 bg-rose-50' },
   ]
 
   return (
@@ -1312,10 +1312,10 @@ function TrustSection() {
         <div className="text-center max-w-2xl mx-auto mb-14">
           <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Confiance</div>
           <h2 className="text-3xl md:text-4xl font-extrabold text-navy-900 tracking-tight">
-            La marketplace immobiliÃ¨re la plus sÃ©curisÃ©e de France
+            La marketplace immobilière la plus sécurisée de France
           </h2>
           <p className="text-slate-600 mt-4">
-            VÃ©rification d'identitÃ©, paiement sÃ©curisÃ©, modÃ©ration IA â€” nous prenons la confiance au sÃ©rieux.
+            Vérification d'identité, paiement sécurisé, modération IA — nous prenons la confiance au sérieux.
           </p>
         </div>
 
@@ -1373,7 +1373,7 @@ function Pricing() {
         <div className="text-center max-w-2xl mx-auto mb-14">
           <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Tarifs</div>
           <h2 className="text-3xl md:text-4xl font-extrabold text-navy-900 tracking-tight">Des prix simples, sans surprise</h2>
-          <p className="text-slate-600 mt-4">Choisissez le pack adaptÃ© Ã  vos besoins. Sans engagement, rÃ©siliable Ã  tout moment.</p>
+          <p className="text-slate-600 mt-4">Choisissez le pack adapté à vos besoins. Sans engagement, résiliable à tout moment.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {PLANS.map((p, i) => (
@@ -1411,7 +1411,7 @@ function Pricing() {
                   <span className={`inline-flex items-center text-[9px] font-extrabold uppercase tracking-[0.15em] px-2 py-0.5 rounded-full ring-1 ${p.listingBadge.tone}`}>
                     {p.listingBadge.label}
                   </span>
-                  <span className={`text-[11px] ${p.highlight ? 'text-white/70' : 'text-slate-500'}`}>affichÃ© sur vos annonces</span>
+                  <span className={`text-[11px] ${p.highlight ? 'text-white/70' : 'text-slate-500'}`}>affiché sur vos annonces</span>
                 </div>
               )}
               <ul className="space-y-3 mb-8">
@@ -1429,13 +1429,13 @@ function Pricing() {
           ))}
         </div>
 
-        {/* Ã€ la carte */}
+        {/* À la carte */}
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.45 }}
           className="mt-12 max-w-5xl mx-auto">
           <div className="text-center mb-7">
-            <div className="text-orange-600 font-semibold text-xs tracking-wider uppercase mb-1">Ã€ la carte</div>
+            <div className="text-orange-600 font-semibold text-xs tracking-wider uppercase mb-1">À la carte</div>
             <h3 className="text-xl font-extrabold text-navy-900">Boostez selon vos besoins</h3>
             <p className="text-slate-500 text-sm mt-1">Disponibles avec tous les plans, sans engagement.</p>
           </div>
@@ -1443,10 +1443,10 @@ function Pricing() {
             {[
               {
                 Icon: Icons.Zap,
-                title: 'Remonter en tÃªte',
-                price: '4,90 â‚¬',
+                title: 'Remonter en tête',
+                price: '4,90 €',
                 sub: 'paiement unique',
-                desc: 'PremiÃ¨re position des rÃ©sultats pendant 72h. Effet immÃ©diat.',
+                desc: 'Première position des résultats pendant 72h. Effet immédiat.',
                 cta: 'Activer le boost',
                 tag: null,
                 color: '#F97316',
@@ -1454,19 +1454,19 @@ function Pricing() {
               {
                 Icon: Icons.Image,
                 title: 'Pack Photos Pro',
-                price: '49 â‚¬',
+                price: '49 €',
                 sub: 'par annonce',
-                desc: 'Photographe professionnel + retouches HDR livrÃ©es en 48h.',
-                cta: 'RÃ©server un shoot',
+                desc: 'Photographe professionnel + retouches HDR livrées en 48h.',
+                cta: 'Réserver un shoot',
                 tag: 'Nouveau',
                 color: '#6366F1',
               },
               {
                 Icon: Icons.Sparkles,
                 title: 'Estimation IA',
-                price: '0 â‚¬',
+                price: '0 €',
                 sub: 'gratuit',
-                desc: 'Valeur vÃ©nale estimÃ©e en 30 secondes par notre modÃ¨le propriÃ©taire.',
+                desc: 'Valeur vénale estimée en 30 secondes par notre modèle propriétaire.',
                 cta: 'Estimer maintenant',
                 tag: 'Gratuit',
                 color: '#10B981',
@@ -1509,7 +1509,7 @@ function Pricing() {
 }
 
 /* ============================================================
-   B2B â€” Agency Subscriptions (dark navy + orange)
+   B2B — Agency Subscriptions (dark navy + orange)
    ============================================================ */
 function AgencyPricing() {
   const [billing, setBilling] = useState('monthly')
@@ -1529,21 +1529,21 @@ function AgencyPricing() {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-white/85 text-xs font-semibold uppercase tracking-wider mb-4">
             <Icons.Building size={12} className="text-orange-400" />
-            Solution Agences Â· B2B
+            Solution Agences · B2B
           </div>
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
-            La plateforme pensÃ©e pour <span className="text-gradient-orange">les pros de l'immobilier</span>
+            La plateforme pensée pour <span className="text-gradient-orange">les pros de l'immobilier</span>
           </h2>
           <p className="text-white/70 mt-4 leading-relaxed">
-            ConÃ§u pour les agences, rÃ©seaux et groupes immobiliers. Pipeline de leads, comptes agents,
-            analytics, API â€” tout pour scaler en confiance.
+            Conçu pour les agences, réseaux et groupes immobiliers. Pipeline de leads, comptes agents,
+            analytics, API — tout pour scaler en confiance.
           </p>
 
           {/* Billing toggle */}
           <div className="mt-8 inline-flex items-center bg-white/5 border border-white/10 p-1 rounded-full">
             {[
               { id: 'monthly', label: 'Mensuel' },
-              { id: 'yearly',  label: 'Annuel Â· -20%' },
+              { id: 'yearly',  label: 'Annuel · -20%' },
             ].map((b) => (
               <button
                 key={b.id}
@@ -1599,10 +1599,10 @@ function AgencyPricing() {
 
                 <div className="flex items-baseline gap-1.5 mb-1">
                   <span className="text-5xl font-extrabold tracking-tight text-white">{price}</span>
-                  <span className="text-sm text-white/60">â‚¬/mois</span>
+                  <span className="text-sm text-white/60">€/mois</span>
                 </div>
                 <div className="text-[11px] text-white/40 mb-5">
-                  {yearly ? `Soit ${yearlyTotal.toLocaleString('fr-FR')} â‚¬ facturÃ©s annuellement` : 'FacturÃ© mensuellement, rÃ©siliable Ã  tout moment'}
+                  {yearly ? `Soit ${yearlyTotal.toLocaleString('fr-FR')} € facturés annuellement` : 'Facturé mensuellement, résiliable à tout moment'}
                 </div>
 
                 <p className="text-sm text-white/75 mb-6 leading-relaxed">{p.desc}</p>
@@ -1645,9 +1645,9 @@ function AgencyPricing() {
                 Inclus dans tous les plans
               </div>
               {[
-                { icon: Icons.Shield, label: 'RGPD Â· hÃ©bergement FR' },
-                { icon: Icons.CreditCard, label: 'Stripe Connect intÃ©grÃ©' },
-                { icon: Icons.Sparkles, label: 'ModÃ©ration IA anti-fraude' },
+                { icon: Icons.Shield, label: 'RGPD · hébergement FR' },
+                { icon: Icons.CreditCard, label: 'Stripe Connect intégré' },
+                { icon: Icons.Sparkles, label: 'Modération IA anti-fraude' },
               ].map((f) => {
                 const Icon = f.icon
                 return (
@@ -1672,13 +1672,13 @@ function AgencyPricing() {
         >
           <div className="inline-flex flex-col md:flex-row items-center gap-3 md:gap-5 bg-white/5 border border-white/10 rounded-full p-2 pl-5">
             <div className="text-sm text-white/85 text-center md:text-left">
-              Besoin d'une dÃ©mo personnalisÃ©e ?
+              Besoin d'une démo personnalisée ?
             </div>
             <button className="inline-flex items-center gap-2 bg-white text-navy-900 hover:bg-orange-50 font-semibold text-sm px-5 py-2.5 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-cardHover">
-              Parler Ã  un expert <Icons.ArrowRight size={14} />
+              Parler à un expert <Icons.ArrowRight size={14} />
             </button>
           </div>
-          <div className="text-[11px] text-white/40 mt-3">RÃ©ponse sous 24h ouvrÃ©es Â· â˜Ž 01 84 80 19 26</div>
+          <div className="text-[11px] text-white/40 mt-3">Réponse sous 24h ouvrées · â˜Ž 01 84 80 19 26</div>
         </motion.div>
       </div>
     </section>
@@ -1704,13 +1704,13 @@ function Testimonials() {
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
           <div>
-            <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">TÃ©moignages</div>
+            <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Témoignages</div>
             <h2 className="text-3xl md:text-4xl font-extrabold text-navy-900 tracking-tight">Ils nous font confiance</h2>
           </div>
           <div className="flex items-center gap-2 text-navy-700">
             <div className="flex">{[...Array(5)].map((_, i) => <Icons.Star key={i} size={20} fill="#FF6B00" className="text-orange-600" />)}</div>
             <span className="font-bold text-navy-900">4.9/5</span>
-            <span className="text-sm text-slate-600">â€” 8 412 avis</span>
+            <span className="text-sm text-slate-600">— 8 412 avis</span>
           </div>
         </div>
 
@@ -1769,12 +1769,12 @@ function Testimonials() {
                 <button
                   key={i}
                   onClick={() => setIndex(i)}
-                  aria-label={`TÃ©moignage ${i + 1}`}
+                  aria-label={`Témoignage ${i + 1}`}
                   className={`h-1.5 rounded-full transition-all ${i === index ? 'bg-orange-600 w-8' : 'bg-slate-200 hover:bg-slate-300 w-1.5'}`}
                 />
               ))}
             </div>
-            <button onClick={() => go(-1)} className="w-11 h-11 rounded-full bg-slate-100 hover:bg-navy-900 hover:text-white text-navy-900 flex items-center justify-center transition-colors" aria-label="PrÃ©cÃ©dent">
+            <button onClick={() => go(-1)} className="w-11 h-11 rounded-full bg-slate-100 hover:bg-navy-900 hover:text-white text-navy-900 flex items-center justify-center transition-colors" aria-label="Précédent">
               <Icons.ChevronLeft size={18} />
             </button>
             <button onClick={() => go(1)} className="w-11 h-11 rounded-full bg-slate-100 hover:bg-navy-900 hover:text-white text-navy-900 flex items-center justify-center transition-colors" aria-label="Suivant">
@@ -1796,12 +1796,12 @@ function CTA({ onPublish }) {
           <div className="absolute -bottom-20 -left-10 w-72 h-72 rounded-full bg-orange-600/20 blur-3xl" />
           <div className="relative grid md:grid-cols-2 gap-10 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">PrÃªt Ã  publier votre annonce ?</h2>
-              <p className="mt-4 text-white/80 max-w-md">Rejoignez plus de 18 000 propriÃ©taires qui font confiance Ã  PASMAL pour vendre ou louer leur bien.</p>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Prêt à publier votre annonce ?</h2>
+              <p className="mt-4 text-white/80 max-w-md">Rejoignez plus de 18 000 propriétaires qui font confiance à PASMAL pour vendre ou louer leur bien.</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 md:justify-end">
-              <button onClick={onPublish} className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-7 py-3.5 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-cardHover">DÃ©poser une annonce</button>
-              <button className="bg-white/10 hover:bg-white/20 text-white font-semibold px-7 py-3.5 rounded-full transition-all">Voir une dÃ©mo</button>
+              <button onClick={onPublish} className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-7 py-3.5 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-cardHover">Déposer une annonce</button>
+              <button className="bg-white/10 hover:bg-white/20 text-white font-semibold px-7 py-3.5 rounded-full transition-all">Voir une démo</button>
             </div>
           </div>
         </div>
@@ -1822,7 +1822,7 @@ function NewsletterForm() {
   return (
     <form onSubmit={submit} className="mt-5">
       <div className="text-white font-semibold text-sm mb-2">Newsletter PASMAL</div>
-      <div className="text-white/60 text-xs mb-3">Les meilleures opportunitÃ©s, chaque jeudi dans votre boÃ®te.</div>
+      <div className="text-white/60 text-xs mb-3">Les meilleures opportunités, chaque jeudi dans votre boîte.</div>
       <div className="flex items-center gap-2 bg-white/10 border border-white/15 rounded-full p-1 pl-4 focus-within:border-orange-500 transition-colors">
         <Icons.Mail size={14} className="text-white/70" />
         <input
@@ -1849,7 +1849,7 @@ function Footer({ setCurrentView }) {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
           <div className="col-span-2">
             <BrandLogo dark />
-            <p className="text-sm text-white/65 max-w-sm mt-4">Le marchÃ© immobilier premium qui connecte propriÃ©taires exigeants et acquÃ©reurs qualifiÃ©s.</p>
+            <p className="text-sm text-white/65 max-w-sm mt-4">Le marché immobilier premium qui connecte propriétaires exigeants et acquéreurs qualifiés.</p>
             <div className="flex items-center gap-3 mt-6">
               {[Icons.Facebook, Icons.Instagram, Icons.Twitter, Icons.Linkedin].map((I, i) => (
                 <a key={i} href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-orange-600 flex items-center justify-center transition-colors">
@@ -1867,13 +1867,13 @@ function Footer({ setCurrentView }) {
               <li><button onClick={() => navigate('/agences')} className="hover:text-orange-500 transition-colors">Agences</button></li>
               <li><button onClick={() => navigate('/tarifs')} className="hover:text-orange-500 transition-colors">Tarifs</button></li>
               <li><button onClick={() => setCurrentView('alerts')} className="hover:text-orange-500 transition-colors">Alertes</button></li>
-              <li><button onClick={() => navigate('/early-access')} className="hover:text-orange-500 transition-colors">âš¡ AccÃ¨s anticipÃ©</button></li>
-              <li><button onClick={() => navigate('/auth/register')} className="hover:text-orange-500 transition-colors">DÃ©poser une annonce</button></li>
+              <li><button onClick={() => navigate('/early-access')} className="hover:text-orange-500 transition-colors">âš¡ Accès anticipé</button></li>
+              <li><button onClick={() => navigate('/auth/register')} className="hover:text-orange-500 transition-colors">Déposer une annonce</button></li>
             </ul>
           </div>
           {[
-            { title: 'Entreprise', links: ['Ã€ propos', 'Tarifs', 'CarriÃ¨res', 'Presse'] },
-            { title: 'LÃ©gal', links: ['CGU', 'ConfidentialitÃ©', 'Cookies', 'Mentions lÃ©gales'] },
+            { title: 'Entreprise', links: ['À propos', 'Tarifs', 'Carrières', 'Presse'] },
+            { title: 'Légal', links: ['CGU', 'Confidentialité', 'Cookies', 'Mentions légales'] },
           ].map((col) => (
             <div key={col.title}>
               <div className="text-white font-semibold text-sm mb-4">{col.title}</div>
@@ -1886,11 +1886,11 @@ function Footer({ setCurrentView }) {
           ))}
         </div>
         <div className="mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/55">
-          <div>Â© {new Date().getFullYear()} PASMAL â€” Le MarchÃ© Immobilier Premium. Tous droits rÃ©servÃ©s.</div>
+          <div>© {new Date().getFullYear()} PASMAL — Le Marché Immobilier Premium. Tous droits réservés.</div>
           <div className="flex items-center gap-5">
             <a href="#" className="hover:text-white">Plan du site</a>
             <a href="#" className="hover:text-white">Contact</a>
-            <a href="#" className="hover:text-white">FR Â· â‚¬</a>
+            <a href="#" className="hover:text-white">FR · €</a>
           </div>
         </div>
       </div>
@@ -1905,7 +1905,7 @@ function MobileBottomNav({ currentView, setCurrentView, onPublish }) {
   const items = [
     { id: 'home',    label: 'Accueil', icon: Icons.Home2 },
     { id: 'acheter', label: 'Acheter', icon: Icons.Search },
-    { id: 'publier', label: 'DÃ©poser', icon: Icons.PlusSquare, primary: true, onClick: onPublish },
+    { id: 'publier', label: 'Déposer', icon: Icons.PlusSquare, primary: true, onClick: onPublish },
     { id: 'louer',   label: 'Louer',   icon: Icons.Key },
     { id: 'alerts',  label: 'Alertes', icon: Icons.Bell },
   ]
@@ -1960,7 +1960,7 @@ function MobileStickyCTA({ onPublish, visible }) {
             onClick={onPublish}
             className="pointer-events-auto w-full bg-navy-900 text-white rounded-full px-5 py-3.5 font-semibold text-sm shadow-cardHover flex items-center justify-center gap-2"
           >
-            <Icons.PlusSquare size={18} /> DÃ©poser une annonce
+            <Icons.PlusSquare size={18} /> Déposer une annonce
           </button>
         </motion.div>
       )}
@@ -2000,28 +2000,28 @@ function ProfilView({ user, onPublish }) {
 
   const MOCK_ANNONCES = [
     { id: 'PSM-2441', title: 'T3 lumineux proche Bastille', city: 'Paris 11e', price: 580000, surface: 72, rooms: 3, status: 'active', views: 847, contacts: 12, daysLeft: 22, img: unsplash('photo-1502672260266-1c1ef2d93688', 300) },
-    { id: 'PSM-2389', title: 'Studio meublÃ© Croix-Rousse', city: 'Lyon 4e', price: 950, surface: 28, rooms: 1, status: 'active', views: 412, contacts: 6, daysLeft: 8, isLocation: true, img: unsplash('photo-1522708323590-d24dbb6b0267', 300) },
-    { id: 'PSM-2201', title: 'Maison avec jardin 115mÂ²', city: 'Bordeaux', price: 420000, surface: 115, rooms: 5, status: 'expired', views: 1240, contacts: 24, daysLeft: 0, img: unsplash('photo-1600585154340-be6161a56a0c', 300) },
+    { id: 'PSM-2389', title: 'Studio meublé Croix-Rousse', city: 'Lyon 4e', price: 950, surface: 28, rooms: 1, status: 'active', views: 412, contacts: 6, daysLeft: 8, isLocation: true, img: unsplash('photo-1522708323590-d24dbb6b0267', 300) },
+    { id: 'PSM-2201', title: 'Maison avec jardin 115m²', city: 'Bordeaux', price: 420000, surface: 115, rooms: 5, status: 'expired', views: 1240, contacts: 24, daysLeft: 0, img: unsplash('photo-1600585154340-be6161a56a0c', 300) },
   ]
   const MOCK_FAVORIS = [
-    { id: 'F1', title: 'Appartement haussmannien 95mÂ²', city: 'Paris 8e', price: 1250000, surface: 95, img: unsplash('photo-1484154218962-a197022b5858', 400) },
+    { id: 'F1', title: 'Appartement haussmannien 95m²', city: 'Paris 8e', price: 1250000, surface: 95, img: unsplash('photo-1484154218962-a197022b5858', 400) },
     { id: 'F2', title: 'Villa avec piscine', city: 'Nice', price: 890000, surface: 180, img: unsplash('photo-1493809842364-78817add7ffb', 400) },
-    { id: 'F3', title: 'Loft industriel 88mÂ²', city: 'Lyon', price: 320000, surface: 88, img: unsplash('photo-1556909114-f6e7ad7d3136', 400) },
+    { id: 'F3', title: 'Loft industriel 88m²', city: 'Lyon', price: 320000, surface: 88, img: unsplash('photo-1556909114-f6e7ad7d3136', 400) },
   ]
   const MOCK_HISTORY = [
-    { icon: Icons.Search,    color: 'orange',  text: 'Recherche : T3 Paris 11e â‰¤ 600 kâ‚¬',         time: 'Il y a 2h' },
-    { icon: Icons.Eye,       color: 'indigo',  text: 'ConsultÃ© : Appartement Bastille â€” PSM-2441', time: 'Il y a 3h' },
-    { icon: Icons.Heart,     color: 'rose',    text: 'AjoutÃ© aux favoris : Villa Nice',            time: 'Il y a 1j' },
-    { icon: Icons.Bell,      color: 'emerald', text: 'Alerte crÃ©Ã©e : T2 Lyon â‰¤ 1 200 â‚¬/mois',     time: 'Il y a 2j' },
+    { icon: Icons.Search,    color: 'orange',  text: 'Recherche : T3 Paris 11e â‰¤ 600 k€',         time: 'Il y a 2h' },
+    { icon: Icons.Eye,       color: 'indigo',  text: 'Consulté : Appartement Bastille — PSM-2441', time: 'Il y a 3h' },
+    { icon: Icons.Heart,     color: 'rose',    text: 'Ajouté aux favoris : Villa Nice',            time: 'Il y a 1j' },
+    { icon: Icons.Bell,      color: 'emerald', text: 'Alerte créée : T2 Lyon â‰¤ 1 200 €/mois',     time: 'Il y a 2j' },
     { icon: Icons.Search,    color: 'orange',  text: 'Recherche : Maison Bordeaux avec jardin',    time: 'Il y a 3j' },
-    { icon: Icons.Eye,       color: 'indigo',  text: 'ConsultÃ© : Maison Bordeaux â€” PSM-2201',      time: 'Il y a 3j' },
+    { icon: Icons.Eye,       color: 'indigo',  text: 'Consulté : Maison Bordeaux — PSM-2201',      time: 'Il y a 3j' },
   ]
   const TRUST_BADGES = [
-    { id: 'email',    label: 'E-mail vÃ©rifiÃ©',    icon: Icons.Mail,           done: !!email,     desc: 'Adresse confirmÃ©e' },
-    { id: 'phone',    label: 'TÃ©lÃ©phone',          icon: Icons.Phone,          done: !!editPhone, desc: 'NumÃ©ro confirmÃ©' },
-    { id: 'identity', label: 'IdentitÃ©',           icon: Icons.IdCard,         done: false,       desc: 'PiÃ¨ce d\'identitÃ©' },
-    { id: 'active',   label: 'Membre actif',       icon: Icons.BadgeCheck,     done: true,        desc: 'Compte en rÃ¨gle' },
-    { id: 'seller',   label: 'CertifiÃ© PASMAL',    icon: Icons.ShieldCheckBig, done: false,       desc: 'Validation Ã©quipe' },
+    { id: 'email',    label: 'E-mail vérifié',    icon: Icons.Mail,           done: !!email,     desc: 'Adresse confirmée' },
+    { id: 'phone',    label: 'Téléphone',          icon: Icons.Phone,          done: !!editPhone, desc: 'Numéro confirmé' },
+    { id: 'identity', label: 'Identité',           icon: Icons.IdCard,         done: false,       desc: 'Pièce d\'identité' },
+    { id: 'active',   label: 'Membre actif',       icon: Icons.BadgeCheck,     done: true,        desc: 'Compte en règle' },
+    { id: 'seller',   label: 'Certifié PASMAL',    icon: Icons.ShieldCheckBig, done: false,       desc: 'Validation équipe' },
   ]
   const trustScore = Math.round((TRUST_BADGES.filter(b => b.done).length / TRUST_BADGES.length) * 100)
 
@@ -2031,7 +2031,7 @@ function ProfilView({ user, onPublish }) {
     { id: 'annonces',     label: 'Mes annonces', icon: Icons.Building,   badge: MOCK_ANNONCES.filter(a => a.status === 'active').length },
     { id: 'favoris',      label: 'Favoris',      icon: Icons.Heart,      badge: MOCK_FAVORIS.length },
     { id: 'historique',   label: 'Historique',   icon: Icons.Eye },
-    { id: 'parametres',   label: 'ParamÃ¨tres',   icon: Icons.Bell },
+    { id: 'parametres',   label: 'Paramètres',   icon: Icons.Bell },
   ]
 
   const inputCls2 = 'w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition text-[#0B1F3A]'
@@ -2137,24 +2137,24 @@ function ProfilView({ user, onPublish }) {
                         <input value={editName} onChange={e => setEditName(e.target.value)} className={inputCls2} />
                       </div>
                       <div>
-                        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">TÃ©lÃ©phone</label>
+                        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Téléphone</label>
                         <input value={editPhone} onChange={e => setEditPhone(e.target.value)} placeholder="+33 6 00 00 00 00" className={inputCls2} />
                       </div>
                       <div>
                         <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Adresse e-mail</label>
                         <input value={email} readOnly className={`${inputCls2} opacity-50 cursor-not-allowed`} />
-                        <p className="text-[11px] text-slate-400 mt-1">L'e-mail ne peut pas Ãªtre modifiÃ© ici.</p>
+                        <p className="text-[11px] text-slate-400 mt-1">L'e-mail ne peut pas être modifié ici.</p>
                       </div>
                     </div>
                   ) : (
                     <div className="divide-y divide-slate-50">
                       {[
-                        { label: 'Nom complet',          value: rawName || 'â€”' },
-                        { label: 'Adresse e-mail',        value: email || 'â€”' },
-                        { label: 'TÃ©lÃ©phone',             value: editPhone || 'â€”' },
-                        { label: 'MÃ©thode de connexion',  value: provider },
+                        { label: 'Nom complet',          value: rawName || '—' },
+                        { label: 'Adresse e-mail',        value: email || '—' },
+                        { label: 'Téléphone',             value: editPhone || '—' },
+                        { label: 'Méthode de connexion',  value: provider },
                         { label: 'Membre depuis',         value: memberSince },
-                        { label: 'ID compte',             value: user?.id?.slice(0, 8).toUpperCase() + 'â€¦' || 'â€”' },
+                        { label: 'ID compte',             value: user?.id?.slice(0, 8).toUpperCase() + '…' || '—' },
                       ].map(({ label, value }) => (
                         <div key={label} className="px-6 py-4 flex items-center justify-between">
                           <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{label}</span>
@@ -2192,7 +2192,7 @@ function ProfilView({ user, onPublish }) {
                           </div>
                           {b.done
                             ? <Icons.Check size={14} className="text-emerald-500 shrink-0" />
-                            : <span className="text-[10px] font-semibold text-orange-500 border border-orange-200 px-2 py-0.5 rounded-full shrink-0">ComplÃ©ter</span>
+                            : <span className="text-[10px] font-semibold text-orange-500 border border-orange-200 px-2 py-0.5 rounded-full shrink-0">Compléter</span>
                           }
                         </motion.div>
                       )
@@ -2203,7 +2203,7 @@ function ProfilView({ user, onPublish }) {
                 {/* Danger zone */}
                 <div className="mt-6 bg-white rounded-3xl border border-rose-100 shadow-soft p-6">
                   <div className="font-bold text-[#0B1F3A] mb-1 text-sm">Zone de danger</div>
-                  <p className="text-slate-500 text-xs mb-4">La suppression de votre compte est irrÃ©versible et entraÃ®ne la suppression de toutes vos annonces et donnÃ©es.</p>
+                  <p className="text-slate-500 text-xs mb-4">La suppression de votre compte est irréversible et entraîne la suppression de toutes vos annonces et données.</p>
                   <button className="text-xs font-semibold text-rose-500 hover:text-rose-600 border border-rose-200 hover:border-rose-400 px-4 py-2 rounded-xl transition">
                     Supprimer mon compte
                   </button>
@@ -2214,18 +2214,18 @@ function ProfilView({ user, onPublish }) {
             {/* â”€â”€ Statistiques â”€â”€ */}
             {tab === 'statistiques' && (() => {
               const STAT_KPIS = [
-                { label: 'Biens consultÃ©s',    value: 127, icon: Icons.Eye,        color: '#6366f1', bg: '#eef2ff' },
+                { label: 'Biens consultés',    value: 127, icon: Icons.Eye,        color: '#6366f1', bg: '#eef2ff' },
                 { label: 'Recherches faites',  value: 43,  icon: Icons.Search,     color: '#f97316', bg: '#fff7ed' },
-                { label: 'Contacts envoyÃ©s',   value: 8,   icon: Icons.Mail,       color: '#0ea5e9', bg: '#f0f9ff' },
-                { label: 'Favoris ajoutÃ©s',    value: 12,  icon: Icons.Heart,      color: '#f43f5e', bg: '#fff1f2' },
+                { label: 'Contacts envoyés',   value: 8,   icon: Icons.Mail,       color: '#0ea5e9', bg: '#f0f9ff' },
+                { label: 'Favoris ajoutés',    value: 12,  icon: Icons.Heart,      color: '#f43f5e', bg: '#fff1f2' },
               ]
               const TOP_SEARCHES = [
-                { query: 'T3 Paris 11e â‰¤ 600 kâ‚¬',      count: 14, last: 'Il y a 2h' },
-                { query: 'Maison Lyon jardin â‰¤ 500 kâ‚¬', count: 9,  last: 'Il y a 1j' },
-                { query: 'Studio meublÃ© Bordeaux',       count: 7,  last: 'Il y a 3j' },
+                { query: 'T3 Paris 11e â‰¤ 600 k€',      count: 14, last: 'Il y a 2h' },
+                { query: 'Maison Lyon jardin â‰¤ 500 k€', count: 9,  last: 'Il y a 1j' },
+                { query: 'Studio meublé Bordeaux',       count: 7,  last: 'Il y a 3j' },
                 { query: 'Appartement Marseille 2p',     count: 5,  last: 'Il y a 5j' },
               ]
-              /* 30-day activity sparkline â€” LCG seed */
+              /* 30-day activity sparkline — LCG seed */
               const W = 560; const H = 80; const pts = 30
               let seed = 42
               const raw = Array.from({ length: pts }, () => {
@@ -2258,7 +2258,7 @@ function ProfilView({ user, onPublish }) {
                   {/* Activity chart */}
                   <div className="bg-white rounded-3xl border border-slate-100 shadow-soft p-6 mb-6">
                     <div className="flex items-center justify-between mb-4">
-                      <div className="font-bold text-[#0B1F3A] text-sm">ActivitÃ© â€” 30 derniers jours</div>
+                      <div className="font-bold text-[#0B1F3A] text-sm">Activité — 30 derniers jours</div>
                       <span className="text-xs text-slate-400">Actions / jour</span>
                     </div>
                     <svg viewBox={`0 0 ${W} ${H + 20}`} className="w-full" preserveAspectRatio="none" style={{ height: 80 }}>
@@ -2281,7 +2281,7 @@ function ProfilView({ user, onPublish }) {
 
                   {/* Top searches */}
                   <div className="bg-white rounded-3xl border border-slate-100 shadow-soft overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-50 font-bold text-[#0B1F3A] text-sm">Recherches les plus frÃ©quentes</div>
+                    <div className="px-6 py-4 border-b border-slate-50 font-bold text-[#0B1F3A] text-sm">Recherches les plus fréquentes</div>
                     <div className="divide-y divide-slate-50">
                       {TOP_SEARCHES.map((s, i) => (
                         <div key={i} className="flex items-center gap-4 px-6 py-3.5">
@@ -2289,7 +2289,7 @@ function ProfilView({ user, onPublish }) {
                             <Icons.Search size={11} className="text-orange-500" />
                           </div>
                           <div className="flex-1 text-sm text-[#0B1F3A] font-medium truncate">{s.query}</div>
-                          <span className="text-xs text-slate-400 shrink-0">{s.count}Ã—</span>
+                          <span className="text-xs text-slate-400 shrink-0">{s.count}×</span>
                           <span className="text-[11px] text-slate-300 shrink-0 hidden sm:block">{s.last}</span>
                         </div>
                       ))}
@@ -2320,13 +2320,13 @@ function ProfilView({ user, onPublish }) {
                             <div className="font-bold text-[#0B1F3A] text-sm truncate">{a.title}</div>
                             <span className={`shrink-0 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
                               a.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
-                            }`}>{a.status === 'active' ? 'Actif' : 'ExpirÃ©'}</span>
+                            }`}>{a.status === 'active' ? 'Actif' : 'Expiré'}</span>
                           </div>
                           <div className="text-slate-500 text-xs flex items-center gap-1">
                             <Icons.MapPin size={11} className="text-orange-500" /> {a.city}
                           </div>
                           <div className="font-extrabold text-[#0B1F3A] mt-1">
-                            {a.price.toLocaleString('fr-FR')} â‚¬{a.isLocation ? '/mois' : ''}
+                            {a.price.toLocaleString('fr-FR')} €{a.isLocation ? '/mois' : ''}
                           </div>
                         </div>
                         <div className="flex items-center gap-4 mt-2 flex-wrap">
@@ -2348,7 +2348,7 @@ function ProfilView({ user, onPublish }) {
             {/* â”€â”€ Favoris â”€â”€ */}
             {tab === 'favoris' && (
               <div>
-                <div className="font-bold text-[#0B1F3A] mb-6">{MOCK_FAVORIS.length} bien{MOCK_FAVORIS.length > 1 ? 's' : ''} sauvegardÃ©{MOCK_FAVORIS.length > 1 ? 's' : ''}</div>
+                <div className="font-bold text-[#0B1F3A] mb-6">{MOCK_FAVORIS.length} bien{MOCK_FAVORIS.length > 1 ? 's' : ''} sauvegardé{MOCK_FAVORIS.length > 1 ? 's' : ''}</div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                   {MOCK_FAVORIS.map(f => (
                     <div key={f.id} className="group bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-soft hover:shadow-card transition-all hover:-translate-y-1 cursor-pointer">
@@ -2364,8 +2364,8 @@ function ProfilView({ user, onPublish }) {
                           <Icons.MapPin size={10} className="text-orange-500" /> {f.city}
                         </div>
                         <div className="flex items-center justify-between">
-                          <div className="font-extrabold text-[#0B1F3A] text-sm">{f.price.toLocaleString('fr-FR')} â‚¬</div>
-                          <div className="text-xs text-slate-400">{f.surface} mÂ²</div>
+                          <div className="font-extrabold text-[#0B1F3A] text-sm">{f.price.toLocaleString('fr-FR')} €</div>
+                          <div className="text-xs text-slate-400">{f.surface} m²</div>
                         </div>
                       </div>
                     </div>
@@ -2377,7 +2377,7 @@ function ProfilView({ user, onPublish }) {
             {/* â”€â”€ Historique â”€â”€ */}
             {tab === 'historique' && (
               <div className="max-w-2xl">
-                <div className="font-bold text-[#0B1F3A] mb-6">ActivitÃ© rÃ©cente</div>
+                <div className="font-bold text-[#0B1F3A] mb-6">Activité récente</div>
                 <div className="bg-white rounded-3xl border border-slate-100 shadow-soft divide-y divide-slate-50">
                   {MOCK_HISTORY.map((h, i) => {
                     const HIcon = h.icon
@@ -2398,14 +2398,14 @@ function ProfilView({ user, onPublish }) {
               </div>
             )}
 
-            {/* â”€â”€ ParamÃ¨tres â”€â”€ */}
+            {/* â”€â”€ Paramètres â”€â”€ */}
             {tab === 'parametres' && (
               <div className="max-w-2xl space-y-5">
                 {[
-                  { key: 'newListings', label: 'Nouvelles annonces',    desc: 'Soyez alertÃ© en temps rÃ©el quand un bien correspond Ã  vos critÃ¨res.', channel: 'E-mail' },
+                  { key: 'newListings', label: 'Nouvelles annonces',    desc: 'Soyez alerté en temps réel quand un bien correspond à vos critères.', channel: 'E-mail' },
                   { key: 'priceDrops',  label: 'Baisses de prix',        desc: "Recevez une notification quand le prix d'un de vos favoris baisse.", channel: 'Push' },
-                  { key: 'messages',    label: 'Nouveaux messages',      desc: "Notifications quand un propriÃ©taire ou acheteur vous rÃ©pond.", channel: 'E-mail + SMS' },
-                  { key: 'offers',      label: 'Offres et promotions',   desc: 'Recevez les offres exclusives et nouveautÃ©s PASMAL.', channel: 'E-mail' },
+                  { key: 'messages',    label: 'Nouveaux messages',      desc: "Notifications quand un propriétaire ou acheteur vous répond.", channel: 'E-mail + SMS' },
+                  { key: 'offers',      label: 'Offres et promotions',   desc: 'Recevez les offres exclusives et nouveautés PASMAL.', channel: 'E-mail' },
                   { key: 'sms',         label: 'Alertes SMS',            desc: 'Recevez les alertes urgentes par SMS (bien rare, baisse significative).', channel: 'SMS' },
                   { key: 'push',        label: 'Notifications push',     desc: 'Activez les notifications dans votre navigateur.', channel: 'Push' },
                 ].map(s => (
@@ -2439,7 +2439,7 @@ function FavorisView({ user }) {
     <div className="min-h-screen bg-slate-50 pt-28 pb-16">
       <div className="max-w-4xl mx-auto px-6">
         <h1 className="text-2xl font-bold text-navy-900 mb-2">Mes favoris</h1>
-        <p className="text-slate-500 mb-8">Les biens que vous avez mis de cÃ´tÃ©.</p>
+        <p className="text-slate-500 mb-8">Les biens que vous avez mis de côté.</p>
 
         <div className="bg-white rounded-2xl shadow-card border border-slate-100 flex flex-col items-center justify-center py-20 gap-4">
           <div className="w-14 h-14 rounded-full bg-orange-50 flex items-center justify-center">
@@ -2447,7 +2447,7 @@ function FavorisView({ user }) {
           </div>
           <p className="text-navy-900 font-semibold text-lg">Aucun favori pour l'instant</p>
           <p className="text-slate-400 text-sm text-center max-w-xs">
-            Cliquez sur le cÅ“ur d'une annonce pour la retrouver ici facilement.
+            Cliquez sur le cœur d'une annonce pour la retrouver ici facilement.
           </p>
         </div>
       </div>
@@ -2459,10 +2459,10 @@ function FavorisView({ user }) {
    Mes annonces view
    ============================================================================ */
 const MOCK_MY_LISTINGS = [
-  { id:'ml1', title:'T3 lumineux Bastille â€” 75mÂ²',       city:'Paris',    price:485000, surface:75,  rooms:3, transaction:'vente',    plan:'visibilite', status:'active',   views:342, contacts:12, favorites:28, daysLeft:18, imgId:'photo-1502672260266-1c1ef2d93688', ref:'PSM-1084' },
-  { id:'ml2', title:'Studio meublÃ© Oberkampf â€” 26mÂ²',    city:'Paris',    price:950,    surface:26,  rooms:1, transaction:'location', plan:'gratuit',    status:'expiring', views:89,  contacts:3,  favorites:7,  daysLeft:2,  imgId:'photo-1522708323590-d24dbb6b0267', ref:'PSM-2107' },
-  { id:'ml3', title:'Maison 5p Caluire-et-Cuire â€” 132mÂ²',city:'Lyon',     price:412000, surface:132, rooms:5, transaction:'vente',    plan:'premium',    status:'active',   views:527, contacts:24, favorites:45, daysLeft:22, imgId:'photo-1564013799919-ab600027ffc6', ref:'PSM-0938' },
-  { id:'ml4', title:'Studio Chartrons â€” 30mÂ²',            city:'Bordeaux', price:680,    surface:30,  rooms:1, transaction:'location', plan:'gratuit',    status:'archived', views:156, contacts:8,  favorites:12, daysLeft:0,  imgId:'photo-1484154218962-a197022b5858', ref:'PSM-0771' },
+  { id:'ml1', title:'T3 lumineux Bastille — 75m²',       city:'Paris',    price:485000, surface:75,  rooms:3, transaction:'vente',    plan:'visibilite', status:'active',   views:342, contacts:12, favorites:28, daysLeft:18, imgId:'photo-1502672260266-1c1ef2d93688', ref:'PSM-1084' },
+  { id:'ml2', title:'Studio meublé Oberkampf — 26m²',    city:'Paris',    price:950,    surface:26,  rooms:1, transaction:'location', plan:'gratuit',    status:'expiring', views:89,  contacts:3,  favorites:7,  daysLeft:2,  imgId:'photo-1522708323590-d24dbb6b0267', ref:'PSM-2107' },
+  { id:'ml3', title:'Maison 5p Caluire-et-Cuire — 132m²',city:'Lyon',     price:412000, surface:132, rooms:5, transaction:'vente',    plan:'premium',    status:'active',   views:527, contacts:24, favorites:45, daysLeft:22, imgId:'photo-1564013799919-ab600027ffc6', ref:'PSM-0938' },
+  { id:'ml4', title:'Studio Chartrons — 30m²',            city:'Bordeaux', price:680,    surface:30,  rooms:1, transaction:'location', plan:'gratuit',    status:'archived', views:156, contacts:8,  favorites:12, daysLeft:0,  imgId:'photo-1484154218962-a197022b5858', ref:'PSM-0771' },
 ]
 
 function MesAnnoncesView({ user, onPublish }) {
@@ -2482,8 +2482,8 @@ function MesAnnoncesView({ user, onPublish }) {
   const TABS = [
     { id:'all',      label:'Toutes',           count:listings.length },
     { id:'active',   label:'Actives',           count:listings.filter(l=>l.status==='active').length },
-    { id:'expiring', label:'Expirent bientÃ´t',  count:listings.filter(l=>l.status==='expiring').length },
-    { id:'archived', label:'ArchivÃ©es',          count:listings.filter(l=>l.status==='archived').length },
+    { id:'expiring', label:'Expirent bientôt',  count:listings.filter(l=>l.status==='expiring').length },
+    { id:'archived', label:'Archivées',          count:listings.filter(l=>l.status==='archived').length },
   ]
   const filtered = activeTab==='all' ? listings
     : listings.filter(l => l.status === (activeTab==='active'?'active':activeTab==='expiring'?'expiring':'archived'))
@@ -2498,7 +2498,7 @@ function MesAnnoncesView({ user, onPublish }) {
         <div className="flex items-start justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight text-[#0B1F3A]">Mes annonces</h1>
-            <p className="text-slate-500 text-sm mt-0.5">Suivez la performance et gÃ©rez vos biens publiÃ©s.</p>
+            <p className="text-slate-500 text-sm mt-0.5">Suivez la performance et gérez vos biens publiés.</p>
           </div>
           <button onClick={onPublish}
             className="flex items-center gap-2 text-sm font-bold text-white bg-orange-600 hover:bg-orange-700 px-5 py-2.5 rounded-2xl shadow-sm transition-colors">
@@ -2510,7 +2510,7 @@ function MesAnnoncesView({ user, onPublish }) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label:'Vues totales',    val:totalViews.toLocaleString('fr-FR'), Icon:Icons.Eye,        cls:'text-indigo-600 bg-indigo-50' },
-            { label:'Contacts reÃ§us',  val:totalContacts,                       Icon:Icons.Mail,       cls:'text-orange-600 bg-orange-50' },
+            { label:'Contacts reçus',  val:totalContacts,                       Icon:Icons.Mail,       cls:'text-orange-600 bg-orange-50' },
             { label:'Favoris',         val:totalFavs,                            Icon:Icons.Heart,      cls:'text-rose-600 bg-rose-50' },
             { label:'Taux de contact', val:`${convRate}%`,                       Icon:Icons.TrendingUp, cls:'text-emerald-600 bg-emerald-50' },
           ].map(({ label, val, Icon, cls }, i) => (
@@ -2539,8 +2539,8 @@ function MesAnnoncesView({ user, onPublish }) {
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
               <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
                 <div>
-                  <h3 className="font-bold text-sm text-[#0B1F3A]">Performance â€” 30 derniers jours</h3>
-                  <p className="text-[11px] text-slate-400">Vues cumulÃ©es Â· toutes annonces</p>
+                  <h3 className="font-bold text-sm text-[#0B1F3A]">Performance — 30 derniers jours</h3>
+                  <p className="text-[11px] text-slate-400">Vues cumulées · toutes annonces</p>
                 </div>
                 <span className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500">
                   <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 inline-block" />Vues
@@ -2577,14 +2577,14 @@ function MesAnnoncesView({ user, onPublish }) {
           ))}
         </div>
 
-        {/* Listings â€” ListingRowCard added next */}
+        {/* Listings — ListingRowCard added next */}
         <div className="space-y-3">
           <AnimatePresence mode="popLayout">
             {filtered.length === 0 ? (
               <motion.div key="empty" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
                 className="bg-white rounded-2xl border border-dashed border-slate-200 py-12 text-center">
                 <Icons.Home size={26} className="text-slate-300 mx-auto mb-3" />
-                <p className="text-sm text-slate-500">Aucune annonce dans cette catÃ©gorie.</p>
+                <p className="text-sm text-slate-500">Aucune annonce dans cette catégorie.</p>
               </motion.div>
             ) : filtered.map((l, i) => (
               <ListingRowCard key={l.id} listing={l} index={i}
@@ -2606,13 +2606,13 @@ function MesAnnoncesView({ user, onPublish }) {
 function ListingRowCard({ listing: l, index, onBoost, onArchive, onRenew }) {
   const PLAN = {
     gratuit:    { label:'Gratuit',        cls:'bg-slate-100 text-slate-500' },
-    visibilite: { label:'Pack VisibilitÃ©',cls:'bg-orange-100 text-orange-700' },
+    visibilite: { label:'Pack Visibilité',cls:'bg-orange-100 text-orange-700' },
     premium:    { label:'Premium',        cls:'bg-[#0B1F3A]/10 text-[#0B1F3A]' },
   }
   const STATUS = {
     active:   { label:'Active',          dot:'bg-emerald-500', cls:'text-emerald-700 bg-emerald-50' },
-    expiring: { label:'Expire bientÃ´t',  dot:'bg-amber-500 animate-pulse', cls:'text-amber-700 bg-amber-50' },
-    archived: { label:'ArchivÃ©e',         dot:'bg-slate-400', cls:'text-slate-500 bg-slate-100' },
+    expiring: { label:'Expire bientôt',  dot:'bg-amber-500 animate-pulse', cls:'text-amber-700 bg-amber-50' },
+    archived: { label:'Archivée',         dot:'bg-slate-400', cls:'text-slate-500 bg-slate-100' },
   }
   const plan   = PLAN[l.plan]   || PLAN.gratuit
   const status = STATUS[l.status] || STATUS.archived
@@ -2653,7 +2653,7 @@ function ListingRowCard({ listing: l, index, onBoost, onArchive, onRenew }) {
           </div>
           <h3 className="font-bold text-sm text-[#0B1F3A] truncate mb-0.5">{l.title}</h3>
           <div className="text-[11px] text-slate-500 mb-3">
-            {l.city} Â· {l.surface} mÂ² Â· {l.rooms} p. Â· <span className="font-bold text-[#0B1F3A]">{l.price.toLocaleString('fr-FR')} â‚¬{isRent ? '/mois' : ''}</span>
+            {l.city} · {l.surface} m² · {l.rooms} p. · <span className="font-bold text-[#0B1F3A]">{l.price.toLocaleString('fr-FR')} €{isRent ? '/mois' : ''}</span>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
             {[{ Icon:Icons.Eye, val:l.views, lbl:'vues' },{ Icon:Icons.Mail, val:l.contacts, lbl:'contacts' },{ Icon:Icons.Heart, val:l.favorites, lbl:'favoris' }].map(({ Icon, val, lbl }) => (
@@ -2709,9 +2709,9 @@ function BoostModal({ listing: l, onClose }) {
   const [done, setDone]       = useState(false)
 
   const OPTS = [
-    { label:'Remonter en tÃªte', price:'4,90', desc:'72h en 1Ã¨re position',    Icon:Icons.Zap },
-    { label:'Pack VisibilitÃ©',  price:'9,90', desc:'+200% vues Â· 30 jours',   Icon:Icons.TrendingUp, popular:true },
-    { label:'Premium',          price:'14,90',desc:'Top rÃ©sultats Â· 30 jours',Icon:Icons.Star },
+    { label:'Remonter en tête', price:'4,90', desc:'72h en 1ère position',    Icon:Icons.Zap },
+    { label:'Pack Visibilité',  price:'9,90', desc:'+200% vues · 30 jours',   Icon:Icons.TrendingUp, popular:true },
+    { label:'Premium',          price:'14,90',desc:'Top résultats · 30 jours',Icon:Icons.Star },
   ]
   const pay = () => {
     setBusy(true)
@@ -2734,7 +2734,7 @@ function BoostModal({ listing: l, onClose }) {
             </button>
             <div className="text-[10px] font-bold text-orange-400 uppercase tracking-wider mb-1">Booster l'annonce</div>
             <h3 className="text-white font-extrabold pr-8 truncate">{l.title}</h3>
-            <p className="text-white/55 text-xs mt-0.5">{l.city} Â· {l.surface} mÂ²</p>
+            <p className="text-white/55 text-xs mt-0.5">{l.city} · {l.surface} m²</p>
           </div>
 
           <div className="p-5 space-y-2.5">
@@ -2749,7 +2749,7 @@ function BoostModal({ listing: l, onClose }) {
                   </div>
                   <div className="text-[11px] text-slate-500">{desc}</div>
                 </div>
-                <div className="font-extrabold text-sm text-[#0B1F3A] shrink-0">{price} â‚¬</div>
+                <div className="font-extrabold text-sm text-[#0B1F3A] shrink-0">{price} €</div>
                 {sel===id && <Icons.CheckCircle size={15} className="text-orange-500 shrink-0" />}
               </button>
             ))}
@@ -2758,12 +2758,12 @@ function BoostModal({ listing: l, onClose }) {
           <div className="px-5 pb-5">
             <button onClick={pay} disabled={busy || done}
               className="w-full py-3.5 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm transition-all disabled:opacity-80 flex items-center justify-center gap-2">
-              {done ? <><Icons.CheckCircle size={15} />Boost activÃ© !</>
-                    : busy ? <><Icons.Loader size={14} />Redirection Stripeâ€¦</>
-                    : <><Icons.CreditCard size={14} />Payer â€” {OPTS[sel]?.price} â‚¬</>}
+              {done ? <><Icons.CheckCircle size={15} />Boost activé !</>
+                    : busy ? <><Icons.Loader size={14} />Redirection Stripe…</>
+                    : <><Icons.CreditCard size={14} />Payer — {OPTS[sel]?.price} €</>}
             </button>
             <p className="text-center text-[10px] text-slate-400 mt-2 flex items-center justify-center gap-1">
-              <Icons.Shield size={10} /> Paiement sÃ©curisÃ© Â· Stripe
+              <Icons.Shield size={10} /> Paiement sécurisé · Stripe
             </p>
           </div>
         </div>
@@ -2773,34 +2773,34 @@ function BoostModal({ listing: l, onClose }) {
 }
 
 /* ============================================================================
-   Agency Verification â€” constants & components
+   Agency Verification — constants & components
    ============================================================================ */
 const VSTATUS = {
-  none:     { label: 'Non vÃ©rifiÃ©',           bg: 'bg-slate-100',   text: 'text-slate-600',   border: 'border-slate-200',   dot: 'bg-slate-400',    Icon: Icons.AlertCircle },
-  pending:  { label: 'VÃ©rification en cours', bg: 'bg-amber-50',    text: 'text-amber-700',   border: 'border-amber-200',   dot: 'bg-amber-400',    Icon: Icons.AlertCircle },
-  verified: { label: 'Agence vÃ©rifiÃ©e',       bg: 'bg-emerald-50',  text: 'text-emerald-700', border: 'border-emerald-200', dot: 'bg-emerald-500',  Icon: Icons.BadgeCheck },
+  none:     { label: 'Non vérifié',           bg: 'bg-slate-100',   text: 'text-slate-600',   border: 'border-slate-200',   dot: 'bg-slate-400',    Icon: Icons.AlertCircle },
+  pending:  { label: 'Vérification en cours', bg: 'bg-amber-50',    text: 'text-amber-700',   border: 'border-amber-200',   dot: 'bg-amber-400',    Icon: Icons.AlertCircle },
+  verified: { label: 'Agence vérifiée',       bg: 'bg-emerald-50',  text: 'text-emerald-700', border: 'border-emerald-200', dot: 'bg-emerald-500',  Icon: Icons.BadgeCheck },
   premium:  { label: 'Premium Partner',       bg: 'bg-orange-50',   text: 'text-orange-700',  border: 'border-orange-200',  dot: 'bg-orange-500',   Icon: Icons.Sparkles },
 }
 const STATUS_ORDER = ['none', 'pending', 'verified', 'premium']
 
 const REVIEW_STATE = {
   reviewing: { label: 'En cours d\'examen',  bg: 'bg-amber-50',   text: 'text-amber-700',   border: 'border-amber-200',   Icon: Icons.AlertCircle },
-  approved:  { label: 'Dossier approuvÃ©',    bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200', Icon: Icons.CheckCircle },
-  rejected:  { label: 'Dossier refusÃ©',      bg: 'bg-rose-50',    text: 'text-rose-700',    border: 'border-rose-200',    Icon: Icons.AlertCircle },
+  approved:  { label: 'Dossier approuvé',    bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200', Icon: Icons.CheckCircle },
+  rejected:  { label: 'Dossier refusé',      bg: 'bg-rose-50',    text: 'text-rose-700',    border: 'border-rose-200',    Icon: Icons.AlertCircle },
 }
 
 const BENEFITS = [
-  { id: 'badge',      Icon: Icons.BadgeCheck,      label: 'Badge vÃ©rifiÃ©',        desc: 'Un sceau officiel PASMAL affichÃ© sur chaque annonce.',         minStatus: 'verified' },
-  { id: 'seo',        Icon: Icons.TrendingUp,       label: 'Boost SEO',            desc: 'Vos annonces remontent en tÃªte des rÃ©sultats de recherche.',    minStatus: 'verified' },
-  { id: 'visibility', Icon: Icons.Eye,              label: 'Meilleure visibilitÃ©', desc: 'Exposition prioritaire dans notre newsletter et les alertes.',   minStatus: 'verified' },
-  { id: 'crm',        Icon: Icons.Users,            label: 'AccÃ¨s CRM premium',    desc: 'GÃ©rez tous vos contacts, leads et suivis depuis un seul outil.', minStatus: 'premium'  },
-  { id: 'support',    Icon: Icons.Shield,           label: 'Support prioritaire',  desc: 'Un conseiller dÃ©diÃ© rÃ©pond en moins de 2 h ouvrÃ©es.',           minStatus: 'premium'  },
+  { id: 'badge',      Icon: Icons.BadgeCheck,      label: 'Badge vérifié',        desc: 'Un sceau officiel PASMAL affiché sur chaque annonce.',         minStatus: 'verified' },
+  { id: 'seo',        Icon: Icons.TrendingUp,       label: 'Boost SEO',            desc: 'Vos annonces remontent en tête des résultats de recherche.',    minStatus: 'verified' },
+  { id: 'visibility', Icon: Icons.Eye,              label: 'Meilleure visibilité', desc: 'Exposition prioritaire dans notre newsletter et les alertes.',   minStatus: 'verified' },
+  { id: 'crm',        Icon: Icons.Users,            label: 'Accès CRM premium',    desc: 'Gérez tous vos contacts, leads et suivis depuis un seul outil.', minStatus: 'premium'  },
+  { id: 'support',    Icon: Icons.Shield,           label: 'Support prioritaire',  desc: 'Un conseiller dédié répond en moins de 2 h ouvrées.',           minStatus: 'premium'  },
 ]
 
 const VER_STEPS = [
-  { n: 1, label: 'Compte crÃ©Ã©',       key: 'none' },
+  { n: 1, label: 'Compte créé',       key: 'none' },
   { n: 2, label: 'Documents soumis',  key: 'pending' },
-  { n: 3, label: 'VÃ©rifiÃ©',           key: 'verified' },
+  { n: 3, label: 'Vérifié',           key: 'verified' },
   { n: 4, label: 'Premium Partner',   key: 'premium' },
 ]
 
@@ -2843,16 +2843,16 @@ function AdminReviewPanel({ reviewState, setReviewState }) {
           <div>
             <div className="font-bold text-sm mb-0.5">{cfg.label}</div>
             {reviewState === 'reviewing' && (
-              <p className="text-xs text-amber-600 leading-relaxed">Votre dossier est en cours d'examen par notre Ã©quipe. DÃ©lai estimÃ© : 48 h ouvrÃ©es.</p>
+              <p className="text-xs text-amber-600 leading-relaxed">Votre dossier est en cours d'examen par notre équipe. Délai estimé : 48 h ouvrées.</p>
             )}
             {reviewState === 'approved' && (
-              <p className="text-xs text-emerald-600 leading-relaxed">FÃ©licitations ! Votre agence a Ã©tÃ© vÃ©rifiÃ©e et votre badge est maintenant actif sur toutes vos annonces.</p>
+              <p className="text-xs text-emerald-600 leading-relaxed">Félicitations ! Votre agence a été vérifiée et votre badge est maintenant actif sur toutes vos annonces.</p>
             )}
             {reviewState === 'rejected' && (
               <>
-                <p className="text-xs text-rose-600 leading-relaxed mb-2">Votre dossier n'a pas pu Ãªtre validÃ©. Motif : document illisible ou expirÃ©.</p>
+                <p className="text-xs text-rose-600 leading-relaxed mb-2">Votre dossier n'a pas pu être validé. Motif : document illisible ou expiré.</p>
                 <button className="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-700 hover:text-rose-900 underline underline-offset-2">
-                  Soumettre Ã  nouveau <Icons.ArrowRight size={11} />
+                  Soumettre à nouveau <Icons.ArrowRight size={11} />
                 </button>
               </>
             )}
@@ -2862,10 +2862,10 @@ function AdminReviewPanel({ reviewState, setReviewState }) {
 
       {/* doc checklist */}
       <div className="px-5 py-3 border-t border-slate-100">
-        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Documents reÃ§us</div>
+        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Documents reçus</div>
         {[
           { label: 'Extrait KBIS',         ok: true },
-          { label: 'PiÃ¨ce d\'identitÃ©',     ok: reviewState !== 'rejected' },
+          { label: 'Pièce d\'identité',     ok: reviewState !== 'rejected' },
           { label: 'Justificatif d\'adresse', ok: false },
         ].map(({ label, ok }) => (
           <div key={label} className="flex items-center gap-2 text-xs py-0.5">
@@ -2881,29 +2881,29 @@ function AdminReviewPanel({ reviewState, setReviewState }) {
 }
 
 /* ============================================================================
-   SellerVerificationView â€” wizard 4 Ã©tapes pour vendeurs particuliers
+   SellerVerificationView — wizard 4 étapes pour vendeurs particuliers
    ============================================================================ */
 const SELLER_VER_BENEFITS = [
-  { icon: Icons.BadgeCheck,     color: '#10b981', label: 'Badge certifiÃ©',          desc: 'Visible sur toutes vos annonces et votre profil.' },
-  { icon: Icons.TrendingUp,     color: '#f97316', label: '3Ã— plus de contacts',     desc: 'Les acheteurs font davantage confiance aux vendeurs vÃ©rifiÃ©s.' },
-  { icon: Icons.Shield,         color: '#6366f1', label: 'Annonces prioritaires',   desc: 'RemontÃ©e automatique dans les rÃ©sultats de recherche.' },
-  { icon: Icons.ShieldCheckBig, color: '#0ea5e9', label: 'Transaction sÃ©curisÃ©e',   desc: 'AccÃ¨s Ã  l\'escrow PASMAL et aux outils de signature.' },
+  { icon: Icons.BadgeCheck,     color: '#10b981', label: 'Badge certifié',          desc: 'Visible sur toutes vos annonces et votre profil.' },
+  { icon: Icons.TrendingUp,     color: '#f97316', label: '3× plus de contacts',     desc: 'Les acheteurs font davantage confiance aux vendeurs vérifiés.' },
+  { icon: Icons.Shield,         color: '#6366f1', label: 'Annonces prioritaires',   desc: 'Remontée automatique dans les résultats de recherche.' },
+  { icon: Icons.ShieldCheckBig, color: '#0ea5e9', label: 'Transaction sécurisée',   desc: 'Accès à l\'escrow PASMAL et aux outils de signature.' },
 ]
 
 const DOC_TYPES = [
-  { id: 'cni',      label: 'Carte d\'identitÃ©' },
+  { id: 'cni',      label: 'Carte d\'identité' },
   { id: 'passport', label: 'Passeport' },
   { id: 'permit',   label: 'Permis de conduire' },
 ]
 
 /* ============================================================================
-   OnboardingView â€” wizard 5 Ã©tapes pour les nouveaux utilisateurs
+   OnboardingView — wizard 5 étapes pour les nouveaux utilisateurs
    ============================================================================ */
 const OB_PROJECTS = [
-  { id: 'acheter',   icon: Icons.Home,       label: 'Acheter',    desc: 'Trouver votre rÃ©sidence principale ou secondaire.' },
-  { id: 'louer',     icon: Icons.Building,   label: 'Louer',      desc: 'Trouver un appartement ou une maison Ã  louer.' },
+  { id: 'acheter',   icon: Icons.Home,       label: 'Acheter',    desc: 'Trouver votre résidence principale ou secondaire.' },
+  { id: 'louer',     icon: Icons.Building,   label: 'Louer',      desc: 'Trouver un appartement ou une maison à louer.' },
   { id: 'vendre',    icon: Icons.Tag,        label: 'Vendre',     desc: 'Publier votre bien et trouver un acheteur.' },
-  { id: 'investir',  icon: Icons.TrendingUp, label: 'Investir',   desc: 'Constituer ou dÃ©velopper votre patrimoine.' },
+  { id: 'investir',  icon: Icons.TrendingUp, label: 'Investir',   desc: 'Constituer ou développer votre patrimoine.' },
 ]
 
 const OB_CITIES = ['Paris','Lyon','Marseille','Toulouse','Nice','Nantes','Bordeaux','Strasbourg','Lille','Rennes','Montpellier','Grenoble']
@@ -2925,7 +2925,7 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
   const budgetMax_ = isRent ? 3000  : 1000000
   const budgetMin_ = isRent ? 300   : 50000
   const budgetStep = isRent ? 50    : 10000
-  const budgetFmt  = isRent ? `${budgetMax.toLocaleString('fr-FR')} â‚¬/mois` : `${budgetMax.toLocaleString('fr-FR')} â‚¬`
+  const budgetFmt  = isRent ? `${budgetMax.toLocaleString('fr-FR')} €/mois` : `${budgetMax.toLocaleString('fr-FR')} €`
 
   function toggleProject(id) {
     setProjects(prev => prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id])
@@ -2950,7 +2950,7 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
     setCurrentView('results')
   }
 
-  const STEPS = ['Bienvenue', 'Projet', 'CritÃ¨res', 'Alertes', 'PrÃªt !']
+  const STEPS = ['Bienvenue', 'Projet', 'Critères', 'Alertes', 'Prêt !']
   const canNext = [true, projects.length > 0, true, true, true]
 
   return (
@@ -3001,9 +3001,9 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
               </div>
               <div className="grid grid-cols-1 gap-3 mb-8">
                 {[
-                  { icon: Icons.Search,    color: '#f97316', label: 'Annonces sur mesure',    desc: 'RÃ©sultats filtrÃ©s selon vos critÃ¨res dÃ¨s la premiÃ¨re visite.' },
-                  { icon: Icons.Bell,      color: '#6366f1', label: 'Alertes personnalisÃ©es', desc: 'Recevez les nouvelles annonces avant tout le monde.' },
-                  { icon: Icons.TrendingUp,color: '#10b981', label: 'Dashboard adaptÃ©',       desc: 'Vos favoris, messages et annonces au mÃªme endroit.' },
+                  { icon: Icons.Search,    color: '#f97316', label: 'Annonces sur mesure',    desc: 'Résultats filtrés selon vos critères dès la première visite.' },
+                  { icon: Icons.Bell,      color: '#6366f1', label: 'Alertes personnalisées', desc: 'Recevez les nouvelles annonces avant tout le monde.' },
+                  { icon: Icons.TrendingUp,color: '#10b981', label: 'Dashboard adapté',       desc: 'Vos favoris, messages et annonces au même endroit.' },
                 ].map((b, i) => {
                   const BI = b.icon
                   return (
@@ -3035,7 +3035,7 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
             <motion.div key="ob1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.25 }}>
               <div className="mb-6">
                 <h2 className="text-2xl font-extrabold text-[#0B1F3A] mb-1">Quel est votre projet ?</h2>
-                <p className="text-slate-500 text-sm">Vous pouvez en sÃ©lectionner plusieurs.</p>
+                <p className="text-slate-500 text-sm">Vous pouvez en sélectionner plusieurs.</p>
               </div>
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {OB_PROJECTS.map(p => {
@@ -3067,12 +3067,12 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
             </motion.div>
           )}
 
-          {/* â”€â”€ Step 2 : CritÃ¨res â”€â”€ */}
+          {/* â”€â”€ Step 2 : Critères â”€â”€ */}
           {step === 2 && (
             <motion.div key="ob2" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.25 }}>
               <div className="mb-6">
-                <h2 className="text-2xl font-extrabold text-[#0B1F3A] mb-1">Vos critÃ¨res</h2>
-                <p className="text-slate-500 text-sm">Nous affinerons les rÃ©sultats selon vos prÃ©fÃ©rences.</p>
+                <h2 className="text-2xl font-extrabold text-[#0B1F3A] mb-1">Vos critères</h2>
+                <p className="text-slate-500 text-sm">Nous affinerons les résultats selon vos préférences.</p>
               </div>
               <div className="space-y-6">
                 {/* Budget */}
@@ -3086,8 +3086,8 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
                       onChange={e => setBudgetMax(Number(e.target.value))}
                       className="w-full accent-orange-500 h-2 rounded-full cursor-pointer" />
                     <div className="flex justify-between text-[11px] text-slate-400 mt-1">
-                      <span>{budgetMin_.toLocaleString('fr-FR')} â‚¬{isRent ? '/mois' : ''}</span>
-                      <span>{budgetMax_.toLocaleString('fr-FR')} â‚¬{isRent ? '/mois' : ''}</span>
+                      <span>{budgetMin_.toLocaleString('fr-FR')} €{isRent ? '/mois' : ''}</span>
+                      <span>{budgetMax_.toLocaleString('fr-FR')} €{isRent ? '/mois' : ''}</span>
                     </div>
                   </div>
                 )}
@@ -3096,18 +3096,18 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
                 <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5">
                   <div className="flex items-center justify-between mb-3">
                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Surface minimum</label>
-                    <span className="text-sm font-extrabold text-orange-600">{surface} mÂ²</span>
+                    <span className="text-sm font-extrabold text-orange-600">{surface} m²</span>
                   </div>
                   <input type="range" min={10} max={300} step={5} value={surface} onChange={e => setSurface(Number(e.target.value))}
                     className="w-full accent-orange-500 h-2 rounded-full cursor-pointer" />
                   <div className="flex justify-between text-[11px] text-slate-400 mt-1">
-                    <span>10 mÂ²</span><span>300 mÂ²</span>
+                    <span>10 m²</span><span>300 m²</span>
                   </div>
                 </div>
 
-                {/* PiÃ¨ces */}
+                {/* Pièces */}
                 <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5">
-                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Nombre de piÃ¨ces</div>
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Nombre de pièces</div>
                   <div className="flex gap-2">
                     {[{ v: 0, l: 'Peu importe' }, { v: 1, l: 'Studio' }, { v: 2, l: '2P' }, { v: 3, l: '3P' }, { v: 4, l: '4P' }, { v: 5, l: '5P+' }].map(({ v, l }) => (
                       <button key={v} onClick={() => setRooms(v)}
@@ -3120,12 +3120,12 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
 
                 {/* Ville */}
                 <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 relative">
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Ville ou rÃ©gion</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Ville ou région</label>
                   <div className="relative">
                     <Icons.MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-orange-500" />
                     <input type="text" value={city} onChange={e => handleCityInput(e.target.value)}
                       onBlur={() => setTimeout(() => setCitySugg([]), 150)}
-                      placeholder="Paris, Lyon, Bordeauxâ€¦"
+                      placeholder="Paris, Lyon, Bordeaux…"
                       className="w-full pl-8 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition" />
                   </div>
                   {citySugg.length > 0 && (
@@ -3157,13 +3157,13 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
             <motion.div key="ob3" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.25 }}>
               <div className="mb-6">
                 <h2 className="text-2xl font-extrabold text-[#0B1F3A] mb-1">Comment vous alerter ?</h2>
-                <p className="text-slate-500 text-sm">Soyez le premier informÃ© des nouvelles annonces correspondant Ã  vos critÃ¨res.</p>
+                <p className="text-slate-500 text-sm">Soyez le premier informé des nouvelles annonces correspondant à vos critères.</p>
               </div>
               <div className="space-y-3 mb-6">
                 {[
-                  { state: alertEmail, setter: setAlertEmail, label: 'Alertes par e-mail',          desc: 'Recevez les nouvelles annonces directement dans votre boÃ®te.' },
-                  { state: alertPush,  setter: setAlertPush,  label: 'Notifications push',           desc: 'Notifications instantanÃ©es sur votre navigateur ou tÃ©lÃ©phone.' },
-                  { state: alertFreq === 'digest', setter: (v) => setAlertFreq(v ? 'daily' : 'immediate'), label: 'RÃ©sumÃ© quotidien', desc: 'Un seul e-mail par jour avec toutes les nouvelles annonces.' },
+                  { state: alertEmail, setter: setAlertEmail, label: 'Alertes par e-mail',          desc: 'Recevez les nouvelles annonces directement dans votre boîte.' },
+                  { state: alertPush,  setter: setAlertPush,  label: 'Notifications push',           desc: 'Notifications instantanées sur votre navigateur ou téléphone.' },
+                  { state: alertFreq === 'digest', setter: (v) => setAlertFreq(v ? 'daily' : 'immediate'), label: 'Résumé quotidien', desc: 'Un seul e-mail par jour avec toutes les nouvelles annonces.' },
                 ].map(({ state, setter, label, desc }) => (
                   <div key={label} className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 flex items-center justify-between gap-4">
                     <div className="flex-1 min-w-0">
@@ -3179,14 +3179,14 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
                 ))}
               </div>
 
-              {/* FrÃ©quence */}
+              {/* Fréquence */}
               <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 mb-8">
-                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">FrÃ©quence des alertes</div>
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Fréquence des alertes</div>
                 <div className="flex flex-col gap-2">
                   {[
-                    { id: 'immediate', label: 'ImmÃ©diatement',    desc: 'DÃ¨s qu\'une annonce est publiÃ©e' },
-                    { id: 'daily',     label: '1 fois par jour',  desc: 'RÃ©capitulatif chaque matin' },
-                    { id: 'weekly',    label: '1 fois par semaine', desc: 'RÃ©sumÃ© hebdomadaire le lundi' },
+                    { id: 'immediate', label: 'Immédiatement',    desc: 'Dès qu\'une annonce est publiée' },
+                    { id: 'daily',     label: '1 fois par jour',  desc: 'Récapitulatif chaque matin' },
+                    { id: 'weekly',    label: '1 fois par semaine', desc: 'Résumé hebdomadaire le lundi' },
                   ].map(f => (
                     <button key={f.id} onClick={() => setAlertFreq(f.id)}
                       className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left ${alertFreq === f.id ? 'border-orange-500 bg-orange-50' : 'border-slate-100 hover:border-slate-200'}`}>
@@ -3214,7 +3214,7 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
             </motion.div>
           )}
 
-          {/* â”€â”€ Step 4 : PrÃªt ! â”€â”€ */}
+          {/* â”€â”€ Step 4 : Prêt ! â”€â”€ */}
           {step === 4 && (
             <motion.div key="ob4" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, ease: 'backOut' }}
               className="text-center">
@@ -3223,22 +3223,22 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
                 <Icons.CheckCircle size={44} className="text-white" />
               </motion.div>
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-                <h2 className="text-2xl font-extrabold text-[#0B1F3A] mb-2">Votre profil est prÃªt !</h2>
-                <p className="text-slate-500 mb-8">Voici un rÃ©sumÃ© de vos prÃ©fÃ©rences. Vous pouvez les modifier Ã  tout moment dans votre profil.</p>
+                <h2 className="text-2xl font-extrabold text-[#0B1F3A] mb-2">Votre profil est prêt !</h2>
+                <p className="text-slate-500 mb-8">Voici un résumé de vos préférences. Vous pouvez les modifier à tout moment dans votre profil.</p>
               </motion.div>
 
               {/* Summary */}
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
                 className="bg-white rounded-3xl border border-slate-100 shadow-soft p-6 text-left mb-8">
-                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">RÃ©capitulatif</div>
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Récapitulatif</div>
                 <div className="space-y-3">
                   {[
-                    { icon: Icons.Home,       label: 'Projet',      value: projects.map(p => OB_PROJECTS.find(op => op.id === p)?.label).join(', ') || 'â€”' },
+                    { icon: Icons.Home,       label: 'Projet',      value: projects.map(p => OB_PROJECTS.find(op => op.id === p)?.label).join(', ') || '—' },
                     { icon: Icons.CreditCard, label: 'Budget max',  value: budgetFmt },
-                    { icon: Icons.Maximize,   label: 'Surface min', value: `${surface} mÂ²` },
-                    { icon: Icons.Bed,        label: 'PiÃ¨ces min',  value: rooms > 0 ? `${rooms}P` : 'Peu importe' },
-                    { icon: Icons.MapPin,     label: 'Ville',       value: city || 'France entiÃ¨re' },
-                    { icon: Icons.Bell,       label: 'Alertes',     value: alertEmail ? `E-mail Â· ${alertFreq === 'immediate' ? 'ImmÃ©diat' : alertFreq === 'daily' ? '1Ã—/jour' : '1Ã—/semaine'}` : 'DÃ©sactivÃ©es' },
+                    { icon: Icons.Maximize,   label: 'Surface min', value: `${surface} m²` },
+                    { icon: Icons.Bed,        label: 'Pièces min',  value: rooms > 0 ? `${rooms}P` : 'Peu importe' },
+                    { icon: Icons.MapPin,     label: 'Ville',       value: city || 'France entière' },
+                    { icon: Icons.Bell,       label: 'Alertes',     value: alertEmail ? `E-mail · ${alertFreq === 'immediate' ? 'Immédiat' : alertFreq === 'daily' ? '1×/jour' : '1×/semaine'}` : 'Désactivées' },
                   ].map(({ icon: RI, label, value }) => (
                     <div key={label} className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
                       <div className="flex items-center gap-2 text-slate-500">
@@ -3254,11 +3254,11 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
               <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="flex flex-col gap-3">
                 <button onClick={finish}
                   className="w-full py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-base rounded-2xl transition-all hover:-translate-y-0.5 hover:shadow-xl flex items-center justify-center gap-2">
-                  <Icons.Search size={18} /> Voir mes annonces personnalisÃ©es
+                  <Icons.Search size={18} /> Voir mes annonces personnalisées
                 </button>
                 <button onClick={() => setCurrentView('profil')}
                   className="w-full py-3.5 bg-white border border-slate-200 hover:border-slate-300 text-[#0B1F3A] font-semibold rounded-2xl transition flex items-center justify-center gap-2">
-                  <Icons.User size={16} /> AccÃ©der Ã  mon profil
+                  <Icons.User size={16} /> Accéder à mon profil
                 </button>
               </motion.div>
             </motion.div>
@@ -3271,7 +3271,7 @@ function OnboardingView({ user, setCurrentView, setFilters }) {
 }
 
 function SellerVerificationView({ setCurrentView }) {
-  const [step,       setStep]       = useState(0)   // 0=intro 1=identitÃ© 2=tÃ©lÃ©phone 3=succÃ¨s
+  const [step,       setStep]       = useState(0)   // 0=intro 1=identité 2=téléphone 3=succès
   const [docType,    setDocType]    = useState('cni')
   const [rectoFile,  setRectoFile]  = useState(null)
   const [versoFile,  setVersoFile]  = useState(null)
@@ -3326,7 +3326,7 @@ function SellerVerificationView({ setCurrentView }) {
   const canSubmitId   = rectoUrl && (docType === 'passport' || versoUrl)
   const canVerifyCode = codeVals.join('').length === 6
 
-  const STEP_LABELS = ['Bienvenue', 'IdentitÃ©', 'TÃ©lÃ©phone', 'Badge obtenu']
+  const STEP_LABELS = ['Bienvenue', 'Identité', 'Téléphone', 'Badge obtenu']
 
   return (
     <div className="min-h-screen bg-slate-50 pt-16">
@@ -3374,8 +3374,8 @@ function SellerVerificationView({ setCurrentView }) {
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mx-auto mb-5 shadow-xl">
                   <Icons.BadgeCheck size={30} className="text-white" />
                 </div>
-                <h1 className="text-2xl font-extrabold text-[#0B1F3A] mb-2">Devenez vendeur certifiÃ©</h1>
-                <p className="text-slate-500 max-w-md mx-auto">VÃ©rifiez votre identitÃ© en 2 minutes et obtenez le badge de confiance PASMAL â€” visible par 2,4 M d'acheteurs.</p>
+                <h1 className="text-2xl font-extrabold text-[#0B1F3A] mb-2">Devenez vendeur certifié</h1>
+                <p className="text-slate-500 max-w-md mx-auto">Vérifiez votre identité en 2 minutes et obtenez le badge de confiance PASMAL — visible par 2,4 M d'acheteurs.</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -3399,9 +3399,9 @@ function SellerVerificationView({ setCurrentView }) {
               <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 mb-6">
                 <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Ce dont vous aurez besoin</div>
                 {[
-                  { icon: Icons.IdCard,  text: 'PiÃ¨ce d\'identitÃ© en cours de validitÃ© (CNI, passeport ou permis)' },
-                  { icon: Icons.Phone,   text: 'Votre numÃ©ro de tÃ©lÃ©phone mobile pour recevoir le code SMS' },
-                  { icon: Icons.Loader,  text: 'Environ 2 Ã  5 minutes de votre temps' },
+                  { icon: Icons.IdCard,  text: 'Pièce d\'identité en cours de validité (CNI, passeport ou permis)' },
+                  { icon: Icons.Phone,   text: 'Votre numéro de téléphone mobile pour recevoir le code SMS' },
+                  { icon: Icons.Loader,  text: 'Environ 2 à 5 minutes de votre temps' },
                 ].map((it, i) => {
                   const II = it.icon
                   return (
@@ -3415,17 +3415,17 @@ function SellerVerificationView({ setCurrentView }) {
 
               <button onClick={() => setStep(1)}
                 className="w-full py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-base rounded-2xl transition-all hover:-translate-y-0.5 hover:shadow-xl flex items-center justify-center gap-2">
-                Commencer la vÃ©rification <Icons.ArrowRight size={18} />
+                Commencer la vérification <Icons.ArrowRight size={18} />
               </button>
             </motion.div>
           )}
 
-          {/* â”€â”€ STEP 1 : IdentitÃ© â”€â”€ */}
+          {/* â”€â”€ STEP 1 : Identité â”€â”€ */}
           {step === 1 && (
             <motion.div key="s1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.25 }}>
               <div className="mb-6">
-                <h2 className="text-xl font-extrabold text-[#0B1F3A] mb-1">PiÃ¨ce d'identitÃ©</h2>
-                <p className="text-slate-500 text-sm">Choisissez votre type de document et photographiez les deux faces si nÃ©cessaire.</p>
+                <h2 className="text-xl font-extrabold text-[#0B1F3A] mb-1">Pièce d'identité</h2>
+                <p className="text-slate-500 text-sm">Choisissez votre type de document et photographiez les deux faces si nécessaire.</p>
               </div>
 
               {/* Doc type selector */}
@@ -3464,8 +3464,8 @@ function SellerVerificationView({ setCurrentView }) {
                           </>
                         : <>
                             <Icons.Upload size={22} className="text-slate-400 mb-2" />
-                            <span className="text-xs text-slate-500 font-medium">Cliquer ou glisser-dÃ©poser</span>
-                            <span className="text-[11px] text-slate-400 mt-1">JPG, PNG, PDF â€” max 5 Mo</span>
+                            <span className="text-xs text-slate-500 font-medium">Cliquer ou glisser-déposer</span>
+                            <span className="text-[11px] text-slate-400 mt-1">JPG, PNG, PDF — max 5 Mo</span>
                           </>
                       }
                     </button>
@@ -3478,7 +3478,7 @@ function SellerVerificationView({ setCurrentView }) {
               <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-6 flex gap-3">
                 <Icons.Info size={15} className="text-blue-500 shrink-0 mt-0.5" />
                 <p className="text-xs text-blue-700 leading-relaxed">
-                  Vos documents sont chiffrÃ©s et stockÃ©s de maniÃ¨re sÃ©curisÃ©e. Ils ne sont accessibles qu'Ã  notre Ã©quipe de vÃ©rification et sont supprimÃ©s aprÃ¨s validation.
+                  Vos documents sont chiffrés et stockés de manière sécurisée. Ils ne sont accessibles qu'à notre équipe de vérification et sont supprimés après validation.
                 </p>
               </div>
 
@@ -3489,16 +3489,16 @@ function SellerVerificationView({ setCurrentView }) {
             </motion.div>
           )}
 
-          {/* â”€â”€ STEP 2 : TÃ©lÃ©phone â”€â”€ */}
+          {/* â”€â”€ STEP 2 : Téléphone â”€â”€ */}
           {step === 2 && (
             <motion.div key="s2" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.25 }}>
               <div className="mb-6">
-                <h2 className="text-xl font-extrabold text-[#0B1F3A] mb-1">VÃ©rification du tÃ©lÃ©phone</h2>
-                <p className="text-slate-500 text-sm">Entrez votre numÃ©ro mobile. Nous vous enverrons un code SMS Ã  6 chiffres.</p>
+                <h2 className="text-xl font-extrabold text-[#0B1F3A] mb-1">Vérification du téléphone</h2>
+                <p className="text-slate-500 text-sm">Entrez votre numéro mobile. Nous vous enverrons un code SMS à 6 chiffres.</p>
               </div>
 
               <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 mb-6">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">NumÃ©ro de tÃ©lÃ©phone</label>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Numéro de téléphone</label>
                 <div className="flex gap-2">
                   <div className="flex items-center gap-2 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-600 shrink-0 font-medium">
                     ðŸ‡«ðŸ‡· +33
@@ -3508,7 +3508,7 @@ function SellerVerificationView({ setCurrentView }) {
                     className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition disabled:opacity-60" />
                   <button onClick={sendCode} disabled={codeSent || phone.replace(/\s/g,'').length < 9}
                     className="shrink-0 px-4 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 text-white text-sm font-semibold rounded-xl transition whitespace-nowrap">
-                    {codeSent ? 'EnvoyÃ© âœ“' : 'Envoyer'}
+                    {codeSent ? 'Envoyé âœ“' : 'Envoyer'}
                   </button>
                 </div>
 
@@ -3517,7 +3517,7 @@ function SellerVerificationView({ setCurrentView }) {
                   {codeSent && (
                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} transition={{ duration: 0.3 }}>
                       <div className="mt-5">
-                        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Code reÃ§u par SMS</label>
+                        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Code reçu par SMS</label>
                         <div className="flex gap-2 justify-center mb-2">
                           {codeVals.map((v, i) => (
                             <input key={i} type="text" inputMode="numeric" maxLength={1} value={v}
@@ -3532,10 +3532,10 @@ function SellerVerificationView({ setCurrentView }) {
                           ))}
                         </div>
                         {codeError && (
-                          <p className="text-xs text-rose-500 text-center mt-1">Code incorrect. Veuillez rÃ©essayer.</p>
+                          <p className="text-xs text-rose-500 text-center mt-1">Code incorrect. Veuillez réessayer.</p>
                         )}
                         <p className="text-[11px] text-slate-400 text-center mt-2">
-                          Code de dÃ©monstration : n'importe quel code Ã  6 chiffres.{' '}
+                          Code de démonstration : n'importe quel code à 6 chiffres.{' '}
                           <button onClick={() => { setCodeSent(false); setCodeVals(['','','','','','']) }}
                             className="text-orange-500 font-semibold hover:underline">
                             Renvoyer
@@ -3550,14 +3550,14 @@ function SellerVerificationView({ setCurrentView }) {
               <button onClick={verifyCode} disabled={!canVerifyCode || verifying}
                 className="w-full py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:opacity-40 text-white font-extrabold text-base rounded-2xl transition-all hover:-translate-y-0.5 hover:shadow-xl flex items-center justify-center gap-2">
                 {verifying
-                  ? <><Icons.Loader size={18} className="animate-spin" /> VÃ©rificationâ€¦</>
-                  : <><Icons.Check size={18} /> VÃ©rifier le code</>
+                  ? <><Icons.Loader size={18} className="animate-spin" /> Vérification…</>
+                  : <><Icons.Check size={18} /> Vérifier le code</>
                 }
               </button>
             </motion.div>
           )}
 
-          {/* â”€â”€ STEP 3 : SuccÃ¨s â”€â”€ */}
+          {/* â”€â”€ STEP 3 : Succès â”€â”€ */}
           {step === 3 && (
             <motion.div key="s3" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, ease: 'backOut' }}
               className="text-center">
@@ -3569,17 +3569,17 @@ function SellerVerificationView({ setCurrentView }) {
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
                 <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1.5 rounded-full mb-4">
-                  <Icons.Check size={12} /> Vendeur certifiÃ© PASMAL
+                  <Icons.Check size={12} /> Vendeur certifié PASMAL
                 </div>
-                <h2 className="text-2xl font-extrabold text-[#0B1F3A] mb-3">FÃ©licitations, votre badge est actif !</h2>
-                <p className="text-slate-500 mb-8 max-w-sm mx-auto">Votre identitÃ© a Ã©tÃ© vÃ©rifiÃ©e. Le badge certifiÃ© apparaÃ®t dÃ©sormais sur toutes vos annonces et votre profil.</p>
+                <h2 className="text-2xl font-extrabold text-[#0B1F3A] mb-3">Félicitations, votre badge est actif !</h2>
+                <p className="text-slate-500 mb-8 max-w-sm mx-auto">Votre identité a été vérifiée. Le badge certifié apparaît désormais sur toutes vos annonces et votre profil.</p>
 
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   {[
-                    { val: '3Ã—', label: 'Plus de contacts' },
-                    { val: 'Top', label: 'Dans les rÃ©sultats' },
-                    { val: '48h', label: 'DÃ©lai moyen' },
+                    { val: '3×', label: 'Plus de contacts' },
+                    { val: 'Top', label: 'Dans les résultats' },
+                    { val: '48h', label: 'Délai moyen' },
                   ].map((s, i) => (
                     <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 + i * 0.1 }}
                       className="bg-white rounded-2xl border border-slate-100 shadow-soft py-4">
@@ -3591,7 +3591,7 @@ function SellerVerificationView({ setCurrentView }) {
 
                 {/* Badge preview */}
                 <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 mb-8 text-left">
-                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">AperÃ§u sur vos annonces</div>
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Aperçu sur vos annonces</div>
                   <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
                     <div className="w-10 h-10 rounded-xl bg-orange-500 text-white font-extrabold flex items-center justify-center text-sm">
                       {user?.user_metadata?.full_name?.[0]?.toUpperCase() || 'U'}
@@ -3600,10 +3600,10 @@ function SellerVerificationView({ setCurrentView }) {
                       <div className="font-semibold text-sm text-[#0B1F3A] truncate">{user?.user_metadata?.full_name || 'Vendeur particulier'}</div>
                       <div className="flex items-center gap-1 mt-0.5">
                         <Icons.BadgeCheck size={11} className="text-emerald-500" />
-                        <span className="text-[11px] text-emerald-600 font-semibold">CertifiÃ© PASMAL</span>
+                        <span className="text-[11px] text-emerald-600 font-semibold">Certifié PASMAL</span>
                       </div>
                     </div>
-                    <div className="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full">VÃ©rifiÃ©</div>
+                    <div className="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full">Vérifié</div>
                   </div>
                 </div>
 
@@ -3627,11 +3627,11 @@ function SellerVerificationView({ setCurrentView }) {
   )
 }
 /* ============================================================================
-   AcheterView â€” Buyer landing page
+   AcheterView — Buyer landing page
    ============================================================================ */
 
 const ACHAT_STEPS = [
-  { icon: Icons.Search,     title: "Definir votre projet",    desc: "Budget, surface, localisation, criteres essentiels â€” posez les bases pour ne visiter que les biens qui vous correspondent vraiment." },
+  { icon: Icons.Search,     title: "Definir votre projet",    desc: "Budget, surface, localisation, criteres essentiels — posez les bases pour ne visiter que les biens qui vous correspondent vraiment." },
   { icon: Icons.MapPin,     title: "Rechercher et visiter",   desc: "Activez vos alertes PASMAL et recevez les nouvelles annonces en temps reel. Planifiez vos visites directement depuis l'annonce." },
   { icon: Icons.CreditCard, title: "Financer",                desc: "Simulez votre pret, obtenez votre accord de principe et comparez les offres bancaires grace a nos partenaires courtiers agrees." },
   { icon: Icons.CheckCircle,title: "Signer",                  desc: "De l'offre d'achat a l'acte notarie, notre equipe vous accompagne a chaque etape pour securiser votre acquisition en toute serenite." },
@@ -3646,7 +3646,7 @@ const ACHAT_AVANTAGES = [
 
 const GUIDES_ACHAT = [
   { tag: 'Financement', title: "Tout savoir sur le PTZ en 2026",           desc: "Conditions, plafonds, zones eligibles : le guide complet du Pret a Taux Zero pour primo-accedants.",              img: unsplash('photo-1554224155-6726b3ff858f', 400), time: '5 min' },
-  { tag: 'Immobilier',  title: "VEFA : acheter sur plan en toute serenite", desc: "Contrat de reservation, garanties GFA/GFI, livraison â€” comment eviter les pieges de l'achat sur plan.",          img: unsplash('photo-1486325212027-8081e485255e', 400), time: '7 min' },
+  { tag: 'Immobilier',  title: "VEFA : acheter sur plan en toute serenite", desc: "Contrat de reservation, garanties GFA/GFI, livraison — comment eviter les pieges de l'achat sur plan.",          img: unsplash('photo-1486325212027-8081e485255e', 400), time: '7 min' },
   { tag: 'DPE',         title: "Decrypter le DPE avant d'acheter",          desc: "Classe energetique, passoires thermiques, travaux obligatoires : ce que vous devez savoir avant de signer.",        img: unsplash('photo-1467533003447-e295ff1b0435', 400), time: '4 min' },
 ]
 
@@ -3718,7 +3718,7 @@ function AcheterView({ listings, loading, error, source, filters, setFilters, on
               <span className="text-orange-400">qui vous ressemble.</span>
             </h1>
             <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto">
-              {"Plus de 8 200 biens premium verifies â€” appartements, maisons, villas â€” partout en France."}
+              {"Plus de 8 200 biens premium verifies — appartements, maisons, villas — partout en France."}
             </p>
 
             {/* Counters */}
@@ -3830,8 +3830,8 @@ function AcheterView({ listings, loading, error, source, filters, setFilters, on
               <div className="font-bold text-navy-900 text-lg mb-6">Votre projet</div>
               <div className="space-y-5">
                 {[
-                  { label: "Prix du bien (â‚¬)",      value: simPrix,   set: setSimPrix,   placeholder: '300 000' },
-                  { label: "Apport personnel (â‚¬)",   value: simApport, set: setSimApport, placeholder: '60 000'  },
+                  { label: "Prix du bien (€)",      value: simPrix,   set: setSimPrix,   placeholder: '300 000' },
+                  { label: "Apport personnel (€)",   value: simApport, set: setSimApport, placeholder: '60 000'  },
                   { label: "Duree du pret (ans)",    value: simDuree,  set: setSimDuree,  placeholder: '20'      },
                   { label: "Taux annuel (%)",         value: simTaux,   set: setSimTaux,   placeholder: '3.50'    },
                 ].map(({ label, value, set, placeholder }) => (
@@ -3849,14 +3849,14 @@ function AcheterView({ listings, loading, error, source, filters, setFilters, on
                 <div className="mt-5">
                   <div className="flex justify-between text-xs text-slate-500 mb-1.5">
                     <span>Apport : {pct} %</span>
-                    <span>Capital emprunte : {fmt(capital)} â‚¬</span>
+                    <span>Capital emprunte : {fmt(capital)} €</span>
                   </div>
                   <div className="h-2 rounded-full bg-slate-200 overflow-hidden">
                     <motion.div animate={{ width: `${Math.min(pct, 100)}%` }} transition={{ duration: 0.4 }}
                       className={`h-full rounded-full ${pct >= 20 ? 'bg-emerald-500' : pct >= 10 ? 'bg-orange-500' : 'bg-rose-500'}`} />
                   </div>
                   <p className={`text-[11px] mt-1.5 font-medium ${pct >= 20 ? 'text-emerald-600' : pct >= 10 ? 'text-orange-500' : 'text-rose-500'}`}>
-                    {pct >= 20 ? "Excellent apport â€” taux preferentiels accessibles" : pct >= 10 ? "Apport correct â€” negociation possible" : "Apport faible â€” taux majores probables"}
+                    {pct >= 20 ? "Excellent apport — taux preferentiels accessibles" : pct >= 10 ? "Apport correct — negociation possible" : "Apport faible — taux majores probables"}
                   </p>
                 </div>
               )}
@@ -3870,7 +3870,7 @@ function AcheterView({ listings, loading, error, source, filters, setFilters, on
                 <div className="relative">
                   <div className="text-white/60 text-sm mb-1">Mensualite estimee</div>
                   <div className="text-white text-5xl font-extrabold tracking-tight">
-                    {fmt(mensualite)} <span className="text-2xl text-white/60">â‚¬/mois</span>
+                    {fmt(mensualite)} <span className="text-2xl text-white/60">€/mois</span>
                   </div>
                   <div className="text-white/50 text-xs mt-2">hors assurance emprunteur</div>
                 </div>
@@ -3880,11 +3880,11 @@ function AcheterView({ listings, loading, error, source, filters, setFilters, on
               <div className="bg-white rounded-3xl border border-slate-100 shadow-soft p-6 space-y-3">
                 <div className="font-bold text-navy-900 mb-1">Detail du financement</div>
                 {[
-                  { label: 'Capital emprunte',       value: `${fmt(capital)} â‚¬`,                    hi: false },
-                  { label: 'Mensualite + assurance',  value: `${fmt(mensualite + assurance)} â‚¬/mois`, hi: true  },
-                  { label: 'Assurance estimee',       value: `${fmt(assurance)} â‚¬/mois`,              hi: false },
-                  { label: 'Cout total du credit',    value: `${fmt(coutCredit)} â‚¬`,                  hi: false },
-                  { label: 'Cout total (bien + inter)', value: `${fmt(coutTotal + apport)} â‚¬`,         hi: false },
+                  { label: 'Capital emprunte',       value: `${fmt(capital)} €`,                    hi: false },
+                  { label: 'Mensualite + assurance',  value: `${fmt(mensualite + assurance)} €/mois`, hi: true  },
+                  { label: 'Assurance estimee',       value: `${fmt(assurance)} €/mois`,              hi: false },
+                  { label: 'Cout total du credit',    value: `${fmt(coutCredit)} €`,                  hi: false },
+                  { label: 'Cout total (bien + inter)', value: `${fmt(coutTotal + apport)} €`,         hi: false },
                 ].map(({ label, value, hi }) => (
                   <div key={label} className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
                     <span className="text-slate-500 text-sm">{label}</span>
@@ -3894,7 +3894,7 @@ function AcheterView({ listings, loading, error, source, filters, setFilters, on
               </div>
 
               <p className="text-slate-400 text-xs text-center">
-                {"Simulation indicative. Taux et assurance a titre d'exemple â€” consultez un courtier pour une offre personnalisee."}
+                {"Simulation indicative. Taux et assurance a titre d'exemple — consultez un courtier pour une offre personnalisee."}
               </p>
             </div>
           </div>
@@ -3981,7 +3981,7 @@ function AcheterView({ listings, loading, error, source, filters, setFilters, on
               <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Marche</div>
               <h2 className="text-3xl font-extrabold text-navy-900 tracking-tight">Villes les plus recherchees</h2>
             </div>
-            <span className="text-xs text-slate-400 italic">Prix medians â€” Mai 2026</span>
+            <span className="text-xs text-slate-400 italic">Prix medians — Mai 2026</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {ACHAT_CITIES.map((c, i) => (
@@ -3994,7 +3994,7 @@ function AcheterView({ listings, loading, error, source, filters, setFilters, on
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-900/85 via-navy-900/30 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-left">
                   <div className="text-white font-extrabold text-base leading-tight">{c.name}</div>
-                  <div className="text-white/70 text-xs mt-0.5">{c.price.toLocaleString('fr-FR')} â‚¬/mÂ²</div>
+                  <div className="text-white/70 text-xs mt-0.5">{c.price.toLocaleString('fr-FR')} €/m²</div>
                   <div className="text-white/50 text-[10px] mt-0.5">{c.dept}</div>
                 </div>
               </motion.button>
@@ -4010,7 +4010,7 @@ function AcheterView({ listings, loading, error, source, filters, setFilters, on
 }
 
 /* ============================================================================
-   LouerView â€” Tenant landing page
+   LouerView — Tenant landing page
    ============================================================================ */
 
 const LOUER_TYPES = [
@@ -4019,15 +4019,15 @@ const LOUER_TYPES = [
   { icon: Icons.Building2, label: 'T2 / T3',    count: '2 100', color: 'emerald' },
   { icon: Icons.Home,      label: 'T4 et +',    count: '620',   color: 'orange' },
   { icon: Icons.Users,     label: 'Colocation', count: '480',   color: 'rose' },
-  { icon: Icons.Sparkles,  label: 'MeublÃ©',     count: '1 070', color: 'indigo' },
+  { icon: Icons.Sparkles,  label: 'Meublé',     count: '1 070', color: 'indigo' },
 ]
 
 const LOUER_CITIES = [
-  { name: 'Paris',     dept: 'ÃŽle-de-France',      price: 1450, img: unsplash('photo-1502672260266-1c1ef2d93688', 400) },
-  { name: 'Lyon',      dept: 'Auvergne-RhÃ´ne',     price: 820,  img: unsplash('photo-1613490493576-7fde63acd811', 400) },
+  { name: 'Paris',     dept: 'Île-de-France',      price: 1450, img: unsplash('photo-1502672260266-1c1ef2d93688', 400) },
+  { name: 'Lyon',      dept: 'Auvergne-Rhône',     price: 820,  img: unsplash('photo-1613490493576-7fde63acd811', 400) },
   { name: 'Marseille', dept: 'PACA',               price: 720,  img: unsplash('photo-1560448204-e02f11c3d0e2', 400) },
   { name: 'Bordeaux',  dept: 'Nouvelle-Aquitaine', price: 880,  img: unsplash('photo-1600585154340-be6161a56a0c', 400) },
-  { name: 'Nice',      dept: "CÃ´te d'Azur",        price: 960,  img: unsplash('photo-1493809842364-78817add7ffb', 400) },
+  { name: 'Nice',      dept: "Côte d'Azur",        price: 960,  img: unsplash('photo-1493809842364-78817add7ffb', 400) },
   { name: 'Nantes',    dept: 'Pays de la Loire',   price: 750,  img: unsplash('photo-1522708323590-d24dbb6b0267', 400) },
 ]
 
@@ -4047,7 +4047,7 @@ const LOUER_AVANTAGES = [
 
 const GUIDES_LOUER = [
   { tag: 'Location',     title: "Comprendre le bail de location en 2026",          desc: "Durees, preavis, charges, depots de garantie : tout ce que la Loi Alur impose et protege pour le locataire.",  img: unsplash('photo-1554224155-6726b3ff858f', 400), time: '6 min' },
-  { tag: 'Budget',       title: "Charges locatives : ce que vous devez vraiment",  desc: "Charges recup, provisions, regularisation annuelle â€” comment verifier que votre proprietaire ne surfacture pas.", img: unsplash('photo-1560518883-ce09059eeffa', 400), time: '4 min' },
+  { tag: 'Budget',       title: "Charges locatives : ce que vous devez vraiment",  desc: "Charges recup, provisions, regularisation annuelle — comment verifier que votre proprietaire ne surfacture pas.", img: unsplash('photo-1560518883-ce09059eeffa', 400), time: '4 min' },
   { tag: 'Installation', title: "Etat des lieux : le guide pour etre protege",      desc: "Comment realiser un etat des lieux d'entree irreprochable, photos incluses, pour recup integralement votre depot.", img: unsplash('photo-1486325212027-8081e485255e', 400), time: '5 min' },
 ]
 
@@ -4097,7 +4097,7 @@ function LouerView({ listings, loading, error, source, filters, setFilters, onSe
               <span className="text-orange-400">sans les mauvaises surprises.</span>
             </h1>
             <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto">
-              {"Plus de 5 400 locations verifiees â€” studios, T2, colocations, maisons â€” dans toutes les villes de France."}
+              {"Plus de 5 400 locations verifiees — studios, T2, colocations, maisons — dans toutes les villes de France."}
             </p>
 
             {/* Counters */}
@@ -4194,7 +4194,7 @@ function LouerView({ listings, loading, error, source, filters, setFilters, onSe
           <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
             <div>
               <div className="text-orange-600 font-semibold text-sm tracking-wider uppercase mb-2">Par ville</div>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0B1F3A] tracking-tight">Villes les plus demandÃ©es</h2>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0B1F3A] tracking-tight">Villes les plus demandées</h2>
             </div>
             <button className="text-navy-700 hover:text-orange-600 font-medium text-sm flex items-center gap-1 transition-colors">
               Toutes les villes <Icons.ArrowRight size={16} />
@@ -4207,7 +4207,7 @@ function LouerView({ listings, loading, error, source, filters, setFilters, onSe
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/80 via-transparent to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-3 text-left">
                   <div className="text-white font-bold text-sm truncate">{city.name}</div>
-                  <div className="text-white/70 text-[11px]">Ã  partir de {city.price} â‚¬/mois</div>
+                  <div className="text-white/70 text-[11px]">à partir de {city.price} €/mois</div>
                 </div>
               </button>
             ))}
@@ -4230,7 +4230,7 @@ function LouerView({ listings, loading, error, source, filters, setFilters, onSe
               <div className="font-bold text-navy-900 text-lg mb-6">Votre situation</div>
               <div className="space-y-5">
                 {[
-                  { label: "Revenus nets mensuels (â‚¬)",  value: simRevenu, set: setSimRevenu, placeholder: '2 500' },
+                  { label: "Revenus nets mensuels (€)",  value: simRevenu, set: setSimRevenu, placeholder: '2 500' },
                   { label: "Nombre de personnes",         value: simPers,   set: setSimPers,   placeholder: '1'     },
                 ].map(({ label, value, set, placeholder }) => (
                   <div key={label}>
@@ -4247,7 +4247,7 @@ function LouerView({ listings, loading, error, source, filters, setFilters, onSe
                 <div className="mt-6">
                   <div className="flex justify-between text-xs text-slate-500 mb-1.5">
                     <span>Taux d'effort : {Math.round(ratio)} %</span>
-                    <span>Loyer max : {fmt(loyerMax)} â‚¬/mois</span>
+                    <span>Loyer max : {fmt(loyerMax)} €/mois</span>
                   </div>
                   <div className="h-2 rounded-full bg-slate-200 overflow-hidden">
                     <motion.div animate={{ width: `${ratio}%` }} transition={{ duration: 0.4 }}
@@ -4276,7 +4276,7 @@ function LouerView({ listings, loading, error, source, filters, setFilters, onSe
                 <div className="relative">
                   <div className="text-white/60 text-sm mb-1">Loyer maximum recommande</div>
                   <div className="text-white text-5xl font-extrabold tracking-tight">
-                    {fmt(loyerMax)} <span className="text-2xl text-white/60">â‚¬/mois</span>
+                    {fmt(loyerMax)} <span className="text-2xl text-white/60">€/mois</span>
                   </div>
                   <div className="text-white/50 text-xs mt-2">hors charges locatives</div>
                 </div>
@@ -4286,11 +4286,11 @@ function LouerView({ listings, loading, error, source, filters, setFilters, onSe
               <div className="bg-white rounded-3xl border border-slate-100 shadow-soft p-6 space-y-3">
                 <div className="font-bold text-navy-900 mb-1">Detail budget location</div>
                 {[
-                  { label: "Loyer max (33 % revenus)",   value: `${fmt(loyerMax)} â‚¬/mois`,     hi: true  },
-                  { label: "Charges estimees (~ 10 %)",  value: `${fmt(chargesEst)} â‚¬/mois`,   hi: false },
-                  { label: "Total mensuel estime",        value: `${fmt(totalMensuel)} â‚¬/mois`, hi: false },
-                  { label: "Depot de garantie (1 mois)", value: `${fmt(caution)} â‚¬`,            hi: false },
-                  { label: "Budget a prevoir (M1)",       value: `${fmt(totalMensuel + caution)} â‚¬`, hi: false },
+                  { label: "Loyer max (33 % revenus)",   value: `${fmt(loyerMax)} €/mois`,     hi: true  },
+                  { label: "Charges estimees (~ 10 %)",  value: `${fmt(chargesEst)} €/mois`,   hi: false },
+                  { label: "Total mensuel estime",        value: `${fmt(totalMensuel)} €/mois`, hi: false },
+                  { label: "Depot de garantie (1 mois)", value: `${fmt(caution)} €`,            hi: false },
+                  { label: "Budget a prevoir (M1)",       value: `${fmt(totalMensuel + caution)} €`, hi: false },
                 ].map(({ label, value, hi }) => (
                   <div key={label} className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
                     <span className="text-slate-500 text-sm">{label}</span>
@@ -4577,7 +4577,7 @@ function PublierView({ user, onSignIn }) {
                 )}
                 <div className={`text-lg font-extrabold mb-1 ${plan.highlight ? 'text-white' : 'text-navy-900'}`}>{plan.name}</div>
                 <div className={`text-3xl font-extrabold mb-1 ${plan.highlight ? 'text-orange-400' : 'text-navy-900'}`}>
-                  {plan.price === '0' ? 'Gratuit' : `${plan.price} â‚¬`}
+                  {plan.price === '0' ? 'Gratuit' : `${plan.price} €`}
                   {plan.price !== '0' && <span className={`text-sm font-medium ml-1 ${plan.highlight ? 'text-white/50' : 'text-slate-400'}`}>/ annonce</span>}
                 </div>
                 <div className={`w-full h-px my-4 ${plan.highlight ? 'bg-white/10' : 'bg-slate-100'}`} />
@@ -4656,11 +4656,11 @@ function PublierView({ user, onSignIn }) {
             <h2 className="text-2xl font-bold text-navy-900 mb-2">Votre annonce est en ligne</h2>
             <p className="text-slate-500 mb-2">
               <span className="font-semibold text-navy-900">{form.title || 'Votre bien'}</span>
-              {form.city && <> Â· {form.city}</>}
+              {form.city && <> · {form.city}</>}
             </p>
             {form.price && (
               <p className="text-xl font-extrabold text-orange-600 mb-6">
-                {Number(form.price).toLocaleString('fr-FR')} â‚¬{form.transactionType === 'location' ? '/mois' : ''}
+                {Number(form.price).toLocaleString('fr-FR')} €{form.transactionType === 'location' ? '/mois' : ''}
               </p>
             )}
             <div className="flex flex-col sm:flex-row gap-3 justify-center mt-4">
@@ -4669,7 +4669,7 @@ function PublierView({ user, onSignIn }) {
                 Publier un autre bien
               </button>
               <button className="px-6 py-3 rounded-full bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold transition">
-                GÃ©rer mes annonces
+                Gérer mes annonces
               </button>
             </div>
           </div>
@@ -4728,7 +4728,7 @@ function PublierView({ user, onSignIn }) {
               })}
             </div>
             <div className="text-center mt-3">
-              <span className="text-xs text-slate-400">Ã‰tape <span className="font-bold text-navy-900">{step}</span> / {PUBLI_STEPS.length}</span>
+              <span className="text-xs text-slate-400">Étape <span className="font-bold text-navy-900">{step}</span> / {PUBLI_STEPS.length}</span>
             </div>
           </div>
 
@@ -4783,32 +4783,32 @@ function PublierView({ user, onSignIn }) {
 
                 <PublierField label="Titre de l'annonce" error={errors.title}>
                   <input value={form.title} onChange={e => set('title', e.target.value)}
-                    className={inputCls(errors.title)} placeholder="Beau 3 piÃ¨ces lumineux proche mÃ©tro" />
+                    className={inputCls(errors.title)} placeholder="Beau 3 pièces lumineux proche métro" />
                 </PublierField>
 
                 <PublierField label="Description">
                   <textarea rows={4} value={form.description} onChange={e => set('description', e.target.value)}
                     className={`${inputCls()} resize-none`}
-                    placeholder="DÃ©crivez votre bien : atouts, Ã©tat, environnementâ€¦" />
+                    placeholder="Décrivez votre bien : atouts, état, environnement…" />
                 </PublierField>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <PublierField label="Surface (mÂ²)" error={errors.surface}>
+                  <PublierField label="Surface (m²)" error={errors.surface}>
                     <input type="number" value={form.surface} onChange={e => set('surface', e.target.value)}
                       className={inputCls(errors.surface)} placeholder="65" min="1" />
                   </PublierField>
-                  <PublierField label="PiÃ¨ces">
+                  <PublierField label="Pièces">
                     <input type="number" value={form.rooms} onChange={e => set('rooms', e.target.value)}
                       className={inputCls()} placeholder="3" min="1" />
                   </PublierField>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <PublierField label="Ã‰tage">
+                  <PublierField label="Étage">
                     <input type="number" value={form.floor} onChange={e => set('floor', e.target.value)}
                       className={inputCls()} placeholder="2" min="0" />
                   </PublierField>
-                  <PublierField label="AnnÃ©e de construction">
+                  <PublierField label="Année de construction">
                     <input type="number" value={form.yearBuilt} onChange={e => set('yearBuilt', e.target.value)}
                       className={inputCls()} placeholder="1985" min="1800" max="2025" />
                   </PublierField>
@@ -4820,7 +4820,7 @@ function PublierView({ user, onSignIn }) {
                       className={`w-11 h-6 rounded-full transition-colors flex items-center px-0.5 ${form.furnished ? 'bg-orange-500' : 'bg-slate-200'}`}>
                       <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${form.furnished ? 'translate-x-5' : 'translate-x-0'}`} />
                     </div>
-                    <span className="text-sm font-medium text-slate-700">Bien meublÃ©</span>
+                    <span className="text-sm font-medium text-slate-700">Bien meublé</span>
                   </label>
                 )}
 
@@ -4837,14 +4837,14 @@ function PublierView({ user, onSignIn }) {
                         {band}
                       </button>
                     ))}
-                    {form.dpe && <span className="self-center text-xs text-slate-400 ml-1">SÃ©lectionnÃ© : {form.dpe}</span>}
+                    {form.dpe && <span className="self-center text-xs text-slate-400 ml-1">Sélectionné : {form.dpe}</span>}
                   </div>
                 </div>
 
-                {/* Ã‰quipements */}
+                {/* Équipements */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">
-                    Ã‰quipements <span className="normal-case font-normal text-slate-400">(facultatif)</span>
+                    Équipements <span className="normal-case font-normal text-slate-400">(facultatif)</span>
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {PUBLI_FEATURES.map(f => {
@@ -4895,7 +4895,7 @@ function PublierView({ user, onSignIn }) {
                         }
                         setErrors(e => ({ ...e, city: undefined }))
                       }}
-                      placeholder="Paris, Lyon, 69000â€¦"
+                      placeholder="Paris, Lyon, 69000…"
                     />
                   </div>
                 </PublierField>
@@ -4906,7 +4906,7 @@ function PublierView({ user, onSignIn }) {
                       <input value={form.zipcode} onChange={e => set('zipcode', e.target.value)}
                         className={inputCls()} />
                     </PublierField>
-                    <PublierField label="DÃ©partement">
+                    <PublierField label="Département">
                       <input readOnly value={form.department}
                         className={`${inputCls()} bg-slate-50 text-slate-500 cursor-default`} />
                     </PublierField>
@@ -4914,7 +4914,7 @@ function PublierView({ user, onSignIn }) {
                 )}
 
                 {form.region && (
-                  <PublierField label="RÃ©gion">
+                  <PublierField label="Région">
                     <input readOnly value={form.region}
                       className={`${inputCls()} bg-slate-50 text-slate-500 cursor-default`} />
                   </PublierField>
@@ -4927,7 +4927,7 @@ function PublierView({ user, onSignIn }) {
               <div className="space-y-5">
                 <div>
                   <h2 className="text-xl font-bold text-navy-900 mb-1">Photos de votre bien</h2>
-                  <p className="text-sm text-slate-500">La premiÃ¨re photo sera la photo principale de l'annonce.</p>
+                  <p className="text-sm text-slate-500">La première photo sera la photo principale de l'annonce.</p>
                 </div>
 
                 <div
@@ -4939,7 +4939,7 @@ function PublierView({ user, onSignIn }) {
                   </div>
                   <div className="text-center">
                     <p className="text-sm font-semibold text-slate-600">Glissez vos photos ici</p>
-                    <p className="text-xs text-slate-400 mt-0.5">JPG, PNG, WebP â€” max 6 photos</p>
+                    <p className="text-xs text-slate-400 mt-0.5">JPG, PNG, WebP — max 6 photos</p>
                   </div>
                   <span className="text-xs font-semibold text-orange-600 bg-orange-50 border border-orange-100 px-3 py-1 rounded-full">
                     Parcourir les fichiers
@@ -4950,7 +4950,7 @@ function PublierView({ user, onSignIn }) {
 
                 {form.photos.length > 0 && (
                   <div>
-                    <p className="text-xs text-slate-500 mb-2">{form.photos.length} photo{form.photos.length > 1 ? 's' : ''} ajoutÃ©e{form.photos.length > 1 ? 's' : ''}</p>
+                    <p className="text-xs text-slate-500 mb-2">{form.photos.length} photo{form.photos.length > 1 ? 's' : ''} ajoutée{form.photos.length > 1 ? 's' : ''}</p>
                     <div className="grid grid-cols-3 gap-3">
                       {form.photos.map((src, i) => (
                         <div key={i} className="relative rounded-xl overflow-hidden border border-slate-200 aspect-[4/3]">
@@ -4968,14 +4968,14 @@ function PublierView({ user, onSignIn }) {
                         </div>
                       ))}
                     </div>
-                    <p className="text-[10px] text-slate-400 mt-2">ðŸ’¡ La premiÃ¨re photo est la plus importante â€” les acheteurs la voient en premier.</p>
+                    <p className="text-[10px] text-slate-400 mt-2">ðŸ’¡ La première photo est la plus importante — les acheteurs la voient en premier.</p>
                   </div>
                 )}
 
                 {form.photos.length === 0 && (
                   <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 flex items-start gap-2.5">
                     <Icons.AlertCircle size={14} className="text-amber-500 shrink-0 mt-0.5" />
-                    <p className="text-xs text-amber-700">Les annonces avec photos reÃ§oivent <strong>3Ã— plus de contacts</strong>. Vous pouvez passer cette Ã©tape et ajouter des photos plus tard.</p>
+                    <p className="text-xs text-amber-700">Les annonces avec photos reçoivent <strong>3× plus de contacts</strong>. Vous pouvez passer cette étape et ajouter des photos plus tard.</p>
                   </div>
                 )}
               </div>
@@ -4986,18 +4986,18 @@ function PublierView({ user, onSignIn }) {
               <div className="space-y-6">
                 <div>
                   <h2 className="text-xl font-bold text-navy-900 mb-1">Prix & formule de diffusion</h2>
-                  <p className="text-sm text-slate-500">DÃ©finissez votre prix et choisissez la visibilitÃ© de votre annonce.</p>
+                  <p className="text-sm text-slate-500">Définissez votre prix et choisissez la visibilité de votre annonce.</p>
                 </div>
 
                 {/* Prix */}
                 <div className={form.transactionType === 'location' ? 'grid grid-cols-2 gap-4' : ''}>
-                  <PublierField label={form.transactionType === 'location' ? 'Loyer (â‚¬/mois)' : 'Prix de vente (â‚¬)'} error={errors.price}>
+                  <PublierField label={form.transactionType === 'location' ? 'Loyer (€/mois)' : 'Prix de vente (€)'} error={errors.price}>
                     <input type="number" value={form.price} onChange={e => set('price', e.target.value)}
                       className={inputCls(errors.price)}
                       placeholder={form.transactionType === 'location' ? '950' : '350 000'} min="0" />
                   </PublierField>
                   {form.transactionType === 'location' && (
-                    <PublierField label="Charges (â‚¬/mois)">
+                    <PublierField label="Charges (€/mois)">
                       <input type="number" value={form.charges} onChange={e => set('charges', e.target.value)}
                         className={inputCls()} placeholder="80" min="0" />
                     </PublierField>
@@ -5022,7 +5022,7 @@ function PublierView({ user, onSignIn }) {
                           )}
                           <div className="font-extrabold text-navy-900 text-sm mb-0.5">{plan.name}</div>
                           <div className={`text-lg font-extrabold mb-2 ${active ? 'text-orange-600' : 'text-navy-900'}`}>
-                            {plan.price === 0 ? 'Gratuit' : `${plan.price.toFixed(2).replace('.', ',')} â‚¬`}
+                            {plan.price === 0 ? 'Gratuit' : `${plan.price.toFixed(2).replace('.', ',')} €`}
                           </div>
                           <ul className="space-y-1">
                             {plan.features.map(f => (
@@ -5044,7 +5044,7 @@ function PublierView({ user, onSignIn }) {
 
                 {/* Summary card */}
                 <div className="bg-navy-900 rounded-2xl p-5 text-white">
-                  <div className="text-xs font-bold uppercase tracking-widest text-white/50 mb-3">RÃ©capitulatif de votre annonce</div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-white/50 mb-3">Récapitulatif de votre annonce</div>
                   <div className="flex gap-4 items-start">
                     {form.photos.length > 0 ? (
                       <img src={form.photos[0]} alt="" className="w-16 h-16 rounded-xl object-cover shrink-0" />
@@ -5054,11 +5054,11 @@ function PublierView({ user, onSignIn }) {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <div className="font-extrabold text-base leading-tight truncate">{form.title || 'Titre non renseignÃ©'}</div>
+                      <div className="font-extrabold text-base leading-tight truncate">{form.title || 'Titre non renseigné'}</div>
                       {form.city && <div className="text-white/60 text-sm mt-0.5 flex items-center gap-1"><Icons.MapPin size={12}/>{form.city}{form.zipcode ? ` (${form.zipcode})` : ''}</div>}
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {form.surface && <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full">{form.surface} mÂ²</span>}
-                        {form.rooms   && <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full">{form.rooms} piÃ¨ce{Number(form.rooms)>1?'s':''}</span>}
+                        {form.surface && <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full">{form.surface} m²</span>}
+                        {form.rooms   && <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full">{form.rooms} pièce{Number(form.rooms)>1?'s':''}</span>}
                         {form.dpe     && <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ background: PUBLI_DPE_COLORS[form.dpe], color: ['C','D'].includes(form.dpe)?'#111':'white' }}>DPE {form.dpe}</span>}
                         {form.features.slice(0,3).map(f => <span key={f} className="text-xs bg-white/10 px-2 py-0.5 rounded-full">{f}</span>)}
                         {form.features.length > 3 && <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full">+{form.features.length-3}</span>}
@@ -5067,7 +5067,7 @@ function PublierView({ user, onSignIn }) {
                     {form.price && (
                       <div className="text-right shrink-0">
                         <div className="text-xl font-extrabold text-orange-400">
-                          {Number(form.price).toLocaleString('fr-FR')} â‚¬{form.transactionType==='location'?'/mois':''}
+                          {Number(form.price).toLocaleString('fr-FR')} €{form.transactionType==='location'?'/mois':''}
                         </div>
                       </div>
                     )}
@@ -5086,7 +5086,7 @@ function PublierView({ user, onSignIn }) {
               {step > 1 ? (
                 <button onClick={back}
                   className="flex items-center gap-1.5 text-sm font-semibold text-slate-500 hover:text-navy-900 transition">
-                  <Icons.ChevronLeft size={16} /> PrÃ©cÃ©dent
+                  <Icons.ChevronLeft size={16} /> Précédent
                 </button>
               ) : <div />}
 
@@ -5111,10 +5111,10 @@ function PublierView({ user, onSignIn }) {
 }
 
 /* ============================================================================
-   ADMIN VIEW â€” gateway landing page
+   ADMIN VIEW — gateway landing page
    ============================================================================ */
 const ADMIN_KPIS = [
-  { icon: Icons.CreditCard, label: 'Revenus 30j',    value: 142580, suffix: ' â‚¬', trend: +18, color: 'orange' },
+  { icon: Icons.CreditCard, label: 'Revenus 30j',    value: 142580, suffix: ' €', trend: +18, color: 'orange' },
   { icon: Icons.Users,      label: 'Utilisateurs',   value: 8412,                      trend: +24, color: 'indigo' },
   { icon: Icons.Building,   label: 'Annonces',       value: 1248,                      trend: +12, color: 'emerald' },
   { icon: Icons.Sparkles,   label: 'Abonnements',    value: 384,                       trend: +9,  color: 'orange' },
@@ -5125,9 +5125,9 @@ const ADMIN_KPIS = [
 const ADMIN_MODULES = [
   { id: 'dashboard', icon: Icons.Eye,        label: 'Dashboard',    desc: 'Vue generale de la plateforme', color: 'orange' },
   { id: 'users',     icon: Icons.Users,      label: 'Utilisateurs', desc: '8 412 comptes actifs',          color: 'indigo' },
-  { id: 'listings',  icon: Icons.Building,   label: 'Annonces',     desc: '1 248 actives Â· 14 en attente', color: 'emerald' },
-  { id: 'agencies',  icon: Icons.Building2,  label: 'Agences',      desc: '142 certifiees Â· 2 en cours',   color: 'indigo' },
-  { id: 'payments',  icon: Icons.CreditCard, label: 'Paiements',    desc: '142 580 â‚¬ encaisses',      color: 'emerald' },
+  { id: 'listings',  icon: Icons.Building,   label: 'Annonces',     desc: '1 248 actives · 14 en attente', color: 'emerald' },
+  { id: 'agencies',  icon: Icons.Building2,  label: 'Agences',      desc: '142 certifiees · 2 en cours',   color: 'indigo' },
+  { id: 'payments',  icon: Icons.CreditCard, label: 'Paiements',    desc: '142 580 € encaisses',      color: 'emerald' },
   { id: 'crm',       icon: Icons.Send,       label: 'CRM',          desc: 'Leads & contacts',              color: 'orange' },
   { id: 'reports',   icon: Icons.TrendingUp, label: 'Rapports',     desc: 'Analytiques & statistiques',    color: 'indigo' },
   { id: 'settings',  icon: Icons.Key,        label: 'Parametres',   desc: 'Configuration plateforme',      color: 'rose' },
@@ -5137,7 +5137,7 @@ const ADMIN_ACTIVITY = [
   { actor: 'PASMAL Trust', action: "a bloque l'annonce",  target: 'PSM-2418 (Lille)',    icon: Icons.Shield,     tone: 'rose',    time: 'Il y a 3 min' },
   { actor: 'Camille L.',   action: 'a contacte',          target: 'Studio Bastille',     icon: Icons.Mail,       tone: 'orange',  time: 'Il y a 8 min' },
   { actor: 'BARNES Lyon',  action: 'a soumis son Kbis',   target: 'Dossier #PSM-AG-204', icon: Icons.FileText,   tone: 'indigo',  time: 'Il y a 14 min' },
-  { actor: 'Stripe',       action: 'a encaisse',          target: '+4 870 â‚¬ Visibilite', icon: Icons.CreditCard, tone: 'emerald', time: 'Il y a 22 min' },
+  { actor: 'Stripe',       action: 'a encaisse',          target: '+4 870 € Visibilite', icon: Icons.CreditCard, tone: 'emerald', time: 'Il y a 22 min' },
   { actor: 'PASMAL IA',    action: 'a detecte un doublon',target: '94% avec PSM-2401',   icon: Icons.Sparkles,   tone: 'rose',    time: 'Il y a 1h' },
 ]
 
@@ -5156,7 +5156,7 @@ const ADMIN_TONE = {
 }
 
 /* ============================================================================
-   MessagesView â€” SystÃ¨me de messagerie
+   MessagesView — Système de messagerie
    ============================================================================ */
 const MOCK_CONVERSATIONS = [
   {
@@ -5165,65 +5165,65 @@ const MOCK_CONVERSATIONS = [
     listing: { title: 'T3 lumineux Bastille', ref: 'PSM-2441', img: unsplash('photo-1502672260266-1c1ef2d93688', 120), price: 580000, surface: 72, rooms: 3, city: 'Paris 11e', dpe: 'C' },
     unread: 2,
     messages: [
-      { id: 'm1', from: 'them', text: 'Bonjour, merci pour votre intÃ©rÃªt pour notre bien au Bastille. Comment puis-je vous aider ?', time: '09:14', date: '24 mai' },
-      { id: 'm2', from: 'me', text: "Bonjour, je serais intÃ©ressÃ© pour organiser une visite. ÃŠtes-vous disponible en fin de semaine ?", time: '10:02', date: '24 mai' },
-      { id: 'm3', from: 'them', text: 'Bien sÃ»r ! Je vous propose samedi 25 mai Ã  10h00 ou 14h00. Quelle heure vous convient ?', time: '10:47', date: '24 mai' },
-      { id: 'm4', from: 'them', text: 'Confirmez-vous votre disponibilitÃ© pour samedi matin ?', time: '11:02', date: '25 mai' },
-      { id: 'm5', from: 'them', text: 'Nous sommes Ã©galement disponibles dimanche en matinÃ©e si vous prÃ©fÃ©rez.', time: '09:33', date: '26 mai' },
+      { id: 'm1', from: 'them', text: 'Bonjour, merci pour votre intérêt pour notre bien au Bastille. Comment puis-je vous aider ?', time: '09:14', date: '24 mai' },
+      { id: 'm2', from: 'me', text: "Bonjour, je serais intéressé pour organiser une visite. Êtes-vous disponible en fin de semaine ?", time: '10:02', date: '24 mai' },
+      { id: 'm3', from: 'them', text: 'Bien sûr ! Je vous propose samedi 25 mai à 10h00 ou 14h00. Quelle heure vous convient ?', time: '10:47', date: '24 mai' },
+      { id: 'm4', from: 'them', text: 'Confirmez-vous votre disponibilité pour samedi matin ?', time: '11:02', date: '25 mai' },
+      { id: 'm5', from: 'them', text: 'Nous sommes également disponibles dimanche en matinée si vous préférez.', time: '09:33', date: '26 mai' },
     ],
   },
   {
     id: 'c2',
     contact: { name: 'FONCIA Lyon', initials: 'FO', color: '#1D4ED8', isAgency: true },
-    listing: { title: 'Studio meublÃ© Croix-Rousse', ref: 'PSM-2389', img: unsplash('photo-1522708323590-d24dbb6b0267', 120), price: 950, surface: 28, rooms: 1, city: 'Lyon 4e', dpe: 'B', isLocation: true },
+    listing: { title: 'Studio meublé Croix-Rousse', ref: 'PSM-2389', img: unsplash('photo-1522708323590-d24dbb6b0267', 120), price: 950, surface: 28, rooms: 1, city: 'Lyon 4e', dpe: 'B', isLocation: true },
     unread: 0,
     messages: [
-      { id: 'm1', from: 'me', text: 'Bonjour, le studio est-il encore disponible pour une entrÃ©e en septembre ?', time: '15:30', date: '22 mai' },
-      { id: 'm2', from: 'them', text: 'Bonjour ! Oui, disponible dÃ¨s le 1er septembre. Souhaitez-vous visiter ou postuler en ligne ?', time: '16:05', date: '22 mai' },
-      { id: 'm3', from: 'me', text: 'Je prÃ©fÃ¨rerais visiter avant. Merci pour la rÃ©ponse rapide !', time: '16:20', date: '22 mai' },
-      { id: 'm4', from: 'them', text: 'Parfait, je vous envoie les crÃ©neaux disponibles demain matin.', time: '16:28', date: '22 mai' },
+      { id: 'm1', from: 'me', text: 'Bonjour, le studio est-il encore disponible pour une entrée en septembre ?', time: '15:30', date: '22 mai' },
+      { id: 'm2', from: 'them', text: 'Bonjour ! Oui, disponible dès le 1er septembre. Souhaitez-vous visiter ou postuler en ligne ?', time: '16:05', date: '22 mai' },
+      { id: 'm3', from: 'me', text: 'Je préfèrerais visiter avant. Merci pour la réponse rapide !', time: '16:20', date: '22 mai' },
+      { id: 'm4', from: 'them', text: 'Parfait, je vous envoie les créneaux disponibles demain matin.', time: '16:28', date: '22 mai' },
     ],
   },
   {
     id: 'c3',
     contact: { name: 'Thomas M.', initials: 'TM', color: '#7C3AED', isAgency: false },
-    listing: { title: 'Maison Bordeaux 115 mÂ²', ref: 'PSM-2201', img: unsplash('photo-1600585154340-be6161a56a0c', 120), price: 412000, surface: 115, rooms: 5, city: 'Bordeaux', dpe: 'D' },
+    listing: { title: 'Maison Bordeaux 115 m²', ref: 'PSM-2201', img: unsplash('photo-1600585154340-be6161a56a0c', 120), price: 412000, surface: 115, rooms: 5, city: 'Bordeaux', dpe: 'D' },
     unread: 1,
     messages: [
       { id: 'm1', from: 'me', text: "Bonjour, je suis vendeur pour la maison de Bordeaux. Avez-vous des questions ?", time: '14:00', date: '25 mai' },
-      { id: 'm2', from: 'them', text: 'Bonjour, seriez-vous ouvert Ã  une contre-offre ?', time: '18:42', date: '25 mai' },
-      { id: 'm3', from: 'them', text: 'Je propose 395 000 â‚¬ pour un compromis signÃ© avant le 15 juin.', time: '18:43', date: '25 mai' },
+      { id: 'm2', from: 'them', text: 'Bonjour, seriez-vous ouvert à une contre-offre ?', time: '18:42', date: '25 mai' },
+      { id: 'm3', from: 'them', text: 'Je propose 395 000 € pour un compromis signé avant le 15 juin.', time: '18:43', date: '25 mai' },
     ],
   },
   {
     id: 'c4',
     contact: { name: 'Nexity Paris', initials: 'NX', color: '#BE123C', isAgency: true },
-    listing: { title: 'Appartement haussmannien 98 mÂ²', ref: 'PSM-1840', img: unsplash('photo-1560448204-e02f11c3d0e2', 120), price: 1150000, surface: 98, rooms: 4, city: 'Paris 8e', dpe: 'E' },
+    listing: { title: 'Appartement haussmannien 98 m²', ref: 'PSM-1840', img: unsplash('photo-1560448204-e02f11c3d0e2', 120), price: 1150000, surface: 98, rooms: 4, city: 'Paris 8e', dpe: 'E' },
     unread: 0,
     messages: [
       { id: 'm1', from: 'me', text: 'Bonjour, pouvez-vous me transmettre les diagnostics immobiliers du bien ?', time: '10:15', date: '20 mai' },
-      { id: 'm2', from: 'them', text: "Bonjour, je vous envoie le dossier complet (DPE, amiante, Ã©lectricitÃ©) par email aujourd'hui.", time: '11:00', date: '20 mai' },
-      { id: 'm3', from: 'me', text: "Merci beaucoup, j'ai bien reÃ§u les documents. Tout semble en ordre.", time: '14:33', date: '20 mai' },
-      { id: 'm4', from: 'them', text: "Super ! N'hÃ©sitez pas si vous avez la moindre question avant la visite.", time: '14:45', date: '20 mai' },
+      { id: 'm2', from: 'them', text: "Bonjour, je vous envoie le dossier complet (DPE, amiante, électricité) par email aujourd'hui.", time: '11:00', date: '20 mai' },
+      { id: 'm3', from: 'me', text: "Merci beaucoup, j'ai bien reçu les documents. Tout semble en ordre.", time: '14:33', date: '20 mai' },
+      { id: 'm4', from: 'them', text: "Super ! N'hésitez pas si vous avez la moindre question avant la visite.", time: '14:45', date: '20 mai' },
     ],
   },
   {
     id: 'c5',
-    contact: { name: 'LaforÃªt Nantes', initials: 'LF', color: '#047857', isAgency: true },
-    listing: { title: 'T2 moderne ÃŽle de Nantes', ref: 'PSM-1762', img: unsplash('photo-1493809842364-78817add7ffb', 120), price: 245000, surface: 48, rooms: 2, city: 'Nantes', dpe: 'B' },
+    contact: { name: 'Laforêt Nantes', initials: 'LF', color: '#047857', isAgency: true },
+    listing: { title: 'T2 moderne Île de Nantes', ref: 'PSM-1762', img: unsplash('photo-1493809842364-78817add7ffb', 120), price: 245000, surface: 48, rooms: 2, city: 'Nantes', dpe: 'B' },
     unread: 0,
     messages: [
-      { id: 'm1', from: 'them', text: 'Bonjour, suite Ã  votre demande de contact â€” ce T2 est encore disponible et une visite peut Ãªtre planifiÃ©e dÃ¨s cette semaine.', time: '08:55', date: '18 mai' },
+      { id: 'm1', from: 'them', text: 'Bonjour, suite à votre demande de contact — ce T2 est encore disponible et une visite peut être planifiée dès cette semaine.', time: '08:55', date: '18 mai' },
     ],
   },
 ]
 
 const AUTO_REPLIES = {
-  c1: ['Je vous confirme samedi Ã  10h ! Ã€ bientÃ´t.', 'Parfait, je note votre visite â€” Ã  samedi !'],
-  c2: ['Voici les crÃ©neaux disponibles : lundi 16h ou mercredi 11h. Lequel vous convient ?', 'Bonne journÃ©e !'],
-  c3: ['Je suis ouvert Ã  la discussion. Quel est votre dÃ©lai de signature ?', 'C\'est notÃ©, je reviens vers vous rapidement.'],
-  c4: ['N\'hÃ©sitez pas, je reste disponible pour toute question.', 'Bonne continuation !'],
-  c5: ['Merci pour votre rÃ©ponse, Ã  bientÃ´t !', 'Avec plaisir.'],
+  c1: ['Je vous confirme samedi à 10h ! À bientôt.', 'Parfait, je note votre visite — à samedi !'],
+  c2: ['Voici les créneaux disponibles : lundi 16h ou mercredi 11h. Lequel vous convient ?', 'Bonne journée !'],
+  c3: ['Je suis ouvert à la discussion. Quel est votre délai de signature ?', 'C\'est noté, je reviens vers vous rapidement.'],
+  c4: ['N\'hésitez pas, je reste disponible pour toute question.', 'Bonne continuation !'],
+  c5: ['Merci pour votre réponse, à bientôt !', 'Avec plaisir.'],
 }
 
 function MessagesView({ user }) {
@@ -5335,7 +5335,7 @@ function MessagesView({ user }) {
             <div className="relative">
               <Icons.Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input value={search} onChange={e => setSearch(e.target.value)}
-                placeholder="Rechercherâ€¦"
+                placeholder="Rechercher…"
                 className="w-full pl-8 pr-3 py-2 bg-slate-50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 border border-slate-100" />
             </div>
           </div>
@@ -5345,7 +5345,7 @@ function MessagesView({ user }) {
             {[
               { id: 'all',      label: 'Tous' },
               { id: 'unread',   label: 'Non lus', badge: convs.filter(c => !c.archived && c.unread > 0).length },
-              { id: 'archived', label: 'ArchivÃ©s' },
+              { id: 'archived', label: 'Archivés' },
             ].map(f => (
               <button key={f.id} onClick={() => setFilter(f.id)}
                 className={`flex-1 py-2 text-xs font-semibold flex items-center justify-center gap-1 border-b-2 transition-all ${
@@ -5361,7 +5361,7 @@ function MessagesView({ user }) {
           <div className="flex-1 overflow-y-auto">
             {filtered.length === 0 && (
               <div className="p-6 text-center text-slate-400 text-sm">
-                {filter === 'unread' ? 'Aucun message non lu.' : filter === 'archived' ? 'Aucune conversation archivÃ©e.' : 'Aucune conversation trouvÃ©e.'}
+                {filter === 'unread' ? 'Aucun message non lu.' : filter === 'archived' ? 'Aucune conversation archivée.' : 'Aucune conversation trouvée.'}
               </div>
             )}
             {filtered.map(c => {
@@ -5382,7 +5382,7 @@ function MessagesView({ user }) {
                         </span>
                         <span className="text-[10px] text-slate-400 shrink-0 ml-2">{lm?.date}</span>
                       </div>
-                      <div className="text-xs text-slate-400 truncate">{c.listing.ref} Â· {c.listing.title}</div>
+                      <div className="text-xs text-slate-400 truncate">{c.listing.ref} · {c.listing.title}</div>
                       <div className="flex items-center justify-between mt-0.5">
                         <span className={`text-xs truncate ${c.unread > 0 ? 'text-navy-900 font-medium' : 'text-slate-400'}`}>
                           {lm?.from === 'me' ? 'Vous : ' : ''}{lm?.text}
@@ -5435,7 +5435,7 @@ function MessagesView({ user }) {
                 </div>
                 <div className="text-xs text-slate-400 truncate flex items-center gap-1.5">
                   <img src={active.listing.img} alt="" className="w-4 h-4 rounded object-cover inline-block" />
-                  {active.listing.ref} Â· {active.listing.title}
+                  {active.listing.ref} · {active.listing.title}
                 </div>
               </div>
               <div className="flex gap-2 shrink-0">
@@ -5538,7 +5538,7 @@ function MessagesView({ user }) {
                     transition={{ duration: 0.2 }}
                     className="bg-white border-l border-slate-100 overflow-hidden shrink-0 flex flex-col">
                     <div className="p-4 border-b border-slate-50">
-                      <div className="font-bold text-sm text-[#0B1F3A] mb-0.5">Annonce concernÃ©e</div>
+                      <div className="font-bold text-sm text-[#0B1F3A] mb-0.5">Annonce concernée</div>
                       <div className="text-xs text-slate-400">{active.listing.ref}</div>
                     </div>
                     <div className="overflow-y-auto flex-1">
@@ -5550,13 +5550,13 @@ function MessagesView({ user }) {
                           <Icons.MapPin size={10} className="text-orange-500" /> {active.listing.city}
                         </div>
                         <div className="text-lg font-extrabold text-[#0B1F3A] mb-3">
-                          {(active.listing.price || 0).toLocaleString('fr-FR')} â‚¬{active.listing.isLocation ? '/mois' : ''}
+                          {(active.listing.price || 0).toLocaleString('fr-FR')} €{active.listing.isLocation ? '/mois' : ''}
                         </div>
                         <div className="grid grid-cols-3 gap-2 mb-4">
                           {[
-                            { icon: Icons.Maximize, val: `${active.listing.surface} mÂ²` },
+                            { icon: Icons.Maximize, val: `${active.listing.surface} m²` },
                             { icon: Icons.Bed,      val: `${active.listing.rooms} p.` },
-                            { icon: Icons.Building, val: active.listing.dpe || 'â€”' },
+                            { icon: Icons.Building, val: active.listing.dpe || '—' },
                           ].map((stat, i) => {
                             const SI = stat.icon
                             return (
@@ -5576,7 +5576,7 @@ function MessagesView({ user }) {
                       </div>
                       {/* Shared files placeholder */}
                       <div className="mx-4 mb-4 p-3 bg-slate-50 rounded-2xl">
-                        <div className="text-xs font-semibold text-slate-500 mb-2">Fichiers partagÃ©s</div>
+                        <div className="text-xs font-semibold text-slate-500 mb-2">Fichiers partagés</div>
                         {[{ name: 'Diagnostics DPE.pdf', size: '1.2 Mo' }, { name: 'Plan du bien.pdf', size: '840 Ko' }].map(f => (
                           <div key={f.name} className="flex items-center gap-2 py-1.5">
                             <Icons.FileText size={12} className="text-orange-500 shrink-0" />
@@ -5619,7 +5619,7 @@ function MessagesView({ user }) {
                 <div className="flex-1 relative">
                   <textarea rows={1} value={input} onChange={e => setInput(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(e) } }}
-                    placeholder="Ã‰crivez un messageâ€¦"
+                    placeholder="Écrivez un message…"
                     className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-orange-400 resize-none leading-relaxed"
                     style={{ maxHeight: 120 }} />
                 </div>
@@ -5641,7 +5641,7 @@ function MessagesView({ user }) {
               <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Icons.Mail size={28} className="text-slate-300" />
               </div>
-              <div className="font-semibold text-slate-400">SÃ©lectionnez une conversation</div>
+              <div className="font-semibold text-slate-400">Sélectionnez une conversation</div>
             </div>
           </div>
         )}
@@ -5665,7 +5665,7 @@ function MessagesView({ user }) {
               <div className="p-4 border-b border-slate-50">
                 <div className="relative">
                   <Icons.Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input placeholder="Rechercher un contact ou une annonceâ€¦"
+                  <input placeholder="Rechercher un contact ou une annonce…"
                     className="w-full pl-8 pr-3 py-2 bg-slate-50 rounded-xl text-sm focus:outline-none border border-slate-100" />
                 </div>
               </div>
@@ -5784,7 +5784,7 @@ function AdminView({ user }) {
       <section className="max-w-6xl mx-auto px-6 pb-16">
         <div className="grid lg:grid-cols-3 gap-8">
 
-          {/* Module grid â€” 2/3 */}
+          {/* Module grid — 2/3 */}
           <div className="lg:col-span-2">
             <h2 className="text-white font-bold text-lg mb-4">Modules</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -5807,7 +5807,7 @@ function AdminView({ user }) {
             </div>
           </div>
 
-          {/* Activity feed â€” 1/3 */}
+          {/* Activity feed — 1/3 */}
           <div>
             <h2 className="text-white font-bold text-lg mb-4">Activite recente</h2>
             <div className="bg-[#0B1F3A] border border-white/10 rounded-2xl overflow-hidden">
@@ -5892,7 +5892,7 @@ export default function App() {
     return () => subscription?.unsubscribe?.()
   }, [fetchRole])
 
-  // Admin guard â€” redirect non-admin away from backoffice
+  // Admin guard — redirect non-admin away from backoffice
   useEffect(() => {
     if (currentView !== 'admin') return
     // Wait until we know the role (avoid flicker right after login)
@@ -5902,7 +5902,7 @@ export default function App() {
     }
   }, [currentView, user, role])
 
-  // Auth guard â€” redirect to home when session ends on a protected view
+  // Auth guard — redirect to home when session ends on a protected view
   useEffect(() => {
     const authViews = ['profil', 'favoris', 'mes-annonces', 'verification', 'alerts', 'admin', 'messages']
     if (!user && authViews.includes(currentView)) {
@@ -5941,7 +5941,7 @@ export default function App() {
 
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
     if (!supabaseUrl || supabaseUrl.includes('placeholder')) {
-      if (import.meta.env.DEV) console.error('[PASMAL] VITE_SUPABASE_URL manquant ou invalide â€” vÃ©rifier les variables d\'environnement Vercel/Vite.')
+      if (import.meta.env.DEV) console.error('[PASMAL] VITE_SUPABASE_URL manquant ou invalide — vérifier les variables d\'environnement Vercel/Vite.')
       const filtered = applyClientFilters(FALLBACK_LISTINGS, currentFilters)
       setListings(filtered.length ? filtered : FALLBACK_LISTINGS)
       setSource('fallback')
@@ -5972,12 +5972,12 @@ export default function App() {
       const isCors = err?.message?.includes('CORS') || err?.message?.includes('NetworkError when attempting to fetch resource')
 
       let devHint = ''
-      if (isNetworkDown) devHint = `[PASMAL] RÃ©seau inaccessible â€” URL: ${import.meta.env.VITE_SUPABASE_URL}`
-      else if (isCors) devHint = `[PASMAL] Erreur CORS â€” vÃ©rifier les origines dans Supabase Auth > URL Configuration`
+      if (isNetworkDown) devHint = `[PASMAL] Réseau inaccessible — URL: ${import.meta.env.VITE_SUPABASE_URL}`
+      else if (isCors) devHint = `[PASMAL] Erreur CORS — vérifier les origines dans Supabase Auth > URL Configuration`
       else devHint = `[PASMAL] Erreur Supabase: ${err?.message}`
       if (import.meta.env.DEV) console.error(devHint, err)
 
-      setError(err?.message || 'Erreur rÃ©seau')
+      setError(err?.message || 'Erreur réseau')
       const filtered = applyClientFilters(FALLBACK_LISTINGS, currentFilters)
       setListings(filtered.length ? filtered : FALLBACK_LISTINGS)
       setSource('fallback')
@@ -6230,7 +6230,7 @@ export default function App() {
 }
 
 /* ============================================================================
-   Search Results Page â€” Ã‰tape 6
+   Search Results Page — Étape 6
    ============================================================================ */
 
 function ResultsSkeleton({ viewMode }) {
@@ -6307,7 +6307,7 @@ function ResultsGrid({ listings, onSelect, onCompare, compareList = [] }) {
                 <div className="text-lg font-extrabold text-navy-900">{formatPrice(l)}</div>
                 <div className="flex items-center gap-3 text-xs text-slate-400">
                   {l.rooms   && <span className="flex items-center gap-1"><Icons.Home size={12} /> {l.rooms}p.</span>}
-                  {l.surface && <span className="flex items-center gap-1"><Icons.Maximize size={12} /> {l.surface}mÂ²</span>}
+                  {l.surface && <span className="flex items-center gap-1"><Icons.Maximize size={12} /> {l.surface}m²</span>}
                 </div>
               </div>
               <div className="text-[11px] text-slate-400 mt-2">{l.agency}</div>
@@ -6316,7 +6316,7 @@ function ResultsGrid({ listings, onSelect, onCompare, compareList = [] }) {
                   onClick={e => { e.stopPropagation(); onCompare(raw) }}
                   className={`mt-2.5 w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] font-semibold border transition-all ${compareList.some(c => c.id === raw.id) ? 'bg-orange-50 border-orange-300 text-orange-600' : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-orange-300 hover:text-orange-600'}`}>
                   {compareList.some(c => c.id === raw.id)
-                    ? <><Icons.Check size={11} /> AjoutÃ© Ã  la comparaison</>
+                    ? <><Icons.Check size={11} /> Ajouté à la comparaison</>
                     : <>+ Comparer ce bien</>}
                 </button>
               )}
@@ -6362,7 +6362,7 @@ function ResultsList({ listings, onSelect, onCompare, compareList = [] }) {
                 <div className="flex items-center gap-4 flex-wrap mt-3">
                   <span className="text-xl font-extrabold text-navy-900">{formatPrice(l)}</span>
                   {l.rooms   && <span className="flex items-center gap-1 text-sm text-slate-500"><Icons.Home size={13} /> {l.rooms} p.</span>}
-                  {l.surface && <span className="flex items-center gap-1 text-sm text-slate-500"><Icons.Maximize size={13} /> {l.surface} mÂ²</span>}
+                  {l.surface && <span className="flex items-center gap-1 text-sm text-slate-500"><Icons.Maximize size={13} /> {l.surface} m²</span>}
                   <span className="flex items-center gap-1 text-[11px] text-slate-400">
                     <Icons.ShieldCheckBig size={12} className="text-emerald-500" /> Score {l.trust_score}/100
                   </span>
@@ -6378,7 +6378,7 @@ function ResultsList({ listings, onSelect, onCompare, compareList = [] }) {
                 <button
                   onClick={e => { e.stopPropagation(); onCompare(raw) }}
                   className={`text-[10px] font-semibold px-2 py-1 rounded-lg border transition-all whitespace-nowrap ${compareList.some(c => c.id === raw.id) ? 'bg-orange-50 border-orange-300 text-orange-600' : 'bg-slate-50 border-slate-200 text-slate-400 hover:border-orange-300 hover:text-orange-600'}`}>
-                  {compareList.some(c => c.id === raw.id) ? 'âœ“ AjoutÃ©' : '+ Comparer'}
+                  {compareList.some(c => c.id === raw.id) ? 'âœ“ Ajouté' : '+ Comparer'}
                 </button>
               )}
             </div>
@@ -6456,18 +6456,18 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
   const chips = [
     filters.location     && { key: 'location',    label: filters.location,                                           type: 'global', reset: { location: '' } },
     filters.propertyType && { key: 'propertyType', label: filters.propertyType,                                       type: 'global', reset: { propertyType: '' } },
-    filters.priceMax     && { key: 'priceMax',     label: `â‰¤ ${Number(filters.priceMax).toLocaleString('fr-FR')} â‚¬`, type: 'global', reset: { priceMax: '' } },
-    filters.surfaceMin   && { key: 'surfaceMin',   label: `â‰¥ ${filters.surfaceMin} mÂ²`,                              type: 'global', reset: { surfaceMin: '' } },
-    filters.roomsMin     && { key: 'roomsMin',     label: `${filters.roomsMin}+ piÃ¨ces`,                             type: 'global', reset: { roomsMin: '' } },
-    fRooms > 0            && { key: 'fRooms',      label: `${fRooms}+ piÃ¨ces`,   type: 'local', fn: () => setFRooms(0) },
+    filters.priceMax     && { key: 'priceMax',     label: `â‰¤ ${Number(filters.priceMax).toLocaleString('fr-FR')} €`, type: 'global', reset: { priceMax: '' } },
+    filters.surfaceMin   && { key: 'surfaceMin',   label: `â‰¥ ${filters.surfaceMin} m²`,                              type: 'global', reset: { surfaceMin: '' } },
+    filters.roomsMin     && { key: 'roomsMin',     label: `${filters.roomsMin}+ pièces`,                             type: 'global', reset: { roomsMin: '' } },
+    fRooms > 0            && { key: 'fRooms',      label: `${fRooms}+ pièces`,   type: 'local', fn: () => setFRooms(0) },
     fDPE.length > 0       && { key: 'fDPE',        label: `DPE : ${fDPE.join(',')}`, type: 'local', fn: () => setFDPE([]) },
     fParking              && { key: 'fParking',    label: 'Parking',             type: 'local', fn: () => setFParking(false) },
     fElevator             && { key: 'fElevator',   label: 'Ascenseur',           type: 'local', fn: () => setFElevator(false) },
     fCellar               && { key: 'fCellar',     label: 'Cave',                type: 'local', fn: () => setFCellar(false) },
-    fFloorMin             && { key: 'fFloorMin',   label: `â‰¥ Ã©tage ${fFloorMin}`, type: 'local', fn: () => setFFloorMin('') },
+    fFloorMin             && { key: 'fFloorMin',   label: `â‰¥ étage ${fFloorMin}`, type: 'local', fn: () => setFFloorMin('') },
     fNewOnly              && { key: 'fNewOnly',    label: 'Neuf seulement',      type: 'local', fn: () => setFNewOnly(false) },
-    fPriceMin             && { key: 'fPriceMin',   label: `â‰¥ ${Number(fPriceMin).toLocaleString('fr-FR')} â‚¬`, type: 'local', fn: () => setFPriceMin('') },
-    (fPriceMax && !filters.priceMax) && { key: 'fPriceMax', label: `â‰¤ ${Number(fPriceMax).toLocaleString('fr-FR')} â‚¬`, type: 'local', fn: () => setFPriceMax('') },
+    fPriceMin             && { key: 'fPriceMin',   label: `â‰¥ ${Number(fPriceMin).toLocaleString('fr-FR')} €`, type: 'local', fn: () => setFPriceMin('') },
+    (fPriceMax && !filters.priceMax) && { key: 'fPriceMax', label: `â‰¤ ${Number(fPriceMax).toLocaleString('fr-FR')} €`, type: 'local', fn: () => setFPriceMax('') },
   ].filter(Boolean)
 
   const removeChip = (chip) => {
@@ -6479,16 +6479,16 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
     setFilters(next); onSearch(next); resetLocal()
   }
 
-  const typeLabel = filters.type === 'louer' ? 'Ã  louer' : filters.type === 'investir' ? 'Ã  investir' : 'Ã  acheter'
+  const typeLabel = filters.type === 'louer' ? 'à louer' : filters.type === 'investir' ? 'à investir' : 'à acheter'
 
   /* â”€â”€ sidebar controls (shared desktop + mobile) â”€â”€ */
   const SidebarContent = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="font-bold text-[#0B1F3A] text-sm">Filtres avancÃ©s</div>
+        <div className="font-bold text-[#0B1F3A] text-sm">Filtres avancés</div>
         {activeLocalCount > 0 && (
           <button onClick={resetLocal} className="text-xs text-orange-600 hover:text-orange-700 font-semibold">
-            RÃ©initialiser ({activeLocalCount})
+            Réinitialiser ({activeLocalCount})
           </button>
         )}
       </div>
@@ -6496,21 +6496,21 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
       <div>
         <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5">Budget</div>
         <div className="grid grid-cols-2 gap-2">
-          <input type="number" value={fPriceMin} onChange={e => setFPriceMin(e.target.value)} placeholder="Min â‚¬"
+          <input type="number" value={fPriceMin} onChange={e => setFPriceMin(e.target.value)} placeholder="Min €"
             className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition" />
-          <input type="number" value={fPriceMax} onChange={e => setFPriceMax(e.target.value)} placeholder="Max â‚¬"
+          <input type="number" value={fPriceMax} onChange={e => setFPriceMax(e.target.value)} placeholder="Max €"
             className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition" />
         </div>
       </div>
 
       <div>
-        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5">Surface min. (mÂ²)</div>
+        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5">Surface min. (m²)</div>
         <input type="number" value={fSurface} onChange={e => setFSurface(e.target.value)} placeholder="ex. 40"
           className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition" />
       </div>
 
       <div>
-        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5">PiÃ¨ces minimum</div>
+        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5">Pièces minimum</div>
         <div className="flex gap-1">
           {[0,1,2,3,4,5].map(n => (
             <button key={n} onClick={() => setFRooms(n)}
@@ -6557,7 +6557,7 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
       </div>
 
       <div>
-        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5">Ã‰tage minimum</div>
+        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5">Étage minimum</div>
         <div className="flex gap-1">
           {[['', 'Tt'], ['1', '1'], ['2', '2'], ['3', '3+'], ['5', '5+'], ['10', '10+']].map(([v, lbl]) => (
             <button key={v} onClick={() => setFFloorMin(v)}
@@ -6569,7 +6569,7 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
       </div>
 
       <div>
-        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5">Ã‰quipements</div>
+        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2.5">Équipements</div>
         <div className="space-y-2">
           {[
             { state: fParking,  setter: setFParking,  label: 'Parking / Garage' },
@@ -6616,7 +6616,7 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
       })}
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-2 pointer-events-none">
         <Icons.MapPin size={13} className="text-orange-400" />
-        <span className="text-white/80 text-xs font-medium">Carte interactive â€” bientÃ´t disponible</span>
+        <span className="text-white/80 text-xs font-medium">Carte interactive — bientôt disponible</span>
       </div>
     </div>
   )
@@ -6636,8 +6636,8 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
             : <span className="text-sm text-slate-700">
                 <span className="font-bold text-[#0B1F3A]">{sorted.length} bien{sorted.length !== 1 ? 's' : ''}</span>
                 {' '}{typeLabel}
-                {filters.location && <span className="text-orange-600"> Â· {filters.location}</span>}
-                {source === 'fallback' && <span className="ml-1.5 text-xs text-slate-400">(dÃ©mo)</span>}
+                {filters.location && <span className="text-orange-600"> · {filters.location}</span>}
+                {source === 'fallback' && <span className="ml-1.5 text-xs text-slate-400">(démo)</span>}
               </span>
           }
         </div>
@@ -6654,7 +6654,7 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8">
         <div className="flex gap-8 items-start">
 
-          {/* Sidebar â€” desktop */}
+          {/* Sidebar — desktop */}
           <aside className="hidden lg:block w-64 shrink-0 sticky top-24">
             <div className="bg-white rounded-3xl border border-slate-100 shadow-soft p-6">
               <SidebarContent />
@@ -6685,7 +6685,7 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
                   className="h-9 pl-3 pr-8 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 focus:outline-none focus:border-orange-400 appearance-none cursor-pointer">
                   <option value="relevance">Pertinence</option>
                   <option value="price-asc">Prix croissant</option>
-                  <option value="price-desc">Prix dÃ©croissant</option>
+                  <option value="price-desc">Prix décroissant</option>
                   <option value="surface">Surface</option>
                 </select>
               </div>
@@ -6712,7 +6712,7 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
                 { label: 'Ascenseur', active: fElevator, fn: () => setFElevator(s => !s) },
                 { label: 'Cave',      active: fCellar,   fn: () => setFCellar(s => !s) },
                 { label: 'Neuf',      active: fNewOnly,  fn: () => setFNewOnly(s => !s) },
-                { label: 'Ã‰tage 2+',  active: fFloorMin === '2', fn: () => setFFloorMin(v => v === '2' ? '' : '2') },
+                { label: 'Étage 2+',  active: fFloorMin === '2', fn: () => setFFloorMin(v => v === '2' ? '' : '2') },
               ].map(({ label, active, fn }) => (
                 <button key={label} onClick={fn}
                   className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
@@ -6747,7 +6747,7 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-lg font-extrabold text-[#0B1F3A]">{animCount}</span>
                 <span className="text-sm text-slate-500">bien{animCount !== 1 ? 's' : ''} {typeLabel}</span>
-                {activeLocalCount > 0 && <span className="text-xs text-orange-600 font-semibold">Â· {activeLocalCount} filtre{activeLocalCount !== 1 ? 's' : ''} actif{activeLocalCount !== 1 ? 's' : ''}</span>}
+                {activeLocalCount > 0 && <span className="text-xs text-orange-600 font-semibold">· {activeLocalCount} filtre{activeLocalCount !== 1 ? 's' : ''} actif{activeLocalCount !== 1 ? 's' : ''}</span>}
               </div>
             )}
 
@@ -6755,7 +6755,7 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
             {error && (
               <div className="flex items-start gap-2 px-4 py-3 mb-5 bg-orange-50 border border-orange-100 text-orange-700 rounded-2xl text-sm">
                 <Icons.AlertCircle size={16} className="mt-0.5 shrink-0" />
-                <span>Affichage de la sÃ©lection dÃ©mo â€” {error}</span>
+                <span>Affichage de la sélection démo — {error}</span>
               </div>
             )}
 
@@ -6768,10 +6768,10 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
                   <Icons.Search size={24} className="text-orange-600" />
                 </div>
                 <h3 className="text-lg font-bold text-[#0B1F3A] mb-2">Aucun bien ne correspond</h3>
-                <p className="text-slate-500 text-sm mb-6">Essayez d'Ã©largir vos critÃ¨res.</p>
+                <p className="text-slate-500 text-sm mb-6">Essayez d'élargir vos critères.</p>
                 <button onClick={resetAll}
                   className="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-full transition-colors">
-                  RÃ©initialiser les filtres
+                  Réinitialiser les filtres
                 </button>
               </div>
             ) : viewMode === 'map' ? (
@@ -6791,9 +6791,9 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
                 </button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1)
                   .filter(n => n === 1 || n === totalPages || Math.abs(n - page) <= 1)
-                  .reduce((acc, n, i, arr) => { if (i > 0 && n - arr[i - 1] > 1) acc.push('â€¦'); acc.push(n); return acc }, [])
-                  .map((n, i) => n === 'â€¦'
-                    ? <span key={`e${i}`} className="text-slate-400 text-sm px-1">â€¦</span>
+                  .reduce((acc, n, i, arr) => { if (i > 0 && n - arr[i - 1] > 1) acc.push('…'); acc.push(n); return acc }, [])
+                  .map((n, i) => n === '…'
+                    ? <span key={`e${i}`} className="text-slate-400 text-sm px-1">…</span>
                     : <button key={n} onClick={() => setPage(n)}
                         className={`w-9 h-9 rounded-xl text-sm font-bold transition-all ${
                           page === n ? 'bg-orange-500 text-white shadow-sm' : 'bg-white border border-slate-200 text-slate-600 hover:border-orange-400 hover:text-orange-600'
@@ -6808,8 +6808,8 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
             )}
             {!loading && sorted.length > 0 && viewMode !== 'map' && (
               <div className="text-center text-xs text-slate-400 mt-3">
-                {sorted.length > PER_PAGE && <>Page {page} sur {totalPages} Â· </>}
-                {sorted.length} rÃ©sultat{sorted.length !== 1 ? 's' : ''}
+                {sorted.length > PER_PAGE && <>Page {page} sur {totalPages} · </>}
+                {sorted.length} résultat{sorted.length !== 1 ? 's' : ''}
               </div>
             )}
 
@@ -6838,7 +6838,7 @@ function SearchResultsPage({ listings, loading, error, source, filters, setFilte
               <div className="p-6 border-t border-slate-100">
                 <button onClick={() => setSideOpen(false)}
                   className="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-2xl transition-colors">
-                  Voir les rÃ©sultats ({sorted.length})
+                  Voir les résultats ({sorted.length})
                 </button>
               </div>
             </motion.div>
@@ -6868,7 +6868,7 @@ function DPEBadge({ band = 'C' }) {
   const b = DPE_BANDS[band] || DPE_BANDS.C
   return (
     <div className="flex items-center gap-3">
-      <div className="text-xs text-slate-500 font-medium w-28">Ã‰tiquette DPE</div>
+      <div className="text-xs text-slate-500 font-medium w-28">Étiquette DPE</div>
       <div style={{ background: b.color, color: b.textColor }}
         className="px-3 py-1 rounded text-sm font-bold min-w-[32px] text-center">
         {band}
@@ -6878,14 +6878,14 @@ function DPEBadge({ band = 'C' }) {
 }
 
 const _DETAIL_DESCS = [
-  "Magnifique bien en excellent Ã©tat, idÃ©alement situÃ© dans un quartier prisÃ© et calme. Lumineux et fonctionnel, il offre des prestations haut de gamme avec une vue dÃ©gagÃ©e.",
-  "Rare sur le marchÃ©, ce bien d'exception vous sÃ©duira par son charme et sa qualitÃ© de construction. Exposition plein sud, volumes gÃ©nÃ©reux, emplacement de premier choix.",
-  "Coup de cÅ“ur assurÃ© pour ce bien soigneusement rÃ©novÃ© avec des matÃ©riaux nobles. Architecture Ã©lÃ©gante, intÃ©rieur design et moderne, Ã  deux pas des commerces et transports.",
-  "Dans une rÃ©sidence sÃ©curisÃ©e Ã  l'architecture contemporaine, ce bien bÃ©nÃ©ficie de finitions haut de gamme et d'espaces parfaitement agencÃ©s. IdÃ©al pour une premiÃ¨re acquisition.",
+  "Magnifique bien en excellent état, idéalement situé dans un quartier prisé et calme. Lumineux et fonctionnel, il offre des prestations haut de gamme avec une vue dégagée.",
+  "Rare sur le marché, ce bien d'exception vous séduira par son charme et sa qualité de construction. Exposition plein sud, volumes généreux, emplacement de premier choix.",
+  "Coup de cœur assuré pour ce bien soigneusement rénové avec des matériaux nobles. Architecture élégante, intérieur design et moderne, à deux pas des commerces et transports.",
+  "Dans une résidence sécurisée à l'architecture contemporaine, ce bien bénéficie de finitions haut de gamme et d'espaces parfaitement agencés. Idéal pour une première acquisition.",
 ]
 
 const _DETAIL_FEATURES = [
-  ['Double vitrage', 'Parquet bois', 'Cuisine Ã©quipÃ©e', 'Interphone vidÃ©o'],
+  ['Double vitrage', 'Parquet bois', 'Cuisine équipée', 'Interphone vidéo'],
   ['Cave privative', 'Gardien 24h/24', 'Fibre optique', 'Digicode'],
   ['Parking inclus', 'Ascenseur', 'Terrasse', 'Cellier'],
   ['Balcon', 'Lumineux', 'Traversant', 'Parquet bois'],
@@ -6922,16 +6922,16 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
   const historyBase    = l.price || 400000
   const historyValues  = [0.94, 0.96, 0.97, 0.985, 1.0, 1.02].map(f => Math.round(historyBase * f))
   const historyMax     = Math.max(...historyValues)
-  const HISTORY_MONTHS = ['Jan', 'FÃ©v', 'Mar', 'Avr', 'Mai', 'Jun']
+  const HISTORY_MONTHS = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun']
   const neighScores    = [70 + ((seed*3)%28), 60+((seed*7)%35), 65+((seed*5)%30), 55+((seed*11)%40)]
   const NEIGH_ITEMS    = [
     { label: 'Transports', color: '#6366F1', bg: '#EEF2FF' },
-    { label: 'Ã‰coles',     color: '#10B981', bg: '#ECFDF5' },
+    { label: 'Écoles',     color: '#10B981', bg: '#ECFDF5' },
     { label: 'Commerces',  color: '#F97316', bg: '#FFF7ED' },
     { label: 'Calme',      color: '#0EA5E9', bg: '#F0F9FF' },
   ]
   const DPE_ALL = ['A','B','C','D','E','F','G']
-  const DPE_RANGES = { A:'â‰¤ 50', B:'51â€“90', C:'91â€“150', D:'151â€“230', E:'231â€“330', F:'331â€“450', G:'> 450' }
+  const DPE_RANGES = { A:'â‰¤ 50', B:'51–90', C:'91–150', D:'151–230', E:'231–330', F:'331–450', G:'> 450' }
   const DPE_WIDTHS  = { A:28, B:40, C:52, D:64, E:76, F:88, G:100 }
 
   const [photoIdx,    setPhotoIdx]    = useState(0)
@@ -6942,7 +6942,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
   const [loanYears,   setLoanYears]   = useState(20)
   const [form, setForm] = useState({
     name: '', email: '', phone: '',
-    message: "Bonjour, je suis intÃ©ressÃ©(e) par ce bien et souhaite obtenir plus d'informations.",
+    message: "Bonjour, je suis intéressé(e) par ce bien et souhaite obtenir plus d'informations.",
   })
   const [sent, setSent] = useState(false)
 
@@ -7090,8 +7090,8 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                 </div>
                 {l.type !== 'louer' && pricePerSqm && cityAvgPerSqm && (
                   <div className="text-right shrink-0">
-                    <div className="text-xs text-slate-400">Prix au mÂ²</div>
-                    <div className="text-base font-bold text-navy-900">{pricePerSqm.toLocaleString('fr-FR')} â‚¬</div>
+                    <div className="text-xs text-slate-400">Prix au m²</div>
+                    <div className="text-base font-bold text-navy-900">{pricePerSqm.toLocaleString('fr-FR')} €</div>
                     <div style={{ color: pricePerSqm<=cityAvgPerSqm ? '#059669' : '#EA580C' }} className="text-xs font-medium">
                       {pricePerSqm<=cityAvgPerSqm ? 'â–¼' : 'â–²'} {Math.abs(Math.round((pricePerSqm-cityAvgPerSqm)/cityAvgPerSqm*100))}% moy. ville
                     </div>
@@ -7106,18 +7106,18 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                 {l.rooms && (
                   <div className="text-center">
                     <div className="text-lg font-bold text-navy-900">{l.rooms}</div>
-                    <div className="text-xs text-slate-400">piÃ¨ces</div>
+                    <div className="text-xs text-slate-400">pièces</div>
                   </div>
                 )}
                 {l.surface && (
                   <div className="text-center">
-                    <div className="text-lg font-bold text-navy-900">{l.surface} mÂ²</div>
+                    <div className="text-lg font-bold text-navy-900">{l.surface} m²</div>
                     <div className="text-xs text-slate-400">surface</div>
                   </div>
                 )}
                 <div className="text-center">
                   <div className="text-lg font-bold text-navy-900">{detail.floor}<span className="text-sm font-normal text-slate-400">/{detail.totalFloors}</span></div>
-                  <div className="text-xs text-slate-400">Ã©tage</div>
+                  <div className="text-xs text-slate-400">étage</div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-bold text-navy-900">{detail.yearBuilt}</div>
@@ -7136,7 +7136,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
             <div className="bg-gradient-to-r from-indigo-700 to-indigo-900 rounded-2xl p-5 flex items-center justify-between gap-4">
               <div>
                 <div className="text-white font-bold mb-1">Visite virtuelle disponible</div>
-                <p className="text-indigo-200 text-sm">Explorez ce bien en 360Â° depuis chez vous, sans rendez-vous.</p>
+                <p className="text-indigo-200 text-sm">Explorez ce bien en 360° depuis chez vous, sans rendez-vous.</p>
               </div>
               <button className="shrink-0 bg-white text-indigo-700 font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-indigo-50 transition-colors whitespace-nowrap flex items-center gap-2">
                 <svg viewBox="0 0 24 24" style={{ width:14,height:14 }} fill="currentColor">
@@ -7177,7 +7177,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                   </div>
                   <div style={{ width:12, height:12, background:'#F97316', transform:'rotate(45deg)', margin:'-6px auto 0' }} />
                 </div>
-                <div className="absolute bottom-2 right-3 text-white/25" style={{ fontSize:10 }}>Â© PASMAL Maps</div>
+                <div className="absolute bottom-2 right-3 text-white/25" style={{ fontSize:10 }}>© PASMAL Maps</div>
               </div>
 
               {/* Scores */}
@@ -7198,12 +7198,12 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
               {/* Amenities */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
                 {[
-                  { icon:'ðŸš‡', text:'MÃ©tro â€” 3 min Ã  pied' },
-                  { icon:'ðŸ«', text:'Ã‰cole primaire â€” 200 m' },
-                  { icon:'ðŸ›’', text:'SupermarchÃ© â€” 100 m' },
-                  { icon:'ðŸŒ³', text:'Parc municipal â€” 300 m' },
-                  { icon:'ðŸšŒ', text:'Bus direct â€” 1 min' },
-                  { icon:'ðŸ’Š', text:'Pharmacie â€” 150 m' },
+                  { icon:'ðŸš‡', text:'Métro — 3 min à pied' },
+                  { icon:'ðŸ«', text:'École primaire — 200 m' },
+                  { icon:'ðŸ›’', text:'Supermarché — 100 m' },
+                  { icon:'ðŸŒ³', text:'Parc municipal — 300 m' },
+                  { icon:'ðŸšŒ', text:'Bus direct — 1 min' },
+                  { icon:'ðŸ’Š', text:'Pharmacie — 150 m' },
                 ].map(({ icon, text }) => (
                   <div key={text} className="flex items-center gap-2 py-1.5 border-b border-slate-50 text-sm text-slate-600">
                     <span>{icon}</span> {text}
@@ -7214,7 +7214,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
 
             {/* Characteristics + Full DPE */}
             <div className="bg-white rounded-2xl p-5 shadow-soft">
-              <h2 className="font-bold text-navy-900 mb-4">CaractÃ©ristiques</h2>
+              <h2 className="font-bold text-navy-900 mb-4">Caractéristiques</h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
                 {detail.features.map(f => (
                   <div key={f} className="flex items-center gap-2 text-sm text-slate-700">
@@ -7225,7 +7225,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
 
               {/* Full DPE A-G scale */}
               <div className="border-t border-slate-100 pt-5 mb-4">
-                <div className="text-sm font-semibold text-navy-900 mb-3">Diagnostic de Performance Ã‰nergÃ©tique (DPE)</div>
+                <div className="text-sm font-semibold text-navy-900 mb-3">Diagnostic de Performance Énergétique (DPE)</div>
                 <div className="space-y-1.5">
                   {DPE_ALL.map(band => {
                     const b = DPE_BANDS[band]
@@ -7234,7 +7234,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                       <div key={band} className="flex items-center gap-3" style={{ opacity: isActive ? 1 : 0.5, transform: isActive ? 'scale(1.02)' : 'none', transformOrigin: 'left' }}>
                         <div style={{ width:`${DPE_WIDTHS[band]}%`, background: b.color, color: b.textColor, minHeight:32, borderRadius:4, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 10px', fontSize:13, fontWeight:700 }}>
                           <span>{band}</span>
-                          {isActive && <span style={{ fontSize:10, fontWeight:600 }}>{DPE_RANGES[band]} kWh/mÂ²/an</span>}
+                          {isActive && <span style={{ fontSize:10, fontWeight:600 }}>{DPE_RANGES[band]} kWh/m²/an</span>}
                         </div>
                         {isActive && (
                           <div className="flex items-center gap-1.5">
@@ -7252,12 +7252,12 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                 {detail.coOwnershipCharges && (
                   <div className="flex items-center gap-3 text-sm">
                     <span className="text-xs text-slate-500 font-medium w-28">Charges copro.</span>
-                    <span className="font-semibold text-slate-700">{detail.coOwnershipCharges} â‚¬/mois</span>
+                    <span className="font-semibold text-slate-700">{detail.coOwnershipCharges} €/mois</span>
                   </div>
                 )}
                 <div className="flex items-center gap-3 text-sm">
-                  <span className="text-xs text-slate-500 font-medium w-28">Taxe fonciÃ¨re</span>
-                  <span className="font-semibold text-slate-700">{detail.propertyTax} â‚¬/an</span>
+                  <span className="text-xs text-slate-500 font-medium w-28">Taxe foncière</span>
+                  <span className="font-semibold text-slate-700">{detail.propertyTax} €/an</span>
                 </div>
               </div>
             </div>
@@ -7266,7 +7266,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
             {l.type !== 'louer' && (
               <div className="bg-white rounded-2xl p-5 shadow-soft">
                 <h2 className="font-bold text-navy-900 mb-1">Historique de prix</h2>
-                <p className="text-xs text-slate-400 mb-5">Ã‰volution estimÃ©e sur les 6 derniers mois</p>
+                <p className="text-xs text-slate-400 mb-5">Évolution estimée sur les 6 derniers mois</p>
                 <div className="flex items-end gap-2" style={{ height:96 }}>
                   {historyValues.map((val,i) => {
                     const pct = (val / historyMax) * 100
@@ -7275,7 +7275,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                       <div key={i} className="flex-1 flex flex-col items-center gap-1 group relative">
                         <div className="absolute left-1/2 -translate-x-1/2 bg-navy-900 text-white rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none"
                           style={{ bottom:'calc(100% + 4px)', fontSize:10, padding:'2px 6px' }}>
-                          {(val/1000).toFixed(0)}k â‚¬
+                          {(val/1000).toFixed(0)}k €
                         </div>
                         <div className="w-full rounded-t-lg transition-all duration-300"
                           style={{ height:`${pct}%`, background: isLast ? '#F97316' : '#C7D2FE' }} />
@@ -7286,7 +7286,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                 </div>
                 <div className="mt-4 flex items-center gap-2 text-emerald-600 text-xs font-medium">
                   <Icons.TrendingUp size={14} />
-                  +{((historyValues[5]/historyValues[0]-1)*100).toFixed(1)}% sur la pÃ©riode
+                  +{((historyValues[5]/historyValues[0]-1)*100).toFixed(1)}% sur la période
                 </div>
               </div>
             )}
@@ -7326,14 +7326,14 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
               <div className="bg-navy-900 rounded-2xl p-5 text-white">
                 <div className="text-2xl font-extrabold mb-0.5">{formatPrice(l)}</div>
                 {pricePerSqm && (
-                  <div className="text-white/50 text-sm mb-4">{pricePerSqm.toLocaleString('fr-FR')} â‚¬/mÂ²</div>
+                  <div className="text-white/50 text-sm mb-4">{pricePerSqm.toLocaleString('fr-FR')} €/m²</div>
                 )}
                 <div className="flex gap-2">
                   <button onClick={() => setPriceAlert(a => !a)}
                     style={{ background: priceAlert ? '#F97316' : 'rgba(255,255,255,0.1)' }}
                     className="flex-1 text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity text-white">
                     <Icons.Bell size={13} />
-                    {priceAlert ? 'Alerte activÃ©e' : 'Alerte prix'}
+                    {priceAlert ? 'Alerte activée' : 'Alerte prix'}
                   </button>
                   <button onClick={() => setFavd(f => !f)}
                     style={{ background: favd ? '#EF4444' : 'rgba(255,255,255,0.1)' }}
@@ -7392,8 +7392,8 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                 ) : sent ? (
                   <div className="text-center py-4">
                     <Icons.CheckCircle size={32} className="text-emerald-500 mx-auto mb-2" />
-                    <div className="font-semibold text-navy-900">Message envoyÃ© !</div>
-                    <div className="text-xs text-slate-400 mt-1">L'agence vous rÃ©pondra sous 24h.</div>
+                    <div className="font-semibold text-navy-900">Message envoyé !</div>
+                    <div className="text-xs text-slate-400 mt-1">L'agence vous répondra sous 24h.</div>
                   </div>
                 ) : (
                   <form onSubmit={handleSend} className="space-y-3">
@@ -7403,7 +7403,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                     <input type="email" required placeholder="Email" value={form.email}
                       onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                       className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-400" />
-                    <input type="tel" placeholder="TÃ©lÃ©phone (optionnel)" value={form.phone}
+                    <input type="tel" placeholder="Téléphone (optionnel)" value={form.phone}
                       onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
                       className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-400" />
                     <textarea rows={3} value={form.message}
@@ -7429,12 +7429,12 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                 <div className="bg-white rounded-2xl p-5 shadow-soft">
                   <h3 className="font-bold text-navy-900 mb-4 flex items-center gap-2">
                     <Icons.CreditCard size={16} className="text-indigo-500" />
-                    Simulateur de prÃªt
+                    Simulateur de prêt
                   </h3>
                   <div className="space-y-3">
                     <div>
                       <div className="flex justify-between text-xs text-slate-500 mb-1.5">
-                        <span>DurÃ©e du prÃªt</span>
+                        <span>Durée du prêt</span>
                         <span className="font-bold text-navy-900">{loanYears} ans</span>
                       </div>
                       <input type="range" min={10} max={25} step={5} value={loanYears}
@@ -7445,18 +7445,18 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                       </div>
                     </div>
                     <div className="bg-indigo-50 rounded-xl p-3.5 text-center">
-                      <div className="text-xs text-slate-500 mb-0.5">MensualitÃ© estimÃ©e</div>
-                      <div className="text-3xl font-extrabold text-indigo-700">{monthly.toLocaleString('fr-FR')} <span className="text-lg">â‚¬</span></div>
-                      <div className="text-xs text-slate-400 mt-0.5">Apport 10% Â· Taux 3,5% Â· {loanYears} ans</div>
+                      <div className="text-xs text-slate-500 mb-0.5">Mensualité estimée</div>
+                      <div className="text-3xl font-extrabold text-indigo-700">{monthly.toLocaleString('fr-FR')} <span className="text-lg">€</span></div>
+                      <div className="text-xs text-slate-400 mt-0.5">Apport 10% · Taux 3,5% · {loanYears} ans</div>
                     </div>
                     <div className="space-y-2 pt-1">
                       <div className="flex justify-between text-xs text-slate-500">
-                        <span>Montant empruntÃ©</span>
-                        <span className="font-semibold text-slate-700">{Math.round(loanAmount).toLocaleString('fr-FR')} â‚¬</span>
+                        <span>Montant emprunté</span>
+                        <span className="font-semibold text-slate-700">{Math.round(loanAmount).toLocaleString('fr-FR')} €</span>
                       </div>
                       <div className="flex justify-between text-xs text-slate-500">
-                        <span>CoÃ»t total du crÃ©dit</span>
-                        <span className="font-semibold text-slate-700">{totalCost.toLocaleString('fr-FR')} â‚¬</span>
+                        <span>Coût total du crédit</span>
+                        <span className="font-semibold text-slate-700">{totalCost.toLocaleString('fr-FR')} €</span>
                       </div>
                     </div>
                   </div>
@@ -7469,7 +7469,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
                   <Icons.Zap size={16} className="text-orange-500 shrink-0 mt-0.5" />
                   <div>
                     <div className="font-semibold text-orange-700 text-sm">
-                      {l.is_urgent ? 'Bien en forte demande' : 'TrÃ¨s consultÃ©'}
+                      {l.is_urgent ? 'Bien en forte demande' : 'Très consulté'}
                     </div>
                     <p className="text-orange-600 text-xs mt-0.5">
                       {l.viewers} personnes ont vu ce bien cette semaine. Ne tardez pas.
@@ -7486,7 +7486,7 @@ function PropertyDetailPage({ listing: raw, idx = 0, onBack, onOpenListing, simi
   )
 }
 
-/* â”€â”€â”€ Ã‰tape 39: Comparateur d'annonces â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* â”€â”€â”€ Étape 39: Comparateur d'annonces â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 const DPE_ORDER_CMP = { A:0, B:1, C:2, D:3, E:4, F:5, G:6 }
 
 function CompareBar({ compareList, setCompareList, setCurrentView }) {
@@ -7519,7 +7519,7 @@ function CompareBar({ compareList, setCompareList, setCurrentView }) {
                       </div>
                       <button onClick={() => setCompareList(p => p.filter(x => x.id !== raw.id))}
                         className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-slate-300 hover:bg-red-500 hover:text-white text-slate-600 rounded-full flex items-center justify-center transition-colors"
-                        style={{ fontSize:13, lineHeight:1 }}>Ã—</button>
+                        style={{ fontSize:13, lineHeight:1 }}>×</button>
                     </div>
                   )
                 })}
@@ -7543,7 +7543,7 @@ function CompareBar({ compareList, setCompareList, setCurrentView }) {
 }
 
 /* ============================================================================
-   Ã‰tape 41 â€” Tendances du MarchÃ©
+   Étape 41 — Tendances du Marché
    ============================================================================ */
 const MARCHE_CITIES_DATA = [
   { city:'Paris',       ppm:10200, prev:10800, color:'#F97316', yield:2.8, days:58 },
@@ -7574,32 +7574,32 @@ const MARCHE_SEGMENTS = [
   { label:'Biens de prestige',     trend:'+4.3 %', volume:'38 000',  Icon: Icons.Star,      color:'#F59E0B' },
 ]
 const MARCHE_PREDICTIONS = [
-  { Icon: Icons.TrendingUp, color:'#10B981', title:'Reprise progressive en province', desc:'Les experts anticipent un rebond de +2 Ã  +4 % sur les marchÃ©s de province en 2026, portÃ©s par la baisse des taux directeurs.', confidence:72 },
-  { Icon: Icons.MapPin,     color:'#F97316', title:'Paris stabilisÃ© Â±2 %',            desc:'La capitale devrait rester stable dans un contexte de taux encore contraints et de hausse du stock disponible.', confidence:65 },
+  { Icon: Icons.TrendingUp, color:'#10B981', title:'Reprise progressive en province', desc:'Les experts anticipent un rebond de +2 à +4 % sur les marchés de province en 2026, portés par la baisse des taux directeurs.', confidence:72 },
+  { Icon: Icons.MapPin,     color:'#F97316', title:'Paris stabilisé ±2 %',            desc:'La capitale devrait rester stable dans un contexte de taux encore contraints et de hausse du stock disponible.', confidence:65 },
   { Icon: Icons.TrendingUp, color:'#6366F1', title:'Investissement locatif en hausse', desc:'Les villes moyennes (Toulouse, Montpellier, Nantes) affichent les meilleures perspectives de rendement brut 2026.', confidence:80 },
 ]
 
 /* ============================================================================
-   Ã‰tape 43 â€” Programme Neuf
+   Étape 43 — Programme Neuf
    ============================================================================ */
 const NEUF_PROGRAMS = [
-  { id:'p1', featured:true,  name:'Les Terrasses du Lac',      developer:'Nexity',               city:'Bordeaux',   hood:'Bordeaux Lac',  type:'Appartements', priceFrom:249000, priceTo:485000, dpe:'A', delivery:'T3 2026', total:48, avail:14, img:unsplash('photo-1545324418-cc1a3fa10c00',900), features:['Parking inclus','Terrasse','Ascenseur','Digicode'], lots:[{t:'T2',surf:'44â€“52 mÂ²',price:'249 000 â€“ 285 000 â‚¬',nb:3},{t:'T3',surf:'62â€“75 mÂ²',price:'320 000 â€“ 368 000 â‚¬',nb:7},{t:'T4',surf:'86â€“98 mÂ²',price:'415 000 â€“ 485 000 â‚¬',nb:4}], desc:'Un programme d\'exception au cÅ“ur du nouveau Bordeaux, alliant architecture contemporaine et confort de vie premium. Prestations haut de gamme, exposition plein sud, vue dÃ©gagÃ©e.' },
-  { id:'p2',                 name:'Olympe RÃ©sidences',          developer:'Bouygues Immobilier',  city:'Lyon',       hood:'Confluence',    type:'Appartements', priceFrom:285000, priceTo:620000, dpe:'A', delivery:'T1 2027', total:72, avail:28, img:unsplash('photo-1486325212027-8081e485255e',900), features:['Cave','Balcon','Gardien','Fibre optique'],             lots:[{t:'T2',surf:'48â€“58 mÂ²',price:'285 000 â€“ 320 000 â‚¬',nb:8},{t:'T3',surf:'68â€“80 mÂ²',price:'385 000 â€“ 440 000 â‚¬',nb:12},{t:'T4',surf:'95â€“115 mÂ²',price:'510 000 â€“ 620 000 â‚¬',nb:8}], desc:'Face au RhÃ´ne, vivez dans un lieu d\'exception au sein du quartier Confluence avec des prestations 5 Ã©toiles et un accÃ¨s direct aux commerces et transports.' },
-  { id:'p3',                 name:'Villa Azur RÃ©sidence',       developer:'Kaufman & Broad',      city:'Nice',       hood:'Cimiez',        type:'Appartements', priceFrom:320000, priceTo:780000, dpe:'A', delivery:'T4 2026', total:36, avail:9,  img:unsplash('photo-1600607687939-ce8a6c25118c',900), features:['Piscine','Parking 2 places','Vue mer','Pergola'],     lots:[{t:'T2',surf:'52â€“60 mÂ²',price:'320 000 â€“ 370 000 â‚¬',nb:2},{t:'T3',surf:'72â€“88 mÂ²',price:'460 000 â€“ 560 000 â‚¬',nb:5},{t:'T4+',surf:'100â€“140 mÂ²',price:'640 000 â€“ 780 000 â‚¬',nb:2}], desc:'Sur les hauteurs de Cimiez, ce programme rare offre une vue panoramique sur la mer et les toits de Nice. RÃ©sidence sÃ©curisÃ©e avec piscine commune et jardins privatifs.' },
-  { id:'p4',                 name:'Le CarrÃ© Montaigne',         developer:'Vinci Immobilier',     city:'Paris',      hood:'15e arrdt',     type:'Appartements', priceFrom:480000, priceTo:1200000, dpe:'B', delivery:'T2 2027', total:60, avail:22, img:unsplash('photo-1560518883-ce09059eeffa',900), features:['Gardien 24h','Conciergerie','Salle sport','Toiture terrasse'], lots:[{t:'T2',surf:'46â€“54 mÂ²',price:'480 000 â€“ 560 000 â‚¬',nb:6},{t:'T3',surf:'68â€“82 mÂ²',price:'720 000 â€“ 890 000 â‚¬',nb:10},{t:'T4',surf:'98â€“120 mÂ²',price:'980 000 â€“ 1,2 Mâ‚¬',nb:6}], desc:'Au cÅ“ur du 15e arrondissement de Paris, une adresse de prestige signÃ©e Vinci. Architecture haussmannienne rÃ©interprÃ©tÃ©e, espaces communs luxueux, domotique intÃ©grÃ©e.' },
-  { id:'p5',                 name:'Domaine des Pins',           developer:'Eiffage Immobilier',   city:'Toulouse',   hood:'Balma',         type:'Maisons',      priceFrom:295000, priceTo:450000, dpe:'A', delivery:'T2 2026', total:24, avail:7,  img:unsplash('photo-1600585154340-be6161a56a0c',900), features:['Jardin privatif','Garage double','Pompe Ã  chaleur','Panneaux solaires'], lots:[{t:'T3',surf:'85 mÂ²',price:'295 000 â‚¬',nb:3},{t:'T4',surf:'105 mÂ²',price:'345 000 â‚¬',nb:3},{t:'T5',surf:'125 mÂ²',price:'410 000 â€“ 450 000 â‚¬',nb:1}], desc:'Un Ã©crin de verdure Ã  quelques minutes de Toulouse. Maisons individuelles contemporaines avec jardins paysagers, sobriÃ©tÃ© Ã©nergÃ©tique exemplaire (DPE A).' },
-  { id:'p6',                 name:'Nantes Horizon',             developer:'Icade Promotion',      city:'Nantes',     hood:'ÃŽle de Nantes', type:'Appartements', priceFrom:220000, priceTo:390000, dpe:'A', delivery:'T4 2026', total:54, avail:31, img:unsplash('photo-1613490493576-7fde63acd811',900), features:['VÃ©lo-box','Loggia','Domotique','Charges rÃ©duites'],    lots:[{t:'T1',surf:'28â€“35 mÂ²',price:'220 000 â€“ 248 000 â‚¬',nb:8},{t:'T2',surf:'46â€“56 mÂ²',price:'268 000 â€“ 315 000 â‚¬',nb:15},{t:'T3',surf:'66â€“78 mÂ²',price:'340 000 â€“ 390 000 â‚¬',nb:8}], desc:'Sur l\'ÃŽle de Nantes en pleine mutation, ce programme bÃ©nÃ©ficie d\'un emplacement stratÃ©gique Ã  5 minutes Ã  pied du tramway et du futur campus universitaire.' },
+  { id:'p1', featured:true,  name:'Les Terrasses du Lac',      developer:'Nexity',               city:'Bordeaux',   hood:'Bordeaux Lac',  type:'Appartements', priceFrom:249000, priceTo:485000, dpe:'A', delivery:'T3 2026', total:48, avail:14, img:unsplash('photo-1545324418-cc1a3fa10c00',900), features:['Parking inclus','Terrasse','Ascenseur','Digicode'], lots:[{t:'T2',surf:'44–52 m²',price:'249 000 – 285 000 €',nb:3},{t:'T3',surf:'62–75 m²',price:'320 000 – 368 000 €',nb:7},{t:'T4',surf:'86–98 m²',price:'415 000 – 485 000 €',nb:4}], desc:'Un programme d\'exception au cœur du nouveau Bordeaux, alliant architecture contemporaine et confort de vie premium. Prestations haut de gamme, exposition plein sud, vue dégagée.' },
+  { id:'p2',                 name:'Olympe Résidences',          developer:'Bouygues Immobilier',  city:'Lyon',       hood:'Confluence',    type:'Appartements', priceFrom:285000, priceTo:620000, dpe:'A', delivery:'T1 2027', total:72, avail:28, img:unsplash('photo-1486325212027-8081e485255e',900), features:['Cave','Balcon','Gardien','Fibre optique'],             lots:[{t:'T2',surf:'48–58 m²',price:'285 000 – 320 000 €',nb:8},{t:'T3',surf:'68–80 m²',price:'385 000 – 440 000 €',nb:12},{t:'T4',surf:'95–115 m²',price:'510 000 – 620 000 €',nb:8}], desc:'Face au Rhône, vivez dans un lieu d\'exception au sein du quartier Confluence avec des prestations 5 étoiles et un accès direct aux commerces et transports.' },
+  { id:'p3',                 name:'Villa Azur Résidence',       developer:'Kaufman & Broad',      city:'Nice',       hood:'Cimiez',        type:'Appartements', priceFrom:320000, priceTo:780000, dpe:'A', delivery:'T4 2026', total:36, avail:9,  img:unsplash('photo-1600607687939-ce8a6c25118c',900), features:['Piscine','Parking 2 places','Vue mer','Pergola'],     lots:[{t:'T2',surf:'52–60 m²',price:'320 000 – 370 000 €',nb:2},{t:'T3',surf:'72–88 m²',price:'460 000 – 560 000 €',nb:5},{t:'T4+',surf:'100–140 m²',price:'640 000 – 780 000 €',nb:2}], desc:'Sur les hauteurs de Cimiez, ce programme rare offre une vue panoramique sur la mer et les toits de Nice. Résidence sécurisée avec piscine commune et jardins privatifs.' },
+  { id:'p4',                 name:'Le Carré Montaigne',         developer:'Vinci Immobilier',     city:'Paris',      hood:'15e arrdt',     type:'Appartements', priceFrom:480000, priceTo:1200000, dpe:'B', delivery:'T2 2027', total:60, avail:22, img:unsplash('photo-1560518883-ce09059eeffa',900), features:['Gardien 24h','Conciergerie','Salle sport','Toiture terrasse'], lots:[{t:'T2',surf:'46–54 m²',price:'480 000 – 560 000 €',nb:6},{t:'T3',surf:'68–82 m²',price:'720 000 – 890 000 €',nb:10},{t:'T4',surf:'98–120 m²',price:'980 000 – 1,2 M€',nb:6}], desc:'Au cœur du 15e arrondissement de Paris, une adresse de prestige signée Vinci. Architecture haussmannienne réinterprétée, espaces communs luxueux, domotique intégrée.' },
+  { id:'p5',                 name:'Domaine des Pins',           developer:'Eiffage Immobilier',   city:'Toulouse',   hood:'Balma',         type:'Maisons',      priceFrom:295000, priceTo:450000, dpe:'A', delivery:'T2 2026', total:24, avail:7,  img:unsplash('photo-1600585154340-be6161a56a0c',900), features:['Jardin privatif','Garage double','Pompe à chaleur','Panneaux solaires'], lots:[{t:'T3',surf:'85 m²',price:'295 000 €',nb:3},{t:'T4',surf:'105 m²',price:'345 000 €',nb:3},{t:'T5',surf:'125 m²',price:'410 000 – 450 000 €',nb:1}], desc:'Un écrin de verdure à quelques minutes de Toulouse. Maisons individuelles contemporaines avec jardins paysagers, sobriété énergétique exemplaire (DPE A).' },
+  { id:'p6',                 name:'Nantes Horizon',             developer:'Icade Promotion',      city:'Nantes',     hood:'Île de Nantes', type:'Appartements', priceFrom:220000, priceTo:390000, dpe:'A', delivery:'T4 2026', total:54, avail:31, img:unsplash('photo-1613490493576-7fde63acd811',900), features:['Vélo-box','Loggia','Domotique','Charges réduites'],    lots:[{t:'T1',surf:'28–35 m²',price:'220 000 – 248 000 €',nb:8},{t:'T2',surf:'46–56 m²',price:'268 000 – 315 000 €',nb:15},{t:'T3',surf:'66–78 m²',price:'340 000 – 390 000 €',nb:8}], desc:'Sur l\'Île de Nantes en pleine mutation, ce programme bénéficie d\'un emplacement stratégique à 5 minutes à pied du tramway et du futur campus universitaire.' },
 ]
 const NEUF_CITIES   = ['Toutes les villes', 'Bordeaux', 'Lyon', 'Nice', 'Paris', 'Toulouse', 'Nantes']
 const NEUF_TYPES    = ['Tous types', 'Appartements', 'Maisons']
-const NEUF_BUDGETS  = ['Tous budgets', '< 300 000 â‚¬', '300 â€“ 500 000 â‚¬', '500 000 â€“ 1 Mâ‚¬', '> 1 Mâ‚¬']
+const NEUF_BUDGETS  = ['Tous budgets', '< 300 000 €', '300 – 500 000 €', '500 000 – 1 M€', '> 1 M€']
 const DPE_COLORS_NF = { A:'#047857', B:'#10B981', C:'#84CC16' }
 const NEUF_AVANTAGES = [
-  { Icon: Icons.CreditCard, title:'TVA rÃ©duite Ã  5,5 %', desc:'En zone ANRU ou primo-accÃ©dants, bÃ©nÃ©ficiez d\'une TVA rÃ©duite et Ã©conomisez jusqu\'Ã  30 000 â‚¬.' },
-  { Icon: Icons.Shield, title:'Frais de notaire rÃ©duits', desc:'Seulement 2 Ã  3 % contre 7 Ã  8 % dans l\'ancien â€” une Ã©conomie immÃ©diate sur le prix d\'achat.' },
-  { Icon: Icons.Star, title:'Garanties constructeur', desc:'Garantie dÃ©cennale, parfait achÃ¨vement, biennale : vous Ãªtes protÃ©gÃ© 10 ans aprÃ¨s la livraison.' },
-  { Icon: Icons.Zap, title:'DPE A ou B garanti', desc:'RE2020 et RT2012 : performances Ã©nergÃ©tiques exemplaires, charges rÃ©duites et confort thermique supÃ©rieur.' },
-  { Icon: Icons.TrendingUp, title:'PTZ â€” PrÃªt Ã  Taux ZÃ©ro', desc:'FinanÃ§able jusqu\'Ã  40 % du prix avec le PTZ pour les primo-accÃ©dants en zone Ã©ligible.' },
+  { Icon: Icons.CreditCard, title:'TVA réduite à 5,5 %', desc:'En zone ANRU ou primo-accédants, bénéficiez d\'une TVA réduite et économisez jusqu\'à 30 000 €.' },
+  { Icon: Icons.Shield, title:'Frais de notaire réduits', desc:'Seulement 2 à 3 % contre 7 à 8 % dans l\'ancien — une économie immédiate sur le prix d\'achat.' },
+  { Icon: Icons.Star, title:'Garanties constructeur', desc:'Garantie décennale, parfait achèvement, biennale : vous êtes protégé 10 ans après la livraison.' },
+  { Icon: Icons.Zap, title:'DPE A ou B garanti', desc:'RE2020 et RT2012 : performances énergétiques exemplaires, charges réduites et confort thermique supérieur.' },
+  { Icon: Icons.TrendingUp, title:'PTZ — Prêt à Taux Zéro', desc:'Finançable jusqu\'à 40 % du prix avec le PTZ pour les primo-accédants en zone éligible.' },
 ]
 
 function NeufProgramCard({ prog, onOpen, featured }) {
@@ -7622,12 +7622,12 @@ function NeufProgramCard({ prog, onOpen, featured }) {
           {urgent && <span className="bg-red-500/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">âš¡ {prog.avail} lots restants</span>}
         </div>
         <div>
-          <div className="text-white/70 text-xs mb-1">{prog.developer} Â· {prog.city}, {prog.hood}</div>
+          <div className="text-white/70 text-xs mb-1">{prog.developer} · {prog.city}, {prog.hood}</div>
           <h3 className="text-white text-2xl font-extrabold mb-2">{prog.name}</h3>
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            <span className="text-orange-300 font-bold">Ã€ partir de {Math.round(prog.priceFrom/1000)} 000 â‚¬</span>
-            <span className="text-white/60">Â· Livraison {prog.delivery}</span>
-            <span className="text-white/60">Â· {prog.type}</span>
+            <span className="text-orange-300 font-bold">À partir de {Math.round(prog.priceFrom/1000)} 000 €</span>
+            <span className="text-white/60">· Livraison {prog.delivery}</span>
+            <span className="text-white/60">· {prog.type}</span>
           </div>
           <div className="mt-3 flex items-center gap-3">
             <div className="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden">
@@ -7659,7 +7659,7 @@ function NeufProgramCard({ prog, onOpen, featured }) {
         </div>
       </div>
       <div className="p-4">
-        <div className="text-[11px] text-slate-400 mb-0.5">{prog.developer} Â· {prog.hood}</div>
+        <div className="text-[11px] text-slate-400 mb-0.5">{prog.developer} · {prog.hood}</div>
         <h3 className="font-bold text-navy-900 text-sm leading-tight mb-2">{prog.name}</h3>
         <div className="flex items-center justify-between text-xs text-slate-500 mb-3">
           <span>Livraison {prog.delivery}</span>
@@ -7667,8 +7667,8 @@ function NeufProgramCard({ prog, onOpen, featured }) {
         </div>
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-[11px] text-slate-400">Ã€ partir de</div>
-            <div className="text-base font-extrabold text-navy-900">{Math.round(prog.priceFrom/1000)} 000 â‚¬</div>
+            <div className="text-[11px] text-slate-400">À partir de</div>
+            <div className="text-base font-extrabold text-navy-900">{Math.round(prog.priceFrom/1000)} 000 €</div>
           </div>
           <span className="text-xs font-semibold text-orange-600 group-hover:text-orange-700 transition-colors flex items-center gap-1">
             Voir les lots <Icons.ArrowRight size={12} />
@@ -7699,7 +7699,7 @@ function NeufDetailModal({ prog, onClose, setCurrentView }) {
               <Icons.X size={14} />
             </button>
             <div className="absolute bottom-4 left-5 right-5">
-              <div className="text-white/70 text-xs mb-0.5">{prog.developer} Â· {prog.city}, {prog.hood}</div>
+              <div className="text-white/70 text-xs mb-0.5">{prog.developer} · {prog.city}, {prog.hood}</div>
               <h2 className="text-white text-xl font-extrabold">{prog.name}</h2>
             </div>
           </div>
@@ -7707,7 +7707,7 @@ function NeufDetailModal({ prog, onClose, setCurrentView }) {
           <div className="overflow-y-auto flex-1 p-6 space-y-5">
             {/* Badges + availability */}
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full">NEUF Â· {prog.type}</span>
+              <span className="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full">NEUF · {prog.type}</span>
               <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white" style={{ background: DPE_COLORS_NF[prog.dpe] || '#64748b' }}>DPE {prog.dpe}</span>
               <span className="bg-slate-100 text-slate-600 text-xs font-medium px-2.5 py-1 rounded-full">Livraison {prog.delivery}</span>
               <span className="bg-orange-50 text-orange-600 text-xs font-bold px-2.5 py-1 rounded-full">{prog.avail} lots disponibles / {prog.total}</span>
@@ -7715,8 +7715,8 @@ function NeufDetailModal({ prog, onClose, setCurrentView }) {
             {/* Availability bar */}
             <div>
               <div className="flex justify-between text-xs text-slate-500 mb-1.5">
-                <span>Avancement des rÃ©servations</span>
-                <span className="font-semibold">{Math.round(100 - availPct)} % rÃ©servÃ©</span>
+                <span>Avancement des réservations</span>
+                <span className="font-semibold">{Math.round(100 - availPct)} % réservé</span>
               </div>
               <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                 <motion.div initial={{ width:0 }} animate={{ width:`${100 - availPct}%` }} transition={{ duration:0.7, ease:'easeOut' }}
@@ -7739,7 +7739,7 @@ function NeufDetailModal({ prog, onClose, setCurrentView }) {
                     <span className="bg-navy-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg w-fit">{l.t}</span>
                     <span className="text-sm text-slate-600">{l.surf}</span>
                     <span className="text-sm font-semibold text-navy-900">{l.price}</span>
-                    <span className={`text-sm font-bold ${l.nb === 0 ? 'text-slate-300' : l.nb <= 2 ? 'text-red-500' : 'text-emerald-600'}`}>{l.nb === 0 ? 'â€”' : l.nb}</span>
+                    <span className={`text-sm font-bold ${l.nb === 0 ? 'text-slate-300' : l.nb <= 2 ? 'text-red-500' : 'text-emerald-600'}`}>{l.nb === 0 ? '—' : l.nb}</span>
                   </div>
                 ))}
               </div>
@@ -7762,7 +7762,7 @@ function NeufDetailModal({ prog, onClose, setCurrentView }) {
                 <Icons.CreditCard size={14} /> Simuler le financement
               </button>
               <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-2xl text-sm transition-colors flex items-center justify-center gap-2">
-                <Icons.Phone size={14} /> ÃŠtre contactÃ©
+                <Icons.Phone size={14} /> Être contacté
               </button>
             </div>
           </div>
@@ -7785,9 +7785,9 @@ const ME_FAVO_TYPES = [
   { label:'Autre',       count:1, color:'#CBD5E1' },
 ]
 const ME_RECENT = [
-  { id:1, label:'Appartement 3P Â· Paris 11e',  price:'450 000 â‚¬', grad:'linear-gradient(135deg,#1e3a6e,#2563eb)' },
-  { id:2, label:'Maison 5P Â· Lyon 6e',         price:'780 000 â‚¬', grad:'linear-gradient(135deg,#4c1d95,#7c3aed)' },
-  { id:3, label:'Studio Â· Marseille 8e',       price:'210 000 â‚¬', grad:'linear-gradient(135deg,#064e3b,#059669)' },
+  { id:1, label:'Appartement 3P · Paris 11e',  price:'450 000 €', grad:'linear-gradient(135deg,#1e3a6e,#2563eb)' },
+  { id:2, label:'Maison 5P · Lyon 6e',         price:'780 000 €', grad:'linear-gradient(135deg,#4c1d95,#7c3aed)' },
+  { id:3, label:'Studio · Marseille 8e',       price:'210 000 €', grad:'linear-gradient(135deg,#064e3b,#059669)' },
 ]
 
 function MonEspaceView({ setCurrentView }) {
@@ -7795,7 +7795,7 @@ function MonEspaceView({ setCurrentView }) {
 
   const NAV = [
     { id:'dashboard',    label:"Vue d'ensemble",          Icon:Icons.Home       },
-    { id:'searches',     label:'Recherches sauvegardÃ©es', Icon:Icons.Search     },
+    { id:'searches',     label:'Recherches sauvegardées', Icon:Icons.Search     },
     { id:'notifs',       label:'Notifications',            Icon:Icons.Bell,  badge:3 },
     { id:'insights',     label:'Insights IA',              Icon:Icons.Sparkles   },
     { id:'subscription', label:'Abonnement',               Icon:Icons.CreditCard },
@@ -7872,8 +7872,8 @@ function MonEspaceView({ setCurrentView }) {
           <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center mb-3">
             <Icons.Zap size={15} className="text-white" />
           </div>
-          <p className="text-white font-extrabold text-sm mb-0.5">Passer Ã  Pro</p>
-          <p className="text-orange-100 text-[11px] leading-relaxed mb-3">Alertes illimitÃ©es + IA avancÃ©e</p>
+          <p className="text-white font-extrabold text-sm mb-0.5">Passer à Pro</p>
+          <p className="text-orange-100 text-[11px] leading-relaxed mb-3">Alertes illimitées + IA avancée</p>
           <button onClick={() => navigate('/tarifs')}
             className="flex items-center gap-1.5 bg-white text-orange-600 text-xs font-extrabold px-3 py-1.5 rounded-xl hover:bg-orange-50 transition-colors">
             Voir les offres <Icons.ArrowRight size={11} />
@@ -7932,7 +7932,7 @@ function MonEspaceView({ setCurrentView }) {
               <div className="grid grid-cols-4 gap-4 mb-6">
                 {[
                   { Icon:Icons.Bell,       color:'#F97316', val:'5',   label:'Alertes actives',  sub:'2 nouvelles correspondances' },
-                  { Icon:Icons.Heart,      color:'#EC4899', val:'12',  label:'Favoris',           sub:'3 collections crÃ©Ã©es'         },
+                  { Icon:Icons.Heart,      color:'#EC4899', val:'12',  label:'Favoris',           sub:'3 collections créées'         },
                   { Icon:Icons.Eye,        color:'#8B5CF6', val:'47',  label:'Annonces vues',     sub:'Cette semaine'                 },
                   { Icon:Icons.CreditCard, color:'#10B981', val:'Pro', label:'Abonnement',        sub:"Actif jusqu'au 22/06"          },
                 ].map(({ Icon, color, val, label, sub }) => (
@@ -7953,10 +7953,10 @@ function MonEspaceView({ setCurrentView }) {
                 <div className="col-span-3 rounded-2xl p-6" style={{ background:'#1e3a5f', border:'1px solid #2d4a6f' }}>
                   <div className="flex items-center justify-between mb-5">
                     <div>
-                      <p className="text-base font-bold text-white">Annonces consultÃ©es</p>
+                      <p className="text-base font-bold text-white">Annonces consultées</p>
                       <p className="text-xs text-slate-400 mt-0.5">7 derniers jours</p>
                     </div>
-                    <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full" style={{ background:'#10B98122', color:'#34d399' }}>+18% VS SEM. PASSÃ‰E</span>
+                    <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full" style={{ background:'#10B98122', color:'#34d399' }}>+18% VS SEM. PASSÉE</span>
                   </div>
                   <div className="flex gap-3">
                     <div className="flex flex-col justify-between text-[10px] text-slate-600 py-0.5 flex-shrink-0" style={{ height:100 }}>
@@ -7986,7 +7986,7 @@ function MonEspaceView({ setCurrentView }) {
                 {/* Donut chart */}
                 <div className="col-span-2 rounded-2xl p-6" style={{ background:'#1e3a5f', border:'1px solid #2d4a6f' }}>
                   <p className="text-base font-bold text-white mb-0.5">Favoris par type</p>
-                  <p className="text-xs text-slate-400 mb-5">{favoTotal} biens sauvegardÃ©s</p>
+                  <p className="text-xs text-slate-400 mb-5">{favoTotal} biens sauvegardés</p>
                   <div className="flex items-center gap-5">
                     <svg viewBox="0 0 120 120" width="100" height="100" style={{ flexShrink:0 }}>
                       <circle cx="60" cy="60" r={fr} fill="none" stroke="#0f172a" strokeWidth="18" />
@@ -8017,8 +8017,8 @@ function MonEspaceView({ setCurrentView }) {
               <div className="rounded-2xl p-6" style={{ background:'#1e3a5f', border:'1px solid #2d4a6f' }}>
                 <div className="flex items-center justify-between mb-5">
                   <div>
-                    <p className="text-base font-bold text-white">ConsultÃ©es rÃ©cemment</p>
-                    <p className="text-xs text-slate-400 mt-0.5">Vos derniÃ¨res annonces visitÃ©es</p>
+                    <p className="text-base font-bold text-white">Consultées récemment</p>
+                    <p className="text-xs text-slate-400 mt-0.5">Vos dernières annonces visitées</p>
                   </div>
                   <button className="text-orange-500 hover:text-orange-400 text-sm font-semibold flex items-center gap-1.5 transition-colors">
                     Voir les favoris <Icons.ArrowRight size={13} />
@@ -8051,7 +8051,7 @@ function MonEspaceView({ setCurrentView }) {
                   <Icons.Sparkles size={28} style={{ color:'#F97316' }} />
                 </div>
                 <p className="text-white font-bold text-lg mb-1">{NAV.find(n => n.id === tab)?.label}</p>
-                <p className="text-slate-400 text-sm">FonctionnalitÃ© Ã  venir.</p>
+                <p className="text-slate-400 text-sm">Fonctionnalité à venir.</p>
               </div>
             </div>
           )}
@@ -8064,29 +8064,29 @@ function MonEspaceView({ setCurrentView }) {
 // â”€â”€â”€ CRM constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const CRM_LEADS_DATA = [
-  { id:1,  fn:'Sophie',  ln:'Martin',   ini:'SM', email:'sophie.m@email.com',     phone:'06 12 34 56 78', src:'Leboncoin', prop:'Appt 3P Paris 11',  budget:450000,  score:87, status:'nouveau',     profile:'Acheteur sÃ©rieux', tags:['URGENT','FINANCEMENT OK'],  date:'2026-05-20', notes:'Cherche pour juillet, financement accordÃ©.'    },
+  { id:1,  fn:'Sophie',  ln:'Martin',   ini:'SM', email:'sophie.m@email.com',     phone:'06 12 34 56 78', src:'Leboncoin', prop:'Appt 3P Paris 11',  budget:450000,  score:87, status:'nouveau',     profile:'Acheteur sérieux', tags:['URGENT','FINANCEMENT OK'],  date:'2026-05-20', notes:'Cherche pour juillet, financement accordé.'    },
   { id:2,  fn:'Thomas',  ln:'Dupont',   ini:'TD', email:'thomas.d@gmail.com',     phone:'06 23 45 67 89', src:'SeLoger',   prop:'Villa 5P Lyon',      budget:780000,  score:72, status:'nouveau',     profile:'Investisseur',     tags:['INVESTISSEMENT'],           date:'2026-05-21', notes:'Investisseur Lyon, cherche rendement > 5 %.'   },
-  { id:3,  fn:'Amina',   ln:'Benali',   ini:'AB', email:'a.benali@hotmail.fr',    phone:'06 34 56 78 90', src:'PAP',       prop:'Studio Paris 15',    budget:210000,  score:55, status:'contacte',    profile:'Faible intention', tags:['INCERTAIN'],                date:'2026-05-19', notes:'IndÃ©cise, compare plusieurs options.'           },
-  { id:4,  fn:'Romain',  ln:'LefÃ¨vre',  ini:'RL', email:'r.lefevre@pro.fr',       phone:'06 45 67 89 01', src:"Bien'ici",  prop:'Appt 4P Bordeaux',   budget:320000,  score:91, status:'contacte',    profile:'Acheteur sÃ©rieux', tags:['URGENT','CASH'],            date:'2026-05-22', notes:'Acheteur cash, dÃ©cision trÃ¨s rapide.'           },
-  { id:5,  fn:'Lucie',   ln:'Moreau',   ini:'LM', email:'lucie.moreau@gmail.com', phone:'06 56 78 90 12', src:'SeLoger',   prop:'Maison Nantes',       budget:550000,  score:80, status:'visite',      profile:'Acheteur sÃ©rieux', tags:['FAMILLE'],                  date:'2026-05-18', notes:'Famille avec 2 enfants, besoin jardin.'         },
-  { id:6,  fn:'Hugo',    ln:'Bernard',  ini:'HB', email:'h.bernard@outlook.com',  phone:'06 67 89 01 23', src:'Leboncoin', prop:'Loft Paris 10',       budget:380000,  score:68, status:'visite',      profile:'Investisseur',     tags:['LOCATION'],                 date:'2026-05-17', notes:'Veut louer aprÃ¨s achat, cherche rendement.'     },
-  { id:7,  fn:'Clara',   ln:'Petit',    ini:'CP', email:'c.petit@email.fr',       phone:'06 78 90 12 34', src:'PAP',       prop:'Appt 2P Paris 9',    budget:290000,  score:63, status:'negociation', profile:'Acheteur sÃ©rieux', tags:['AGENCE','MANDAT'],          date:'2026-05-15', notes:'En cours de nÃ©gociation, offre dÃ©posÃ©e.'        },
-  { id:8,  fn:'Maxime',  ln:'Girard',   ini:'MG', email:'m.girard@gmail.com',     phone:'06 89 01 23 45', src:"Bien'ici",  prop:'Villa Cannes',        budget:1200000, score:76, status:'negociation', profile:'Acheteur sÃ©rieux', tags:['PREMIUM','CASH'],           date:'2026-05-14', notes:'Client premium, villa vue mer.'                 },
-  { id:9,  fn:'Julie',   ln:'Blanc',    ini:'JB', email:'j.blanc@pro.fr',         phone:'06 90 12 34 56', src:'SeLoger',   prop:'T2 Marseille 8',      budget:220000,  score:45, status:'gagne',       profile:'Acheteur sÃ©rieux', tags:['LOCATION'],                 date:'2026-05-10', notes:'Vendu ! Signature chez notaire.'                },
+  { id:3,  fn:'Amina',   ln:'Benali',   ini:'AB', email:'a.benali@hotmail.fr',    phone:'06 34 56 78 90', src:'PAP',       prop:'Studio Paris 15',    budget:210000,  score:55, status:'contacte',    profile:'Faible intention', tags:['INCERTAIN'],                date:'2026-05-19', notes:'Indécise, compare plusieurs options.'           },
+  { id:4,  fn:'Romain',  ln:'Lefèvre',  ini:'RL', email:'r.lefevre@pro.fr',       phone:'06 45 67 89 01', src:"Bien'ici",  prop:'Appt 4P Bordeaux',   budget:320000,  score:91, status:'contacte',    profile:'Acheteur sérieux', tags:['URGENT','CASH'],            date:'2026-05-22', notes:'Acheteur cash, décision très rapide.'           },
+  { id:5,  fn:'Lucie',   ln:'Moreau',   ini:'LM', email:'lucie.moreau@gmail.com', phone:'06 56 78 90 12', src:'SeLoger',   prop:'Maison Nantes',       budget:550000,  score:80, status:'visite',      profile:'Acheteur sérieux', tags:['FAMILLE'],                  date:'2026-05-18', notes:'Famille avec 2 enfants, besoin jardin.'         },
+  { id:6,  fn:'Hugo',    ln:'Bernard',  ini:'HB', email:'h.bernard@outlook.com',  phone:'06 67 89 01 23', src:'Leboncoin', prop:'Loft Paris 10',       budget:380000,  score:68, status:'visite',      profile:'Investisseur',     tags:['LOCATION'],                 date:'2026-05-17', notes:'Veut louer après achat, cherche rendement.'     },
+  { id:7,  fn:'Clara',   ln:'Petit',    ini:'CP', email:'c.petit@email.fr',       phone:'06 78 90 12 34', src:'PAP',       prop:'Appt 2P Paris 9',    budget:290000,  score:63, status:'negociation', profile:'Acheteur sérieux', tags:['AGENCE','MANDAT'],          date:'2026-05-15', notes:'En cours de négociation, offre déposée.'        },
+  { id:8,  fn:'Maxime',  ln:'Girard',   ini:'MG', email:'m.girard@gmail.com',     phone:'06 89 01 23 45', src:"Bien'ici",  prop:'Villa Cannes',        budget:1200000, score:76, status:'negociation', profile:'Acheteur sérieux', tags:['PREMIUM','CASH'],           date:'2026-05-14', notes:'Client premium, villa vue mer.'                 },
+  { id:9,  fn:'Julie',   ln:'Blanc',    ini:'JB', email:'j.blanc@pro.fr',         phone:'06 90 12 34 56', src:'SeLoger',   prop:'T2 Marseille 8',      budget:220000,  score:45, status:'gagne',       profile:'Acheteur sérieux', tags:['LOCATION'],                 date:'2026-05-10', notes:'Vendu ! Signature chez notaire.'                },
   { id:10, fn:'Pierre',  ln:'Lambert',  ini:'PL', email:'p.lambert@email.com',    phone:'06 01 23 45 67', src:'PAP',       prop:'Maison Nice',         budget:650000,  score:33, status:'perdu',       profile:'Faible intention', tags:[],                           date:'2026-05-08', notes:'A choisi une autre agence.'                     },
-  { id:11, fn:'Marie',   ln:'Cohen',    ini:'MC', email:'m.cohen@gmail.com',      phone:'06 12 34 56 79', src:"Bien'ici",  prop:'Studio Lyon 3',       budget:180000,  score:58, status:'gagne',       profile:'Acheteur sÃ©rieux', tags:['INVESTISSEMENT'],           date:'2026-05-05', notes:'Investisseur, LMNP Lyon.'                       },
-  { id:12, fn:'David',   ln:'Rousseau', ini:'DR', email:'d.rousseau@pro.fr',      phone:'06 23 45 67 90', src:'SeLoger',   prop:'Appt 5P Bordeaux',    budget:490000,  score:42, status:'perdu',       profile:'Faible intention', tags:[],                           date:'2026-04-28', notes:'Budget trop serrÃ© aprÃ¨s simulation.'            },
+  { id:11, fn:'Marie',   ln:'Cohen',    ini:'MC', email:'m.cohen@gmail.com',      phone:'06 12 34 56 79', src:"Bien'ici",  prop:'Studio Lyon 3',       budget:180000,  score:58, status:'gagne',       profile:'Acheteur sérieux', tags:['INVESTISSEMENT'],           date:'2026-05-05', notes:'Investisseur, LMNP Lyon.'                       },
+  { id:12, fn:'David',   ln:'Rousseau', ini:'DR', email:'d.rousseau@pro.fr',      phone:'06 23 45 67 90', src:'SeLoger',   prop:'Appt 5P Bordeaux',    budget:490000,  score:42, status:'perdu',       profile:'Faible intention', tags:[],                           date:'2026-04-28', notes:'Budget trop serré après simulation.'            },
 ]
 const CRM_PIPELINE = [
   { id:'nouveau',     label:'Nouveau lead',  color:'#94A3B8' },
-  { id:'contacte',    label:'ContactÃ©',      color:'#3B82F6' },
-  { id:'visite',      label:'Visite prÃ©vue', color:'#8B5CF6' },
-  { id:'negociation', label:'NÃ©gociation',   color:'#F59E0B' },
-  { id:'gagne',       label:'GagnÃ©',         color:'#10B981' },
+  { id:'contacte',    label:'Contacté',      color:'#3B82F6' },
+  { id:'visite',      label:'Visite prévue', color:'#8B5CF6' },
+  { id:'negociation', label:'Négociation',   color:'#F59E0B' },
+  { id:'gagne',       label:'Gagné',         color:'#10B981' },
 ]
 const CRM_CONV_DATA = [
   { m:'Janv', leads:15, conv:5  },
-  { m:'FÃ©vr', leads:18, conv:7  },
+  { m:'Févr', leads:18, conv:7  },
   { m:'Mars', leads:22, conv:9  },
   { m:'Avr',  leads:25, conv:11 },
   { m:'Mai',  leads:28, conv:13 },
@@ -8099,11 +8099,11 @@ const CRM_SOURCES = [
   { label:'Autre',    pct:8,  color:'#94A3B8' },
 ]
 const CRM_TEMPLATES = [
-  { emoji:'ðŸ‘‹', label:'Prise de contact',       delay:'ImmÃ©diat'        },
-  { emoji:'ðŸ””', label:'Relance J+3',            delay:'AprÃ¨s 3 jours'   },
-  { emoji:'ðŸ“…', label:'Confirmation de visite', delay:'Visite prÃ©vue'   },
-  { emoji:'ðŸ’¬', label:'Suivi post-visite',      delay:'AprÃ¨s la visite' },
-  { emoji:'ðŸ¡', label:'Offre personnalisÃ©e',    delay:'NÃ©gociation'     },
+  { emoji:'ðŸ‘‹', label:'Prise de contact',       delay:'Immédiat'        },
+  { emoji:'ðŸ””', label:'Relance J+3',            delay:'Après 3 jours'   },
+  { emoji:'ðŸ“…', label:'Confirmation de visite', delay:'Visite prévue'   },
+  { emoji:'ðŸ’¬', label:'Suivi post-visite',      delay:'Après la visite' },
+  { emoji:'ðŸ¡', label:'Offre personnalisée',    delay:'Négociation'     },
 ]
 
 function CrmView({ setCurrentView }) {
@@ -8129,21 +8129,21 @@ function CrmView({ setCurrentView }) {
 
   const S = {
     nouveau:     { label:'Nouveau lead',  bg:'#1e293b' },
-    contacte:    { label:'ContactÃ©',      bg:'#2563EB' },
-    visite:      { label:'Visite prÃ©vue', bg:'#7C3AED' },
-    negociation: { label:'NÃ©gociation',   bg:'#D97706' },
-    gagne:       { label:'GagnÃ©',         bg:'#059669' },
+    contacte:    { label:'Contacté',      bg:'#2563EB' },
+    visite:      { label:'Visite prévue', bg:'#7C3AED' },
+    negociation: { label:'Négociation',   bg:'#D97706' },
+    gagne:       { label:'Gagné',         bg:'#059669' },
     perdu:       { label:'Perdu',         bg:'#DC2626' },
   }
   const P = {
-    'Acheteur sÃ©rieux': { bg:'#D1FAE5', text:'#065F46', emoji:'ðŸŽ¯' },
+    'Acheteur sérieux': { bg:'#D1FAE5', text:'#065F46', emoji:'ðŸŽ¯' },
     'Investisseur':     { bg:'#DBEAFE', text:'#1E40AF', emoji:'ðŸ“ˆ' },
     'Faible intention': { bg:'#F1F5F9', text:'#475569', emoji:'ðŸ‘¤' },
     'Agence':           { bg:'#FEF3C7', text:'#92400E', emoji:'ðŸ¢' },
   }
 
   const sColor    = s => s >= 80 ? '#10B981' : s >= 60 ? '#F97316' : '#EF4444'
-  const fmtBudget = n => n >= 1000000 ? (n / 1000000).toFixed(1) + ' Mâ‚¬' : (n / 1000).toFixed(0) + ' 000 â‚¬'
+  const fmtBudget = n => n >= 1000000 ? (n / 1000000).toFixed(1) + ' M€' : (n / 1000).toFixed(0) + ' 000 €'
   const AVCOLS    = { S:'#3B82F6',T:'#8B5CF6',A:'#F97316',R:'#10B981',L:'#F59E0B',H:'#06B6D4',C:'#EC4899',M:'#6366F1',J:'#84CC16',P:'#F43F5E',D:'#14B8A6' }
   const avColor   = ini => AVCOLS[ini[0]] || '#94A3B8'
 
@@ -8186,7 +8186,7 @@ function CrmView({ setCurrentView }) {
     const lead = {
       id: Date.now(), fn, ln, ini,
       email: newForm.email.trim(), phone: newForm.phone.trim(),
-      src: newForm.src || 'Autre', prop: newForm.prop.trim() || 'Non prÃ©cisÃ©',
+      src: newForm.src || 'Autre', prop: newForm.prop.trim() || 'Non précisé',
       budget: parseInt(newForm.budget.replace(/\s/g, '')) || 0,
       score, status: 'nouveau',
       profile: newForm.profile || 'Faible intention',
@@ -8215,7 +8215,7 @@ function CrmView({ setCurrentView }) {
 
   const SIDEBAR_NAV = [
     { Icon:Icons.Home,       label:"Vue d'ensemble",         id:'home-crm'   },
-    { Icon:Icons.Search,     label:'Recherches sauvegardÃ©es', id:'saved'      },
+    { Icon:Icons.Search,     label:'Recherches sauvegardées', id:'saved'      },
     { Icon:Icons.Bell,       label:'Notifications',           id:'notifs',    badge:4 },
     { Icon:Icons.Sparkles,   label:'Insights IA',             id:'insights'   },
     { Icon:Icons.CreditCard, label:'Abonnement',              id:'abonnement' },
@@ -8251,9 +8251,9 @@ function CrmView({ setCurrentView }) {
         <div className="mx-4 mb-5 p-4 rounded-2xl" style={{ background:'rgba(249,115,22,0.15)', border:'1px solid rgba(249,115,22,0.25)' }}>
           <div className="flex items-center gap-2 mb-1">
             <Icons.Zap size={14} className="text-orange-400" />
-            <span className="text-sm font-bold text-white">Passer Ã  Pro</span>
+            <span className="text-sm font-bold text-white">Passer à Pro</span>
           </div>
-          <p className="text-xs text-white/60 mb-3">Alertes illimitÃ©es + IA avancÃ©e</p>
+          <p className="text-xs text-white/60 mb-3">Alertes illimitées + IA avancée</p>
           <button className="w-full bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold py-2 rounded-xl transition-all"
             onClick={() => navigate('/tarifs')}>Voir les offres â†’</button>
         </div>
@@ -8299,7 +8299,7 @@ function CrmView({ setCurrentView }) {
           <div className="flex items-start justify-between mb-6">
             <div>
               <h1 className="text-2xl font-extrabold" style={{ color:txt }}>CRM Immobilier</h1>
-              <p className="text-sm mt-0.5" style={{ color:sub }}>{total} leads Â· {gagne} gagnÃ©s Â· Taux de conv. {conv}%</p>
+              <p className="text-sm mt-0.5" style={{ color:sub }}>{total} leads · {gagne} gagnés · Taux de conv. {conv}%</p>
             </div>
             <button onClick={() => setNewLeadOpen(true)} className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm px-5 py-2.5 rounded-2xl transition-all shadow-sm">
               <Icons.PlusSquare size={15} /> Nouveau lead
@@ -8311,7 +8311,7 @@ function CrmView({ setCurrentView }) {
             {[
               { Icon:Icons.Users,       color:'#3B82F6', val:total,    label:'Total leads'    },
               { Icon:Icons.TrendingUp,  color:'#10B981', val:conv+'%', label:'Taux de conv.'  },
-              { Icon:Icons.Tag,         color:'#F59E0B', val:negoc,    label:'En nÃ©gociation' },
+              { Icon:Icons.Tag,         color:'#F59E0B', val:negoc,    label:'En négociation' },
               { Icon:Icons.AlertCircle, color:'#EF4444', val:perdus,   label:'Perdus'         },
             ].map(({ Icon, color, val, label }) => (
               <div key={label} className="rounded-2xl p-5" style={{ background:card, border:`1px solid ${bdr}`, boxShadow:'0 1px 4px rgba(0,0,0,0.05)' }}>
@@ -8427,7 +8427,7 @@ function CrmView({ setCurrentView }) {
                         <div className="rounded-xl border-2 border-dashed p-6 text-center transition-all"
                           style={{ borderColor: isOver ? col.color : bdr, background: isOver ? col.color + '0d' : 'transparent' }}>
                           <p className="text-xs font-medium" style={{ color: isOver ? col.color : sub }}>
-                            {isOver ? 'DÃ©poser ici' : 'Aucun lead'}
+                            {isOver ? 'Déposer ici' : 'Aucun lead'}
                           </p>
                         </div>
                       )}
@@ -8566,7 +8566,7 @@ function CrmView({ setCurrentView }) {
               </div>
               <div className="grid grid-cols-2 gap-5">
                 <div className="rounded-2xl p-5" style={{ background:card, border:`1px solid ${bdr}` }}>
-                  <h3 className="text-sm font-bold mb-4" style={{ color:txt }}>Taux de rÃ©ponse par jour</h3>
+                  <h3 className="text-sm font-bold mb-4" style={{ color:txt }}>Taux de réponse par jour</h3>
                   <div className="flex items-end gap-2" style={{ height:56 }}>
                     {[72,88,65,91,78,84,70].map((v,i) => (
                       <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
@@ -8599,7 +8599,7 @@ function CrmView({ setCurrentView }) {
             <div className="grid grid-cols-2 gap-6">
               <div className="rounded-2xl p-5" style={{ background:card, border:`1px solid ${bdr}` }}>
                 <h3 className="text-sm font-bold mb-0.5" style={{ color:txt }}>Templates d'emails automatiques</h3>
-                <p className="text-xs mb-4" style={{ color:sub }}>SÃ©quences de suivi prÃ©dÃ©finies</p>
+                <p className="text-xs mb-4" style={{ color:sub }}>Séquences de suivi prédéfinies</p>
                 <div className="space-y-2">
                   {CRM_TEMPLATES.map((t, i) => (
                     <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-2xl border cursor-pointer transition-all hover:shadow-sm"
@@ -8617,7 +8617,7 @@ function CrmView({ setCurrentView }) {
               <div className="space-y-5">
                 <div className="rounded-2xl p-5" style={{ background:card, border:`1px solid ${bdr}` }}>
                   <h3 className="text-sm font-bold mb-0.5" style={{ color:txt }}>Relances prioritaires</h3>
-                  <p className="text-xs mb-4" style={{ color:sub }}>Leads Ã  recontacter en urgence</p>
+                  <p className="text-xs mb-4" style={{ color:sub }}>Leads à recontacter en urgence</p>
                   <div className="space-y-2.5">
                     {leads.filter(l => ['negociation','visite','contacte'].includes(l.status))
                       .sort((a,b) => a.date.localeCompare(b.date))
@@ -8644,10 +8644,10 @@ function CrmView({ setCurrentView }) {
                 <div className="rounded-2xl p-5" style={{ background:card, border:`1px solid ${bdr}` }}>
                   <div className="flex items-center gap-2 mb-3">
                     <Icons.Sparkles size={14} style={{ color:'#8B5CF6' }}/>
-                    <h3 className="text-sm font-bold" style={{ color:txt }}>Score IA â€” LÃ©gende</h3>
+                    <h3 className="text-sm font-bold" style={{ color:txt }}>Score IA — Légende</h3>
                   </div>
                   <div className="space-y-2">
-                    {[['80â€“100','Acheteur sÃ©rieux, dÃ©cision rapide','#10B981'],['60â€“79','IntÃ©rÃªt modÃ©rÃ©, Ã  relancer','#F97316'],['0â€“59','Faible intention, surveiller','#EF4444']].map(([range,label,color]) => (
+                    {[['80–100','Acheteur sérieux, décision rapide','#10B981'],['60–79','Intérêt modéré, à relancer','#F97316'],['0–59','Faible intention, surveiller','#EF4444']].map(([range,label,color]) => (
                       <div key={range} className="flex items-center gap-3">
                         <span className="text-xs font-bold px-2 py-0.5 rounded-lg whitespace-nowrap" style={{ background:color+'22', color }}>{range}</span>
                         <span className="text-xs" style={{ color:sub }}>{label}</span>
@@ -8679,7 +8679,7 @@ function CrmView({ setCurrentView }) {
                 <div className="flex items-center justify-between px-7 pt-6 pb-4" style={{ borderBottom:`1px solid ${bdr}` }}>
                   <div>
                     <h2 className="text-lg font-extrabold" style={{ color:txt }}>Nouveau lead</h2>
-                    <p className="text-xs mt-0.5" style={{ color:sub }}>Ajoutez un lead Ã  votre pipeline</p>
+                    <p className="text-xs mt-0.5" style={{ color:sub }}>Ajoutez un lead à votre pipeline</p>
                   </div>
                   <button onClick={() => { setNewLeadOpen(false); setNewFormErr('') }}
                     className="w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-slate-100"
@@ -8705,9 +8705,9 @@ function CrmView({ setCurrentView }) {
                         className="w-full h-11 px-4 rounded-2xl border-2 text-sm outline-none transition-all focus:border-orange-400"
                         style={{ background:dark?'#0f172a':bg, borderColor:bdr, color:txt }} />
                     </div>
-                    {/* TÃ©lÃ©phone */}
+                    {/* Téléphone */}
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color:sub }}>TÃ©lÃ©phone</label>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color:sub }}>Téléphone</label>
                       <input value={newForm.phone} onChange={e => setNewForm(f => ({ ...f, phone:e.target.value }))} placeholder="06 00 00 00 00" type="tel"
                         className="w-full h-11 px-4 rounded-2xl border-2 text-sm outline-none transition-all focus:border-orange-400"
                         style={{ background:dark?'#0f172a':bg, borderColor:bdr, color:txt }} />
@@ -8718,22 +8718,22 @@ function CrmView({ setCurrentView }) {
                       <select value={newForm.src} onChange={e => setNewForm(f => ({ ...f, src:e.target.value }))}
                         className="w-full h-11 px-4 rounded-2xl border-2 text-sm outline-none transition-all focus:border-orange-400 cursor-pointer"
                         style={{ background:dark?'#0f172a':bg, borderColor:bdr, color:newForm.src ? txt : sub }}>
-                        <option value="" style={{ color:sub }}>Choisirâ€¦</option>
+                        <option value="" style={{ color:sub }}>Choisir…</option>
                         {['SeLoger', 'Leboncoin', 'PAP', "Bien'ici", 'Instagram', 'Recommandation', 'Autre'].map(s => (
                           <option key={s} value={s} style={{ color:txt }}>{s}</option>
                         ))}
                       </select>
                     </div>
-                    {/* Bien recherchÃ© */}
+                    {/* Bien recherché */}
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color:sub }}>Bien recherchÃ©</label>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color:sub }}>Bien recherché</label>
                       <input value={newForm.prop} onChange={e => setNewForm(f => ({ ...f, prop:e.target.value }))} placeholder="Appt 3P Paris 11"
                         className="w-full h-11 px-4 rounded-2xl border-2 text-sm outline-none transition-all focus:border-orange-400"
                         style={{ background:dark?'#0f172a':bg, borderColor:bdr, color:txt }} />
                     </div>
                     {/* Budget */}
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color:sub }}>Budget (â‚¬)</label>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color:sub }}>Budget (€)</label>
                       <input value={newForm.budget} onChange={e => setNewForm(f => ({ ...f, budget:e.target.value }))} placeholder="420 000"
                         className="w-full h-11 px-4 rounded-2xl border-2 text-sm outline-none transition-all focus:border-orange-400"
                         style={{ background:dark?'#0f172a':bg, borderColor:bdr, color:txt }} />
@@ -8763,7 +8763,7 @@ function CrmView({ setCurrentView }) {
                   <div>
                     <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color:sub }}>Notes</label>
                     <textarea value={newForm.notes} onChange={e => setNewForm(f => ({ ...f, notes:e.target.value }))}
-                      placeholder="Contexte, motivation, urgenceâ€¦" rows={3}
+                      placeholder="Contexte, motivation, urgence…" rows={3}
                       className="w-full px-4 py-3 rounded-2xl border-2 text-sm outline-none transition-all focus:border-orange-400 resize-none"
                       style={{ background:dark?'#0f172a':bg, borderColor:bdr, color:txt }} />
                   </div>
@@ -8784,7 +8784,7 @@ function CrmView({ setCurrentView }) {
                   </button>
                   <button onClick={handleNewLead}
                     className="flex-1 h-11 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-sm">
-                    <Icons.PlusSquare size={15} /> CrÃ©er le lead
+                    <Icons.PlusSquare size={15} /> Créer le lead
                   </button>
                 </div>
               </motion.div>

@@ -4,6 +4,7 @@ import { I } from '../../lib/ui.jsx'
 import { useAuth } from '../../features/auth/providers/AuthProvider.jsx'
 import { useAuthAction, svc } from '../../features/auth/hooks/useAuth.js'
 import { supabase } from '../../lib/supabase.js'
+import { uploadAgencyLogo, uploadAgencyCover } from '../../features/auth/services/storageService.js'
 
 const PLAN_LABEL = { basic: 'Plan Basic', premium: 'Plan Premium', enterprise: 'Plan Enterprise' }
 
@@ -17,6 +18,8 @@ export default function PageProfile({ dark }) {
   const [phone,        setPhone]        = useState('')
   const [website,      setWebsite]      = useState('')
   const [listingCount, setListingCount] = useState(null)
+  const [uploadingLogo,  setUploadingLogo]  = useState(false)
+  const [uploadingCover, setUploadingCover] = useState(false)
 
   useEffect(() => {
     if (!user) return
@@ -46,6 +49,36 @@ export default function PageProfile({ dark }) {
       setAgency(updated)
       await loadProfile(user.id)
       setEditMode(false)
+    }
+  }
+
+  const handleLogoUpload = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file || !user) return
+    setUploadingLogo(true)
+    try {
+      const url = await uploadAgencyLogo(user.id, file)
+      await svc.updateAgency(user.id, { logo_url: url })
+      setAgency(prev => ({ ...prev, logo_url: url }))
+    } catch (err) {
+      console.error('Logo upload failed:', err)
+    } finally {
+      setUploadingLogo(false)
+    }
+  }
+
+  const handleCoverUpload = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file || !user) return
+    setUploadingCover(true)
+    try {
+      const url = await uploadAgencyCover(user.id, file)
+      await svc.updateAgency(user.id, { cover_url: url })
+      setAgency(prev => ({ ...prev, cover_url: url }))
+    } catch (err) {
+      console.error('Cover upload failed:', err)
+    } finally {
+      setUploadingCover(false)
     }
   }
 
@@ -133,31 +166,66 @@ export default function PageProfile({ dark }) {
         ) : (
           <motion.div key="edit"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className={`rounded-2xl border shadow-sm p-5 space-y-4 ${bd}`}>
-            <div>
-              <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${sx}`}>Description</label>
-              <textarea value={desc} onChange={e => setDesc(e.target.value)} rows={4}
-                className={`${inputCls} resize-none`} placeholder="Décrivez votre agence…" />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${sx}`}>Téléphone</label>
-                <input value={phone} onChange={e => setPhone(e.target.value)} className={inputCls} />
+            className="space-y-4">
+
+            {/* ── Banner / Cover upload ── */}
+            <div className={`rounded-2xl border shadow-sm overflow-hidden ${bd}`}>
+              <label className="block relative h-36 cursor-pointer group">
+                {agency?.cover_url
+                  ? <img src={agency.cover_url} alt="cover" className="w-full h-full object-cover" />
+                  : <div className="w-full h-full bg-gradient-to-r from-[#0B1F3A] to-[#1a3a6b]" />}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                  {uploadingCover
+                    ? <I.Loader size={20} className="text-white" />
+                    : <><I.Camera size={18} className="text-white" /><span className="text-white text-sm font-bold">Changer la bannière</span></>}
+                </div>
+                <input type="file" accept="image/*" className="hidden" onChange={handleCoverUpload} disabled={uploadingCover} />
+              </label>
+
+              {/* ── Logo upload ── */}
+              <div className="px-5 pt-2 pb-5 relative">
+                <label className="absolute -top-8 left-5 w-16 h-16 rounded-2xl border-4 border-white shadow-lg overflow-hidden cursor-pointer group">
+                  {agency?.logo_url
+                    ? <img src={agency.logo_url} alt="logo" className="w-full h-full object-cover" />
+                    : <div className="w-full h-full bg-orange-500 flex items-center justify-center"><I.Building size={22} className="text-white" /></div>}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    {uploadingLogo ? <I.Loader size={14} className="text-white" /> : <I.Camera size={14} className="text-white" />}
+                  </div>
+                  <input type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} disabled={uploadingLogo} />
+                </label>
+                <div className="pt-10">
+                  <p className={`text-[11px] ${sx}`}>Cliquez sur la bannière ou le logo pour les modifier. Formats : JPG, PNG, WebP.</p>
+                </div>
               </div>
-              <div>
-                <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${sx}`}>Site web</label>
-                <input value={website} onChange={e => setWebsite(e.target.value)} className={inputCls} />
-              </div>
             </div>
-            <div className="flex gap-3 pt-2">
-              <button onClick={cancel}
-                className="flex-1 h-10 rounded-xl border-2 border-slate-200 text-sm font-bold text-slate-600 hover:border-slate-300 transition">
-                Annuler
-              </button>
-              <button onClick={save} disabled={saving}
-                className="flex-1 h-10 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold transition disabled:opacity-50">
-                {saving ? 'Enregistrement…' : 'Sauvegarder'}
-              </button>
+
+            {/* ── Text fields ── */}
+            <div className={`rounded-2xl border shadow-sm p-5 space-y-4 ${bd}`}>
+              <div>
+                <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${sx}`}>Description</label>
+                <textarea value={desc} onChange={e => setDesc(e.target.value)} rows={4}
+                  className={`${inputCls} resize-none`} placeholder="Décrivez votre agence…" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${sx}`}>Téléphone</label>
+                  <input value={phone} onChange={e => setPhone(e.target.value)} className={inputCls} />
+                </div>
+                <div>
+                  <label className={`block text-[11px] font-bold uppercase tracking-wider mb-1.5 ${sx}`}>Site web</label>
+                  <input value={website} onChange={e => setWebsite(e.target.value)} className={inputCls} />
+                </div>
+              </div>
+              <div className="flex gap-3 pt-2">
+                <button onClick={cancel}
+                  className="flex-1 h-10 rounded-xl border-2 border-slate-200 text-sm font-bold text-slate-600 hover:border-slate-300 transition">
+                  Annuler
+                </button>
+                <button onClick={save} disabled={saving}
+                  className="flex-1 h-10 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold transition disabled:opacity-50">
+                  {saving ? 'Enregistrement…' : 'Sauvegarder'}
+                </button>
+              </div>
             </div>
           </motion.div>
         )}

@@ -1,6 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { I } from '../lib/ui.jsx'
+import { svc } from '../features/auth/hooks/useAuth.js'
 
 /* ─── Mock favoris ───────────────────────────────────────────── */
 const FAVORI_LISTINGS = [
@@ -89,12 +91,14 @@ export default function LoggedInHome({
   onOpenListing,
   onPublish,
 }) {
+  const navigate = useNavigate()
   const rawName  = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email || ''
   const firstName = rawName.split(/[\s@]+/)[0] || 'vous'
   const initials  = rawName.split(/[\s@]+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'U'
   const isPro     = role === 'agent' || role === 'admin' || role === 'super_admin'
 
   const QUICK = [
+    { label: 'Mon espace',    Icon: I.LayoutDashboard, action: () => navigate('/mon-espace'), color: '#F97316' },
     { label: 'Acheter',       Icon: I.Home,        view: 'acheter',      color: '#3B82F6' },
     { label: 'Louer',         Icon: I.Building,    view: 'louer',        color: '#10B981' },
     { label: 'Mes favoris',   Icon: I.Heart,       view: 'favoris',      color: '#EF4444' },
@@ -115,7 +119,7 @@ export default function LoggedInHome({
             <div className="w-12 h-12 rounded-2xl bg-[#0F172A] text-white text-[15px] font-extrabold flex items-center justify-center flex-shrink-0">
               {initials}
             </div>
-            <div>
+            <div className="flex-1 min-w-0">
               <motion.h1
                 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
                 className="text-[24px] font-extrabold text-[#0F172A] leading-tight"
@@ -124,6 +128,13 @@ export default function LoggedInHome({
               </motion.h1>
               <p className="text-[13px] text-slate-400 mt-0.5">Reprenez là où vous étiez.</p>
             </div>
+            <a href="/auth/logout"
+              title="Se déconnecter"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-[12px] font-semibold text-slate-500 hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 transition flex-shrink-0"
+            >
+              <I.LogOut size={14} />
+              <span className="hidden sm:inline">Déconnexion</span>
+            </a>
           </div>
 
           {/* Search bar */}
@@ -267,9 +278,6 @@ export default function LoggedInHome({
             </div>
           </section>
         )}
-
-        {/* Placeholder étape 4 */}
-        <p className="text-slate-300 text-sm">— activité en cours —</p>
 
       </div>
 

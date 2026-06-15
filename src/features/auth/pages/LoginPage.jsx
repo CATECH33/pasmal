@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I } from '../../../lib/ui.jsx'
 import { useAuthAction, svc } from '../hooks/useAuth.js'
@@ -114,9 +114,11 @@ function LeftPanel() {
 // ── Main export ───────────────────────────────────────────────────────────────
 export default function LoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { loading, error, setError, run } = useAuthAction()
   const { user, loading: authLoading } = useAuth()
-  const [email,        setEmail]        = useState('')
+  const existingEmail = location.state?.existingEmail || ''
+  const [email,        setEmail]        = useState(existingEmail)
   const [password,     setPassword]     = useState('')
   const [showPwd,      setShowPwd]      = useState(false)
   const [oauthLoading, setOauthLoading] = useState(false)
@@ -177,6 +179,21 @@ export default function LoginPage() {
               <h2 className="text-2xl font-extrabold text-[#0F172A] leading-tight">Bon retour parmi nous</h2>
               <p className="text-slate-500 text-sm mt-1">Connectez-vous pour accéder à vos annonces et favoris.</p>
             </div>
+
+            {/* Banner: email already exists */}
+            <AnimatePresence>
+              {existingEmail && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                  className="flex items-start gap-3 px-4 py-3.5 mb-5 bg-blue-50 border border-blue-100 rounded-xl text-sm">
+                  <I.BadgeCheck size={16} className="text-blue-500 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-semibold text-blue-800">Ce compte existe déjà.</span>
+                    <span className="text-blue-700 ml-1">Connectez-vous avec vos identifiants.</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Google OAuth */}
             <button type="button" onClick={signInWithGoogle} disabled={oauthLoading || loading}

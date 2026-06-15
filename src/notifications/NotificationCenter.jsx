@@ -206,23 +206,39 @@ export default function NotificationCenter({ user }) {
     if (!user) return
     loadNotifications()
 
-    const channel = supabase
-      .channel(`notif-center-${user.id}`)
-      .on('postgres_changes', {
-        event:  'INSERT',
-        schema: 'public',
-        table:  'alert_notifications',
-        filter: `user_id=eq.${user.id}`,
-      }, (payload) => {
-        const n = payload.new
-        setNotifications(prev => [n, ...prev])
-        setToast(n)
-      })
-      .subscribe()
+    // Guard against React StrictMode double-fire:
+    // remove any stale channel with the same name before subscribing
+    const channelName = `notif-center-${user.id}`
+    const stale = supabase.getChannels?.()?.find(c => c.topic === `realtime:${channelName}`)
+    if (stale) supabase.removeChannel(stale)
 
-    channelRef.current = channel
-    return () => { supabase.removeChannel(channel) }
-  }, [user, loadNotifications])
+    let channel = null
+    try {
+      channel = supabase
+        .channel(channelName)
+        .on('postgres_changes', {
+          event:  'INSERT',
+          schema: 'public',
+          table:  'alert_notifications',
+          filter: `user_id=eq.${user.id}`,
+        }, (payload) => {
+          const n = payload.new
+          setNotifications(prev => [n, ...prev])
+          setToast(n)
+        })
+        .subscribe((status, err) => {
+          if (err) console.warn('[NotifCenter] Realtime error:', err.message)
+        })
+
+      channelRef.current = channel
+    } catch (err) {
+      console.warn('[NotifCenter] Could not subscribe:', err.message)
+    }
+
+    return () => {
+      if (channel) supabase.removeChannel(channel).catch?.(() => {})
+    }
+  }, [user?.id, loadNotifications])
 
   const markRead = async (id) => {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n))

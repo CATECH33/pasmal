@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { I, BrandLogo, PasswordStrength } from '../../../lib/ui.jsx'
 import { useAuthAction, svc } from '../hooks/useAuth.js'
 import { isValidEmail } from '../validators/authValidators.js'
+import { startPremiumAlertsCheckout } from '../../subscription/subscriptionService.js'
 
 const DRAFT_KEY = 'pasmal_pro_reg_draft'
 
@@ -15,7 +16,6 @@ const STEPS = {
 const PREFS = [
   { key: 'achat',          label: 'Achat',         desc: 'Acquérir un bien',      Icon: I.Home       },
   { key: 'location',       label: 'Location',       desc: 'Trouver à louer',       Icon: I.Key        },
-  { key: 'investissement', label: 'Investissement', desc: 'Rentabiliser un bien',  Icon: I.TrendingUp },
   { key: 'colocation',     label: 'Colocation',     desc: 'Partager un logement',  Icon: I.Users      },
 ]
 
@@ -368,12 +368,139 @@ function Checkbox({ checked, onChange, children, error }) {
   )
 }
 
+// ── Premium alerts modal ─────────────────────────────────────────────────────
+function PremiumAlertsModal({ open, onClose, onSubscribe }) {
+  const BENEFITS = [
+    'Alertes email en temps réel',
+    'Nouvelles annonces selon vos critères',
+    'Achat, location ou colocation',
+    'Désabonnement en 1 clic',
+    'Aucun engagement',
+  ]
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          <motion.div key="pm-bd"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[300] bg-[#0B1F3A]/60 backdrop-blur-sm"
+            onClick={onClose}
+          />
+          <motion.div key="pm-card"
+            initial={{ opacity: 0, scale: 0.92, y: 28 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: 28 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+            className="fixed inset-0 z-[301] flex items-center justify-center p-4 pointer-events-none"
+          >
+            <div className="relative w-full max-w-md bg-white rounded-[28px] shadow-2xl overflow-hidden pointer-events-auto"
+              onClick={e => e.stopPropagation()}>
+
+              {/* Glow accents */}
+              <div className="absolute -top-20 -right-20 w-52 h-52 rounded-full bg-orange-400/20 blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-16 -left-16 w-44 h-44 rounded-full bg-amber-300/15 blur-3xl pointer-events-none" />
+
+              {/* Close button */}
+              <button onClick={onClose}
+                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-400 hover:text-[#0F172A] transition">
+                <I.X size={14} />
+              </button>
+
+              <div className="relative z-10 px-7 pt-8 pb-7">
+                {/* Icon */}
+                <motion.div
+                  initial={{ scale: 0, rotate: -12 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ delay: 0.1, type: 'spring', stiffness: 280, damping: 18 }}
+                  className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center mb-5 shadow-lg shadow-orange-500/25 mx-auto"
+                >
+                  <I.Bell size={28} className="text-white" />
+                </motion.div>
+
+                {/* Title */}
+                <motion.h3 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+                  className="text-xl font-extrabold text-[#0F172A] text-center leading-snug mb-2">
+                  Recevez les nouvelles annonces<br />avant tout le monde
+                </motion.h3>
+
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.22 }}
+                  className="text-sm text-slate-500 text-center leading-relaxed mb-6">
+                  Soyez alerté immédiatement lorsqu'un bien correspondant à vos critères est publié.
+                </motion.p>
+
+                {/* Benefits */}
+                <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}
+                  className="bg-gradient-to-br from-slate-50 to-orange-50/40 border border-slate-100 rounded-2xl p-5 mb-6">
+                  <div className="space-y-3">
+                    {BENEFITS.map((b, i) => (
+                      <motion.div key={b} className="flex items-center gap-3"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.32 + i * 0.06 }}>
+                        <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center shrink-0">
+                          <I.Check size={10} className="text-white" />
+                        </div>
+                        <span className="text-sm text-[#0F172A] font-medium">{b}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* Price */}
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.55 }}
+                  className="flex items-center justify-center gap-3 mb-6">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-extrabold text-[#0F172A]">7,50 €</span>
+                    <span className="text-sm text-slate-500 font-medium">/ mois</span>
+                  </div>
+                  <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-200 uppercase tracking-wide">
+                    Sans engagement
+                  </span>
+                </motion.div>
+
+                {/* Buttons */}
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.62 }}
+                  className="space-y-2.5">
+                  <button type="button" onClick={onSubscribe}
+                    className="w-full h-12 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-sm transition-all shadow-lg shadow-orange-500/25 hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0">
+                    <I.Bell size={15} />
+                    Continuer avec l'abonnement
+                  </button>
+                  <button type="button" onClick={onClose}
+                    className="w-full h-11 flex items-center justify-center rounded-2xl border-2 border-slate-200 text-sm font-semibold text-slate-500 hover:text-[#0F172A] hover:border-slate-300 hover:bg-slate-50 transition-all">
+                    Non merci
+                  </button>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  )
+}
+
 // ── Preferences step (personal) ───────────────────────────────────────────────
 function PreferencesStep({ prefs, setPrefs, emailOptIn, setEmailOptIn }) {
+  const [showModal, setShowModal] = useState(false)
   const toggle = (key) =>
     setPrefs(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key])
+
+  const handleOptInClick = () => {
+    if (emailOptIn) {
+      setEmailOptIn(false)
+    } else {
+      setShowModal(true)
+    }
+  }
+
   return (
     <div className="space-y-5">
+      <PremiumAlertsModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        onSubscribe={() => { setEmailOptIn(true); setShowModal(false) }}
+      />
       <div>
         <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-3">
           Vos projets{' '}
@@ -402,7 +529,7 @@ function PreferencesStep({ prefs, setPrefs, emailOptIn, setEmailOptIn }) {
           })}
         </div>
       </div>
-      <div onClick={() => setEmailOptIn(v => !v)}
+      <div onClick={handleOptInClick}
         className="flex items-start gap-3 cursor-pointer group px-1 py-2 rounded-xl hover:bg-slate-50 transition-colors">
         <div className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
           emailOptIn ? 'bg-orange-500 border-orange-500' : 'border-slate-300 group-hover:border-orange-400'
@@ -869,7 +996,7 @@ export default function RegisterPage() {
   const [avatarFile,  setAvatarFile]  = useState(null)
   const [avatarUrl,   setAvatarUrl]   = useState('')
   const [prefs,       setPrefs]       = useState([])
-  const [emailOptIn,  setEmailOptIn]  = useState(true)
+  const [emailOptIn,  setEmailOptIn]  = useState(false)
 
   // Pro
   const [companyName,   setCompanyName]   = useState('')
@@ -1050,6 +1177,26 @@ export default function RegisterPage() {
       const result = await run(() => svc.signUp(email, password, meta, files))
       if (result) {
         if (tab === 'pro') localStorage.removeItem(DRAFT_KEY)
+
+        // Supabase anti-enumeration: existing confirmed email returns identities:[]
+        // No email is sent — redirect to login with a helpful message instead
+        if (result.user?.identities?.length === 0) {
+          navigate('/auth/login', { state: { existingEmail: email } })
+          return
+        }
+
+        // If user opted in for premium alerts, attempt Stripe Checkout
+        if (tab === 'personal' && emailOptIn && result.session) {
+          try {
+            localStorage.setItem('pasmal_premium_pending', 'true')
+            await startPremiumAlertsCheckout()
+            return // Stripe will redirect — don't show success overlay
+          } catch (stripeErr) {
+            console.warn('[premium] Stripe checkout deferred:', stripeErr.message)
+            // Fall through to success — user can subscribe later
+          }
+        }
+
         setSuccess(true)
       }
       return
@@ -1060,7 +1207,10 @@ export default function RegisterPage() {
 
   const back = () => { setErrors({}); setDir(-1); setStep(n => n - 1) }
 
-  const switchTab = (t) => { setTab(t); setStep(0); setDir(1); setErrors({}) }
+  const switchTab = (t) => {
+    if (t === 'pro') { navigate('/auth/register/pro'); return }
+    setTab(t); setStep(0); setDir(1); setErrors({})
+  }
 
   if (success) return <SuccessOverlay email={email} isPro={tab === 'pro'} />
 

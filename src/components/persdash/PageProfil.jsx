@@ -1,33 +1,74 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { I } from '../../lib/ui.jsx'
+import { useAuth } from '../../features/auth/providers/AuthProvider.jsx'
+import { supabase } from '../../lib/supabase.js'
 
 const PREFS = ['Acheter', 'Louer', 'Investir']
 
 export default function PageProfil({ dark }) {
+  const { user, profile } = useAuth()
   const [editing, setEditing] = useState(false)
+  const [saving, setSaving] = useState(false)
   const [avatar, setAvatar] = useState(null)
-  const [form, setForm] = useState({
-    firstName: 'Jean', lastName: 'Dupont',
-    email: 'jean.dupont@email.com',
-    phone: '+33 6 12 34 56 78',
-    city: 'Paris',
-    pref: 'Acheter',
-  })
-  const [draft, setDraft] = useState(form)
   const fileRef = useRef()
 
-  const tx = dark ? 'text-white' : 'text-navy-900'
+  const initial = {
+    firstName: profile?.first_name || user?.user_metadata?.first_name || '',
+    lastName:  profile?.last_name  || user?.user_metadata?.last_name  || '',
+    email:     user?.email || '',
+    phone:     profile?.phone || '',
+    city:      profile?.city || '',
+    pref:      profile?.project_type || 'Acheter',
+  }
+
+  const [form, setForm] = useState(initial)
+  const [draft, setDraft] = useState(initial)
+
+  useEffect(() => {
+    const updated = {
+      firstName: profile?.first_name || user?.user_metadata?.first_name || '',
+      lastName:  profile?.last_name  || user?.user_metadata?.last_name  || '',
+      email:     user?.email || '',
+      phone:     profile?.phone || '',
+      city:      profile?.city || '',
+      pref:      profile?.project_type || 'Acheter',
+    }
+    setForm(updated)
+    setDraft(updated)
+  }, [user, profile])
+
+  const tx = dark ? 'text-white' : 'text-[#0F172A]'
   const sx = dark ? 'text-white/50' : 'text-slate-400'
   const bd = dark ? 'bg-[#1f2937] border-white/10' : 'bg-white border-slate-200'
   const inp = dark
     ? 'bg-white/5 border-white/10 text-white placeholder-white/30 focus:border-orange-500'
-    : 'bg-slate-50 border-slate-200 text-navy-900 placeholder-slate-300 focus:border-orange-500'
+    : 'bg-slate-50 border-slate-200 text-[#0F172A] placeholder-slate-300 focus:border-orange-500'
 
-  const handleSave = () => { setForm(draft); setEditing(false) }
+  const handleSave = async () => {
+    if (!user) return
+    setSaving(true)
+    try {
+      await supabase.from('profiles').upsert({
+        id: user.id,
+        first_name: draft.firstName,
+        last_name: draft.lastName,
+        phone: draft.phone,
+        city: draft.city,
+        project_type: draft.pref,
+      })
+      setForm(draft)
+      setEditing(false)
+    } catch (err) {
+      console.error('Profile save error:', err)
+    } finally {
+      setSaving(false)
+    }
+  }
+
   const handleCancel = () => { setDraft(form); setEditing(false) }
 
-  const initials = `${form.firstName[0]}${form.lastName[0]}`.toUpperCase()
+  const initials = `${(form.firstName[0] || '').toUpperCase()}${(form.lastName[0] || '').toUpperCase()}` || 'U'
 
   return (
     <div className="p-6 space-y-5 max-w-xl mx-auto">
@@ -56,14 +97,16 @@ export default function PageProfil({ dark }) {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className={`text-base font-extrabold ${tx}`}>{form.firstName} {form.lastName}</p>
+            <p className={`text-base font-extrabold ${tx}`}>
+              {form.firstName || form.lastName ? `${form.firstName} ${form.lastName}`.trim() : 'Utilisateur'}
+            </p>
             <p className={`text-xs mt-0.5 ${sx}`}>{form.email}</p>
             <div className="flex items-center gap-2 mt-1.5">
-              <span className={`flex items-center gap-1 text-[11px] ${sx}`}><I.MapPin size={11}/>{form.city}</span>
+              {form.city && <span className={`flex items-center gap-1 text-[11px] ${sx}`}><I.MapPin size={11}/>{form.city}</span>}
               <span className="text-[11px] font-bold bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full">{form.pref}</span>
             </div>
           </div>
-          <button onClick={() => { setDraft(form); setEditing(e => !e) }}
+          <button onClick={() => { if (editing) handleCancel(); else { setDraft(form); setEditing(true) } }}
             className={`flex items-center gap-1.5 h-8 px-3 rounded-xl text-xs font-bold transition ${
               dark ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
             }`}>
@@ -90,8 +133,9 @@ export default function PageProfil({ dark }) {
               </div>
               <div>
                 <label className={`text-xs font-bold ${sx} block mb-1`}>E-mail</label>
-                <input value={draft.email} onChange={e => setDraft(p => ({ ...p, email: e.target.value }))}
-                  className={`w-full h-9 rounded-xl border px-3 text-sm outline-none transition ${inp}`} />
+                <input value={draft.email} disabled
+                  className={`w-full h-9 rounded-xl border px-3 text-sm outline-none opacity-50 cursor-not-allowed ${inp}`} />
+                <p className={`text-[10px] mt-1 ${sx}`}>L'e-mail ne peut pas être modifié ici</p>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -117,9 +161,11 @@ export default function PageProfil({ dark }) {
                 </div>
               </div>
               <div className="flex gap-2 pt-1">
-                <button onClick={handleSave}
-                  className="flex-1 h-9 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition">
-                  Enregistrer
+                <button onClick={handleSave} disabled={saving}
+                  className={`flex-1 h-9 rounded-xl text-white text-xs font-bold transition flex items-center justify-center gap-2 ${
+                    saving ? 'bg-orange-400 cursor-wait' : 'bg-orange-500 hover:bg-orange-600'
+                  }`}>
+                  {saving ? <><I.Loader size={13} /> Enregistrement...</> : 'Enregistrer'}
                 </button>
                 <button onClick={handleCancel}
                   className={`flex-1 h-9 rounded-xl text-xs font-bold transition ${dark ? 'bg-white/10 text-white/60 hover:bg-white/20' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>
@@ -157,7 +203,7 @@ export default function PageProfil({ dark }) {
 
       {/* Danger zone */}
       <div className={`rounded-2xl border border-rose-200 shadow-sm p-5 ${dark ? 'bg-rose-500/5 border-rose-500/20' : 'bg-rose-50'}`}>
-        <p className={`text-sm font-extrabold text-rose-600 mb-1`}>Zone de danger</p>
+        <p className="text-sm font-extrabold text-rose-600 mb-1">Zone de danger</p>
         <p className={`text-xs ${sx} mb-3`}>Ces actions sont irréversibles. Procédez avec précaution.</p>
         <button className="h-8 px-4 rounded-xl border border-rose-300 text-xs font-bold text-rose-600 hover:bg-rose-100 transition">
           Supprimer mon compte

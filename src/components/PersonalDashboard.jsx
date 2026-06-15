@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import DashSidebar from './persdash/DashSidebar.jsx'
-import DashTopbar from './persdash/DashTopbar.jsx'
+import DashSidebar  from './persdash/DashSidebar.jsx'
+import DashTopbar   from './persdash/DashTopbar.jsx'
 import PageOverview from './persdash/PageOverview.jsx'
-import PageFavoris from './persdash/PageFavoris.jsx'
-import PageAlertes from './persdash/PageAlertes.jsx'
-import PageRecherches from './persdash/PageRecherches.jsx'
+import PageFavoris  from './persdash/PageFavoris.jsx'
+import PageAlertes  from './persdash/PageAlertes.jsx'
+import PageRecherches    from './persdash/PageRecherches.jsx'
 import PageNotifications from './persdash/PageNotifications.jsx'
-import PageAbonnement from './persdash/PageAbonnement.jsx'
-import PageProfil from './persdash/PageProfil.jsx'
+import PageAbonnement    from './persdash/PageAbonnement.jsx'
+import PageProfil        from './persdash/PageProfil.jsx'
 
 const PAGES = {
   overview:      PageOverview,
@@ -20,6 +20,12 @@ const PAGES = {
   profil:        PageProfil,
 }
 
+// Sidebar notification badges (static placeholders — connected to real data in PageOverview)
+const BADGES = {
+  alertes:       2,
+  notifications: 3,
+}
+
 export default function PersonalDashboard({ onExit }) {
   const [page, setPage] = useState('overview')
   const [dark, setDark] = useState(false)
@@ -29,7 +35,14 @@ export default function PersonalDashboard({ onExit }) {
 
   return (
     <div className={`fixed inset-0 z-[120] flex ${bg}`}>
-      <DashSidebar page={page} setPage={setPage} dark={dark} setDark={setDark} onExit={onExit} />
+      <DashSidebar
+        page={page}
+        setPage={setPage}
+        dark={dark}
+        setDark={setDark}
+        onExit={onExit}
+        badges={BADGES}
+      />
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashTopbar page={page} dark={dark} />
@@ -37,10 +50,10 @@ export default function PersonalDashboard({ onExit }) {
         <main className="flex-1 overflow-y-auto">
           <AnimatePresence mode="wait">
             <motion.div key={page}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.18 }}>
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}>
               <Page dark={dark} setPage={setPage} />
             </motion.div>
           </AnimatePresence>
