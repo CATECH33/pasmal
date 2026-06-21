@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I } from '../../../lib/ui.jsx'
 import { useAuthAction, svc } from '../hooks/useAuth.js'
+import { supabase } from '../../../lib/supabase.js'
 import { useAuth } from '../providers/AuthProvider.jsx'
 import { validateLoginForm } from '../validators/authValidators.js'
 import { PasmalInput } from '../../../components/ui/PasmalInput'
@@ -147,8 +148,15 @@ export default function LoginPage() {
       }
     })
     if (result) {
-      const isPro = result.user?.user_metadata?.account_type === 'professional'
-      navigate(isPro ? '/pro' : '/')
+      // Fetch real role from profiles table (authoritative source)
+      try {
+        const { data } = await supabase.from('profiles').select('role').eq('id', result.user.id).single()
+        const PRO_ROLES = ['pro_user', 'agency', 'agency_admin', 'super_admin']
+        navigate(PRO_ROLES.includes(data?.role) ? '/pro' : '/')
+      } catch {
+        const isPro = result.user?.user_metadata?.account_type === 'professional'
+        navigate(isPro ? '/pro' : '/')
+      }
     } else if (unconfirmed) navigate('/auth/verify-pending', { state: { email } })
   }
 

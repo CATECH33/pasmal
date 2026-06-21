@@ -78,11 +78,27 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/simulateur"        element={<SimulateurPage />} />
           <Route path="/estimation"         element={<EstimationPage />} />
           <Route path="/guides"            element={<GuidesPage />} />
-          <Route path="/crm"               element={<CRMPage />} />
-          <Route path="/forms"             element={<FormsPage />} />
+          <Route path="/crm" element={
+            <ProtectedRoute anyOf={['pro_user', 'agency', 'agency_admin', 'super_admin']}>
+              <CRMPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/forms" element={
+            <ProtectedRoute anyOf={['pro_user', 'agency', 'agency_admin', 'super_admin']}>
+              <FormsPage />
+            </ProtectedRoute>
+          } />
           <Route path="/subscription/success" element={<SubscriptionSuccessPage />} />
-          <Route path="/mon-espace" element={<PersonalDashboardPage />} />
-          <Route path="/debug-auth" element={<DebugAuthPage />} />
+          <Route path="/mon-espace" element={
+            <ProtectedRoute>
+              <PersonalDashboardPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/debug-auth" element={
+            <ProtectedRoute anyOf={['super_admin']}>
+              <DebugAuthPage />
+            </ProtectedRoute>
+          } />
           <Route path="/pro" element={
             <ProtectedRoute anyOf={['pro_user', 'agency', 'agency_admin', 'super_admin']}>
               <ProDashboardPage />

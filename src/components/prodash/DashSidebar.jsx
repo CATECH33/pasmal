@@ -2,7 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { I } from '../../lib/ui.jsx'
 
-const NAV = [
+const NAV_PRO = [
   { id: 'overview',      label: 'Vue d\'ensemble', Icon: I.Home       },
   { id: 'listings',      label: 'Mes annonces',    Icon: I.Building   },
   { id: 'leads',         label: 'Leads',           Icon: I.Users,  badge: 3 },
@@ -12,7 +12,19 @@ const NAV = [
   { id: 'profile',       label: 'Profil agence',   Icon: I.Globe      },
 ]
 
-export default function DashSidebar({ page, setPage, dark, setDark, onExit }) {
+const NAV_ADMIN = [
+  { id: 'admin-overview',       label: 'Vue d\'ensemble',       Icon: I.LayoutDashboard },
+  { id: 'admin-searches',       label: 'Recherches sauvegardées', Icon: I.Bookmark      },
+  { id: 'admin-notifications',  label: 'Notifications',          Icon: I.Bell           },
+  { id: 'admin-insights',       label: 'Insights IA',            Icon: I.Sparkles       },
+  { id: 'admin-subscriptions',  label: 'Abonnements',            Icon: I.CreditCard     },
+  { id: 'admin-favorites',      label: 'Favoris',                Icon: I.Heart          },
+  { id: 'admin-profile',        label: 'Mon profil',             Icon: I.User           },
+]
+
+export default function DashSidebar({ page, setPage, dark, setDark, onExit, isAdmin }) {
+  const NAV = isAdmin ? NAV_ADMIN : NAV_PRO
+
   return (
     <aside className="flex flex-col w-60 shrink-0 bg-[#0B1F3A] h-full">
       {/* Brand */}
@@ -22,7 +34,7 @@ export default function DashSidebar({ page, setPage, dark, setDark, onExit }) {
         </div>
         <div>
           <p className="text-white font-extrabold text-sm leading-none">PASMAL</p>
-          <p className="text-white/40 text-[10px] mt-0.5">Espace Pro</p>
+          <p className="text-white/40 text-[10px] mt-0.5">{isAdmin ? 'Super Admin' : 'Espace Pro'}</p>
         </div>
       </div>
 
@@ -53,7 +65,7 @@ export default function DashSidebar({ page, setPage, dark, setDark, onExit }) {
       <div className="px-3 py-4 border-t border-white/10 space-y-1">
         <button onClick={() => setDark(!dark)}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/50 hover:bg-white/10 hover:text-white transition text-[13px] font-semibold">
-          {dark ? <I.Star size={15} /> : <I.Bell size={15} />}
+          {dark ? <I.Sun size={15} /> : <I.Moon size={15} />}
           {dark ? 'Mode clair' : 'Mode sombre'}
         </button>
         <button onClick={onExit}
