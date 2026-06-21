@@ -27,6 +27,7 @@ import ProRegisterPage          from './features/pro/ProRegisterPage.jsx'
 import AgencyVerificationPage  from './features/pro/AgencyVerificationPage.jsx'
 import SubscriptionSuccessPage from './features/subscription/SubscriptionSuccessPage.jsx'
 import PersonalDashboardPage   from './features/dashboard/PersonalDashboardPage.jsx'
+import DebugAuthPage           from './features/debug/DebugAuthPage.jsx'
 import { AuthProvider } from './features/auth/providers/AuthProvider.jsx'
 import './index.css'
 
@@ -81,6 +82,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/forms"             element={<FormsPage />} />
           <Route path="/subscription/success" element={<SubscriptionSuccessPage />} />
           <Route path="/mon-espace" element={<PersonalDashboardPage />} />
+          <Route path="/debug-auth" element={<DebugAuthPage />} />
           <Route path="/pro" element={
             <ProtectedRoute anyOf={['pro_user', 'agency', 'agency_admin', 'super_admin']}>
               <ProDashboardPage />
