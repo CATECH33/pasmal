@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { I, BrandLogo } from '../../lib/ui.jsx'
 import { PasmalSelect } from '../../components/ui/PasmalSelect'
+import { PasmalInput } from '../../components/ui/PasmalInput'
+import { PasmalTextarea } from '../../components/ui/PasmalTextarea'
 
 const unsplash = (id, w = 1200) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`
@@ -555,14 +557,10 @@ export default function AgencesPage() {
                   ) : (
                     <form onSubmit={handleContact} className="space-y-3">
                       <div className="grid grid-cols-2 gap-3">
-                        <input value={msgName} onChange={e => setMsgName(e.target.value)} required placeholder="Votre nom"
-                          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition" />
-                        <input type="email" value={msgEmail} onChange={e => setMsgEmail(e.target.value)} required placeholder="Votre e-mail"
-                          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition" />
+                        <PasmalInput size="sm" value={msgName} onChange={e => setMsgName(e.target.value)} required placeholder="Votre nom" icon={<I.User size={13}/>} />
+                        <PasmalInput type="email" size="sm" value={msgEmail} onChange={e => setMsgEmail(e.target.value)} required placeholder="Votre e-mail" icon={<I.Mail size={13}/>} />
                       </div>
-                      <textarea rows={3} value={msgText} onChange={e => setMsgText(e.target.value)} required
-                        placeholder="Votre message…"
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition resize-none" />
+                      <PasmalTextarea rows={3} value={msgText} onChange={e => setMsgText(e.target.value)} required placeholder="Votre message…" />
                       <button type="submit"
                         className="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl text-sm transition-colors">
                         Envoyer le message

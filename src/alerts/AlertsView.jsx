@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { I } from '../lib/ui.jsx'
 import { supabase } from '../lib/supabase.js'
+import { PasmalInput } from '../components/ui/PasmalInput'
 
 /* ============================================================
    PASMAL — Smart Alerts System
@@ -604,16 +605,10 @@ function AlertCreatorModal({ alert: initial, isPremium, onSave, onClose }) {
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
               Budget {txType === 'rent' ? '(€/mois)' : '(€)'}
             </label>
-            <div className="flex gap-2">
-              <div className="flex-1">
-                <input type="number" value={priceMin} onChange={e => setPriceMin(e.target.value)} placeholder="Min"
-                  className="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-300 transition" />
-              </div>
-              <div className="flex items-center text-slate-400 text-sm font-medium px-1">–</div>
-              <div className="flex-1">
-                <input type="number" value={priceMax} onChange={e => setPriceMax(e.target.value)} placeholder="Max"
-                  className="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-300 transition" />
-              </div>
+            <div className="flex gap-2 items-center">
+              <PasmalInput type="number" size="sm" value={priceMin} onChange={e => setPriceMin(e.target.value)} placeholder="Min" />
+              <span className="text-slate-400 text-sm font-medium">–</span>
+              <PasmalInput type="number" size="sm" value={priceMax} onChange={e => setPriceMax(e.target.value)} placeholder="Max" />
             </div>
           </div>
 
@@ -632,20 +627,15 @@ function AlertCreatorModal({ alert: initial, isPremium, onSave, onClose }) {
 
           {/* Surface */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Surface minimum (m²)</label>
-            <div className="flex items-center gap-2 px-4 h-11 bg-slate-50 border border-slate-200 rounded-xl focus-within:ring-2 focus-within:ring-orange-500/30 focus-within:border-orange-300 transition">
-              <svg className="shrink-0 text-slate-400" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h6M3 15h6"/></svg>
-              <input type="number" min="1" value={surfaceMin} onChange={e => setSurfaceMin(e.target.value)} placeholder="Ex: 40"
-                className="flex-1 bg-transparent text-sm placeholder-slate-400 focus:outline-none" />
-              {surfaceMin && <span className="text-xs text-slate-400 shrink-0">m²</span>}
-            </div>
+            <label className="block text-xs font-semibold text-slate-500 mb-1.5">Surface minimum (m²)</label>
+            <PasmalInput type="number" size="sm" min="1" value={surfaceMin} onChange={e => setSurfaceMin(e.target.value)} placeholder="Ex: 40"
+              iconRight={surfaceMin ? <span className="text-xs text-slate-400">m²</span> : undefined} />
           </div>
 
           {/* Keywords */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Mots-clés</label>
-            <input value={keywords} onChange={e => setKeywords(e.target.value)} placeholder="terrasse, parking, jardin…"
-              className="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-300 transition" />
+            <label className="block text-xs font-semibold text-slate-500 mb-1.5">Mots-clés</label>
+            <PasmalInput size="sm" value={keywords} onChange={e => setKeywords(e.target.value)} placeholder="terrasse, parking, jardin…" />
             <p className="text-[10px] text-slate-400 mt-1">Séparés par des virgules. La recherche est insensible à la casse.</p>
           </div>
 

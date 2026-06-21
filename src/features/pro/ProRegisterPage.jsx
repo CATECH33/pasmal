@@ -5,6 +5,8 @@ import { I, BrandLogo, PasswordStrength } from '../../lib/ui.jsx'
 import { useAuthAction, svc } from '../auth/hooks/useAuth.js'
 import { isValidEmail } from '../auth/validators/authValidators.js'
 import { PasmalSelect } from '../../components/ui/PasmalSelect'
+import { PasmalInput } from '../../components/ui/PasmalInput'
+import { PasmalTextarea } from '../../components/ui/PasmalTextarea'
 
 const DRAFT_KEY = 'pasmal_pro_wizard_v2'
 const MAX_IMG = 5 * 1024 * 1024
@@ -53,16 +55,15 @@ function Field({ label, optional, error, children }) {
 
 function TextInput({ value, onChange, placeholder, type = 'text', icon: Icon, error, maxLength }) {
   return (
-    <div className={`flex items-center gap-3 px-4 h-12 rounded-xl border-2 bg-slate-50/80 transition-all ${
-      error
-        ? 'border-rose-300 bg-rose-50/50 focus-within:border-rose-400 focus-within:ring-2 focus-within:ring-rose-100'
-        : 'border-slate-200 focus-within:border-orange-400 focus-within:ring-2 focus-within:ring-orange-100'
-    }`}>
-      {Icon && <Icon size={15} className={`shrink-0 ${error ? 'text-rose-400' : 'text-slate-400'}`} />}
-      <input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
-        maxLength={maxLength}
-        className="flex-1 bg-transparent text-[#0F172A] placeholder-slate-400 text-sm focus:outline-none" />
-    </div>
+    <PasmalInput
+      type={type}
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      placeholder={placeholder}
+      icon={Icon ? <Icon size={15} /> : undefined}
+      error={error}
+      maxLength={maxLength}
+    />
   )
 }
 
@@ -80,22 +81,15 @@ function SelectInput({ value, onChange, options, placeholder, icon: Icon, error 
 }
 
 function PwdInput({ label, value, onChange, showStrength, error }) {
-  const [show, setShow] = useState(false)
   return (
     <Field label={label} error={error}>
-      <div className={`flex items-center gap-3 px-4 h-12 rounded-xl border-2 bg-slate-50/80 transition-all ${
-        error
-          ? 'border-rose-300 bg-rose-50/50 focus-within:border-rose-400 focus-within:ring-2 focus-within:ring-rose-100'
-          : 'border-slate-200 focus-within:border-orange-400 focus-within:ring-2 focus-within:ring-orange-100'
-      }`}>
-        <I.Lock size={15} className={`shrink-0 ${error ? 'text-rose-400' : 'text-slate-400'}`} />
-        <input type={show ? 'text' : 'password'} value={value} onChange={e => onChange(e.target.value)}
-          placeholder="••••••••"
-          className="flex-1 bg-transparent text-[#0F172A] placeholder-slate-400 text-sm focus:outline-none" />
-        <button type="button" onClick={() => setShow(s => !s)} className="text-slate-400 hover:text-slate-600 transition shrink-0">
-          {show ? <I.EyeOff size={14} /> : <I.Eye size={14} />}
-        </button>
-      </div>
+      <PasmalInput
+        type="password"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder="••••••••"
+        icon={<I.Lock size={15} />}
+      />
       {showStrength && value && <PasswordStrength password={value} />}
     </Field>
   )
@@ -338,9 +332,13 @@ function Step4_Profile({ d, set, errors }) {
         maxSize={MAX_IMG}
       />
       <Field label="Description" optional>
-        <textarea value={d.description} onChange={e => set.description(e.target.value)} rows={4} maxLength={500}
+        <PasmalTextarea
+          value={d.description}
+          onChange={e => set.description(e.target.value)}
+          rows={4}
+          maxLength={500}
           placeholder="Notre agence accompagne acheteurs et vendeurs depuis 2010, avec une expertise reconnue..."
-          className="w-full px-4 py-3 bg-slate-50/80 border-2 border-slate-200 rounded-xl text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-100 focus:border-orange-400 transition-all resize-none" />
+        />
         <div className="text-right text-[10px] text-slate-400 mt-1">{d.description.length}/500</div>
       </Field>
       <Field label="Site web" optional error={errors.website}>

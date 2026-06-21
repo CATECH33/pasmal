@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { I, Badge, Avatar } from '../lib/ui.jsx'
+import { PasmalTextarea } from '../components/ui/PasmalTextarea'
 
 const LEADS = [
   { id: 'l1', name: 'Sophie Mercier',   email: 'sophie.mercier@gmail.com',  phone: '+33 6 12 34 56 78', source: 'Site web',    status: 'hot',   plan: 'Business',    created: '2026-05-18', agency: 'Agence Prestige', value: 79,  notes: 'Intéressée par le pack Business annuel. Rappel vendredi.', avatar: 'SM', color: '#F59E0B' },
@@ -199,12 +200,12 @@ export default function AdminCRM() {
                       </div>
                       <div className="bg-current/[0.04] rounded-xl p-3 text-sm leading-relaxed">{msg.text}</div>
                       <div>
-                        <textarea
+                        <PasmalTextarea
                           value={reply}
                           onChange={(e) => setReply(e.target.value)}
                           placeholder="Votre réponse…"
                           rows={3}
-                          className="w-full text-sm px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-300 transition"
+                          dark
                         />
                         <button onClick={() => setReply('')} className="mt-2 w-full py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-xl transition-colors">
                           <I.Send size={12} className="inline mr-1" />Envoyer la réponse

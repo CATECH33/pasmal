@@ -3,6 +3,7 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I } from '../../lib/ui.jsx'
 import { PasmalSelect } from '../../components/ui/PasmalSelect'
+import { PasmalInput } from '../../components/ui/PasmalInput'
 import { supabase } from '../../lib/supabase.js'
 
 // ── Data ──────────────────────────────────────────────────────────────────────
@@ -281,20 +282,17 @@ function FilterPanel({ params, set, resetAll, activeCount }) {
 
       {/* Budget */}
       <div>
-        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Budget</div>
+        <div className="text-xs font-semibold text-slate-500 mb-2">Budget</div>
         <div className="grid grid-cols-2 gap-2">
-          <input type="number" value={priceMin} onChange={e => set('priceMin', e.target.value)}
-            placeholder="Min €" className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition" />
-          <input type="number" value={priceMax} onChange={e => set('priceMax', e.target.value)}
-            placeholder="Max €" className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition" />
+          <PasmalInput type="number" size="sm" value={priceMin} onChange={e => set('priceMin', e.target.value)} placeholder="Min €" />
+          <PasmalInput type="number" size="sm" value={priceMax} onChange={e => set('priceMax', e.target.value)} placeholder="Max €" />
         </div>
       </div>
 
       {/* Surface */}
       <div>
-        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Surface min. (m²)</div>
-        <input type="number" value={surfaceMin} onChange={e => set('surfaceMin', e.target.value)}
-          placeholder="ex. 40" className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 transition" />
+        <div className="text-xs font-semibold text-slate-500 mb-2">Surface min. (m²)</div>
+        <PasmalInput type="number" size="sm" value={surfaceMin} onChange={e => set('surfaceMin', e.target.value)} placeholder="ex. 40" />
       </div>
 
       {/* Rooms */}

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I } from '../../../lib/ui.jsx'
 import { useAuthAction, svc } from '../hooks/useAuth.js'
+import { PasmalInput } from '../../../components/ui/PasmalInput'
 
 const TIPS = [
   { Icon: I.Mail,    title: 'Vérifiez vos spams',       body: 'Le lien peut atterrir dans votre dossier indésirables.' },
@@ -190,17 +191,15 @@ export default function ForgotPage() {
 
                   <form onSubmit={submit} className="space-y-4">
                     {/* Email */}
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
-                        E-mail
-                      </label>
-                      <div className="flex items-center gap-3 px-4 h-12 rounded-xl border-2 border-slate-200 bg-slate-50 focus-within:border-orange-400 focus-within:ring-2 focus-within:ring-orange-100 transition-all">
-                        <I.Mail size={15} className="text-slate-400 shrink-0" />
-                        <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                          placeholder="vous@exemple.fr"
-                          className="flex-1 bg-transparent text-[#0F172A] placeholder-slate-400 text-sm focus:outline-none" />
-                      </div>
-                    </div>
+                    <PasmalInput
+                      type="email"
+                      label="E-mail"
+                      placeholder="vous@exemple.fr"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                      required
+                      icon={<I.Mail size={15} />}
+                    />
 
                     {/* Error */}
                     <AnimatePresence>

@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { BrandLogo, I } from '../../lib/ui.jsx'
 import { supabase } from '../../lib/supabase.js'
 import { FALLBACK, AGENCIES, DPE_COLORS, enrich, fmtPrice, fmtPricePerSqm, unsplash } from './listingsData.js'
+import { PasmalInput } from '../../components/ui/PasmalInput'
+import { PasmalTextarea } from '../../components/ui/PasmalTextarea'
 
 // ── Extra gallery images per property type ────────────────────────────────────
 const GALLERY_POOL = [
@@ -186,14 +188,9 @@ function ContactCard({ l }) {
         </motion.div>
       ) : (
         <form onSubmit={submit} className="space-y-3">
-          <input required value={name} onChange={e => setName(e.target.value)}
-            placeholder="Votre nom"
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition" />
-          <input type="tel" value={phone} onChange={e => setPhone(e.target.value)}
-            placeholder="Votre téléphone"
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition" />
-          <textarea rows={4} value={msg} onChange={e => setMsg(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition resize-none" />
+          <PasmalInput required size="sm" value={name} onChange={e => setName(e.target.value)} placeholder="Votre nom" icon={<I.User size={14}/>} />
+          <PasmalInput type="tel" size="sm" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Votre téléphone" icon={<I.Phone size={14}/>} />
+          <PasmalTextarea rows={4} value={msg} onChange={e => setMsg(e.target.value)} placeholder="Votre message…" />
           <motion.button type="submit" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}
             className="w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition shadow-lg shadow-orange-200/60 flex items-center justify-center gap-2">
             <I.Send size={15} /> Contacter l'agence

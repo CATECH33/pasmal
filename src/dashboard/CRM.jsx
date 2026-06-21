@@ -11,6 +11,7 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import { I, Button, Avatar } from '../lib/ui.jsx'
 import { PasmalSelect } from '../components/ui/PasmalSelect'
+import { PasmalTextarea } from '../components/ui/PasmalTextarea'
 
 /* ============================================================
    CRM Leads — Kanban premium (HubSpot-style)
@@ -538,12 +539,11 @@ function LeadDetailPanel({ lead, onClose, onStatusChange }) {
               {/* Notes */}
               <div className="px-5 py-4 pb-8">
                 <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Notes</div>
-                <textarea
+                <PasmalTextarea
                   value={note}
                   onChange={e => setNote(e.target.value)}
                   placeholder="Ajouter une note sur ce lead…"
                   rows={3}
-                  className="w-full text-sm text-navy-900 placeholder-slate-400 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 resize-none focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-300 transition"
                 />
                 {note !== savedNote && (
                   <div className="flex items-center justify-end gap-2 mt-2">

@@ -643,8 +643,8 @@ function StepPublish({ data, set }) {
 function Field({ label, children, textarea = false }) {
   return (
     <div>
-      <div className="text-[11px] font-semibold text-slate-600 uppercase tracking-wider mb-1.5">{label}</div>
-      <div className={`px-4 ${textarea ? 'py-3' : 'h-12 flex items-center'} bg-slate-50 border border-slate-200 rounded-2xl focus-within:ring-2 focus-within:ring-orange-500/40 focus-within:border-slate-300 transition`}>
+      <div className="text-sm font-medium text-slate-600 mb-1.5">{label}</div>
+      <div className={`px-4 ${textarea ? 'py-3' : 'h-14 flex items-center'} bg-slate-50 border-2 border-slate-200 rounded-[14px] focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-100 transition-all duration-200`}>
         {children}
       </div>
     </div>
